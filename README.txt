@@ -1,10 +1,10 @@
 === Media Wipe ===
 Contributors: mdnahidhasan
-Donate link: https://yourwebsite.com/donate 
-Tags: media, delete, bulk, media library, cleanup
+Author URI: https://mdnahidhasan.netlify.app
+Tags: media wipe, delete, bulk, media library, cleanup, 
 Requires at least: 5.0
-Tested up to: 6.4
-Requires PHP: 7.4
+Tested up to: 6.7.1
+Requires PHP: 7.4 or higher 
 Stable tag: 1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
