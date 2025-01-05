@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Media Wipe
  * Description: A simple plugin to delete all media files with one click.
- * Version: 1.0
+ * Version: 1.0.0
  * Author: Md. Nahid Hasan
  * Author URI: https://mdnahidhasan.netlify.app
  * Text Domain: media-wipe
