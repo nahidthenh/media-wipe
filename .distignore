@@ -43,3 +43,4 @@ node_modules
 build
 postcss.config.js
 .wordpress-org
+.env
