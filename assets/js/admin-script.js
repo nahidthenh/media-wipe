@@ -22,21 +22,37 @@ jQuery(document).ready(function ($) {
         $('#delete-confirmation-modal').fadeIn();
     });
 
-    // If the user clicks 'Yes', submit the form to delete media
+    // If the user clicks 'Yes', submit the form to delete media via AJAX
     $('#delete-confirmation-yes').on('click', function () {
-        // Set the selected media IDs in a hidden input field
-        var mediaIdsString = mediaIds.join(',');
-        $('<input>').attr({
-            type: 'hidden',
-            name: 'media_ids',
-            value: mediaIdsString
-        }).appendTo('#media-wipe-form');
+        // Make sure there are media IDs to delete
+        if (mediaIds.length === 0) {
+            alert('No media selected.');
+            return;
+        }
 
-        // Submit the form to delete the selected media
-        $('#media-wipe-form').submit();
+        // Make an AJAX request to delete the selected media
+        $.ajax({
+            url: ajaxurl, // WordPress AJAX handler
+            type: 'POST',
+            data: {
+                action: 'media_wipe_delete_unused_media', // Your custom action
+                media_ids: mediaIds // Pass the selected media IDs
+            },
+            success: function (response) {
+                // Show success message on the page
+                // alert('Selected media files have been deleted.');
 
-        // Hide the modal
-        $('#delete-confirmation-modal').fadeOut();
+                // Reload the page or update the UI to reflect the change
+                location.reload(); // Reload page to reflect changes
+
+                // Close the modal
+                $('#delete-confirmation-modal').fadeOut();
+            },
+            error: function (xhr, status, error) {
+                // Show error message
+                alert('An error occurred: ' + error);
+            }
+        });
     });
 
     // If the user clicks 'No', hide the modal

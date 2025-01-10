@@ -64,64 +64,14 @@ function media_wipe_unused_media_page() {
         </form>
     </div>
 
-    <!-- Modal -->
-    <div id="delete-confirmation-modal" style="display:none;">
-        <div class="modal-content">
-            <p>Are you sure you want to delete the selected media files?</p>
-            <button id="delete-confirmation-yes">Yes</button>
-            <button id="delete-confirmation-no">No</button>
-        </div>
+ <!-- Modal -->
+<div id="delete-confirmation-modal" style="display:none;">
+    <div class="modal-content">
+        <p>Are you sure you want to delete the selected media files?</p>
+        <button type="button" id="delete-confirmation-yes">Yes</button>
+        <button type="button" id="delete-confirmation-no">No</button>
     </div>
-
-    <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            var mediaIds = [];
-
-            // When the delete button is clicked
-            $('#open-delete-modal').on('click', function(e) {
-                // Prevent default form submission
-                e.preventDefault();
-
-                // Get the selected media IDs
-                mediaIds = [];
-                $('input[name="delete_media[]"]:checked').each(function() {
-                    mediaIds.push($(this).val());
-                });
-
-                // If no media is selected, return
-                if (mediaIds.length === 0) {
-                    alert('Please select media to delete.');
-                    return;
-                }
-
-                // Show the confirmation modal
-                $('#delete-confirmation-modal').fadeIn();
-            });
-
-            // If the user clicks 'Yes', submit the form to delete media
-            $('#delete-confirmation-yes').on('click', function() {
-                // Set the selected media IDs in a hidden input field
-                var mediaIdsString = mediaIds.join(',');
-                $('<input>').attr({
-                    type: 'hidden',
-                    name: 'media_ids',
-                    value: mediaIdsString
-                }).appendTo('#media-wipe-form');
-
-                // Submit the form to delete the selected media
-                $('#media-wipe-form').submit();
-
-                // Hide the modal
-                $('#delete-confirmation-modal').fadeOut();
-            });
-
-            // If the user clicks 'No', hide the modal
-            $('#delete-confirmation-no').on('click', function() {
-                $('#delete-confirmation-modal').fadeOut();
-            });
-        });
-    </script>
-
+</div>
 
 
     <?php
@@ -154,7 +104,27 @@ function media_wipe_get_unused_media() {
     return $unused_media;
 }
 
-// Delete selected media
+// Handle the AJAX request for deleting selected media
+add_action('wp_ajax_media_wipe_delete_unused_media', 'media_wipe_delete_unused_media_ajax');
+
+function media_wipe_delete_unused_media_ajax() {
+    // Verify the nonce for security (optional)
+    if (!isset($_POST['media_ids']) || !is_array($_POST['media_ids']) || empty($_POST['media_ids'])) {
+        wp_send_json_error(array('message' => 'No media selected.'));
+    }
+
+    // Get the media IDs from the request
+    $media_ids = $_POST['media_ids'];
+
+    // Call the delete function
+    media_wipe_delete_unused_media($media_ids);
+
+    // Send a success response (no WordPress notices)
+    wp_send_json_success(array('message' => 'Selected media deleted.'));
+}
+
+
+// The actual delete function
 function media_wipe_delete_unused_media($media_ids) {
     if (!is_array($media_ids) || empty($media_ids)) {
         return;
@@ -163,8 +133,4 @@ function media_wipe_delete_unused_media($media_ids) {
     foreach ($media_ids as $media_id) {
         wp_delete_attachment($media_id, true);
     }
-
-    add_action('admin_notices', function () {
-        echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Selected unused media files have been deleted.', 'media-wipe') . '</p></div>';
-    });
 }
