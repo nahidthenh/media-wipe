@@ -3,3 +3,222 @@ img {
     padding: 5px;
     background-color: #fff;
 }
+
+.wrap {
+    background-color: #f9f9f9;
+    padding: 20px;
+}
+
+.widefat th,
+.widefat td {
+    padding: 10px;
+    text-align: left;
+}
+
+button {
+    margin-top: 10px;
+}
+
+
+/* ================================
+    Table CSS Start 
+================================ */
+
+/* Target the Media Wipe Plugin Table */
+#media-wipe-unused-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+}
+
+#media-wipe-unused-table th,
+#media-wipe-unused-table td {
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+    vertical-align: middle;
+}
+
+/* Table Header */
+#media-wipe-unused-table th {
+    background-color: #f4f7fa;
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Table Rows */
+#media-wipe-unused-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#media-wipe-unused-table tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* Table Column Styling */
+#media-wipe-unused-table td img {
+    max-width: 80px;
+    height: auto;
+    border-radius: 4px;
+    transition: transform 0.3s ease;
+}
+
+/* Hover effect on image */
+#media-wipe-unused-table td img:hover {
+    transform: scale(1.1);
+}
+
+/* Styling for Buttons */
+.media-wipe-btn {
+    padding: 10px 40px !important;
+    border: 1px solid !important;
+    border-radius: 5px !important;
+}
+
+#media-wipe-unused-table input[type="submit"].button-danger {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.button-danger {
+    background: #ff2109e3 !important;
+    color: #fff !important;
+    transition: .3s;
+}
+
+.button-danger:hover {
+    background: #e74c3c !important;
+
+}
+
+.button-primary:hover {
+    background: #3498db !important;
+    color: #fff !important;
+    transition: .3s;
+}
+
+#media-wipe-unused-table input[type="submit"].button-primary {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#media-wipe-unused-table input[type="submit"].button-danger:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+    /* Slight lift on hover */
+}
+
+#media-wipe-unused-table input[type="submit"].button-primary:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    /* Slight lift on hover */
+}
+
+/* Spacing between buttons */
+#media-wipe-unused-table input[type="submit"]:not(:last-child) {
+    margin-right: 10px;
+}
+
+/* Style for the media file name */
+#media-wipe-unused-table td {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Add some padding to the table cells */
+#media-wipe-unused-table th,
+#media-wipe-unused-table td {
+    padding: 12px 15px;
+}
+
+/* Additional styling for better visual separation */
+#media-wipe-unused-table th,
+#media-wipe-unused-table td {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Table Scroll on Mobile */
+@media (max-width: 768px) {
+    #media-wipe-unused-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* Styling for the page title */
+#media-wipe-unused-table .wrap h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* ================================
+    Table CSS END 
+================================ */
+
+
+/* ================================
+        Selected Media Modal CSS Start
+================================ */
+/* Modal Styling */
+.media-wipe-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black background with opacity */
+}
+
+.media-wipe-modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+}
+
+.media-wipe-close-btn {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    right: 10px;
+    top: 5px;
+}
+
+.media-wipe-close-btn:hover,
+.media-wipe-close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button {
+    margin: 5px;
+}
+
+/* ================================
+    Selected Media Modal CSS End
+================================ */

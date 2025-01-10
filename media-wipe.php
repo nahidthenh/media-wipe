@@ -10,20 +10,23 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  */
 
-if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly.
+// Prevent direct access
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
 }
 
-// Include feature files
-require_once plugin_dir_path(__FILE__) . 'includes/delete-all-media.php';
-require_once plugin_dir_path(__FILE__) . 'includes/delete-selected-media.php';
+// Include necessary files
+include_once plugin_dir_path(__FILE__) . 'includes/delete-all-media.php';
+include_once plugin_dir_path(__FILE__) . 'includes/delete-selected-media.php';
 
-// Add Settings link to the plugin action links
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'media_wipe_add_settings_link');
+// Register plugin constants (optional)
+define( 'MEDIA_WIPE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'MEDIA_WIPE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
-function media_wipe_add_settings_link($links)
-{
-    $settings_link = '<a href="' . esc_url(admin_url('upload.php?page=media-wipe')) . '">' . __('Settings', 'media-wipe') . '</a>';
-    array_unshift($links, $settings_link); // Add to the beginning of the links array
-    return $links;
+// Register hooks for enqueueing scripts and styles
+add_action('admin_enqueue_scripts', 'media_wipe_enqueue_assets');
+function media_wipe_enqueue_assets() {
+    // Enqueue custom styles and scripts for admin
+    wp_enqueue_style('media-wipe-admin-style', MEDIA_WIPE_PLUGIN_URL . 'assets/css/admin-style.css');
+    wp_enqueue_script('media-wipe-admin-script', MEDIA_WIPE_PLUGIN_URL . 'assets/js/admin-script.js', array('jquery'), null, true);
 }
