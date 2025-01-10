@@ -5,7 +5,7 @@ Tags: media wipe, delete, bulk, media library, cleanup
 Requires at least: 5.0
 Tested up to: 6.7.1
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,6 +17,8 @@ Easily delete all media files in your WordPress Media Library with one click. Us
 
 ### Key Features:
 - Permanently deletes all media files in your Media Library.
+- Delete selected media files.
+- Scan and delete unused media files (Comming Soon). 
 - Simple, intuitive interface for quick action.
 - Built-in confirmation prompt to avoid accidental deletions.
 
@@ -34,7 +36,7 @@ Easily delete all media files in your WordPress Media Library with one click. Us
 == Frequently Asked Questions ==
 
 = What does this plugin do? =
-It permanently deletes all media files in your WordPress Media Library, including database entries and server files.
+It allows you to delete all, selected, or unused media files in your WordPress Media Library. Deletions include database entries and server files.
 
 = Can I undo the deletions? =
 No, the deletions are permanent. Ensure you have a backup before using this plugin.
@@ -43,7 +45,7 @@ No, the deletions are permanent. Ensure you have a backup before using this plug
 Yes, but it should be used with caution. Test in a staging environment before using it on a live site.
 
 = Does it delete only unused media files? =
-No, it deletes all media files, both used and unused.
+You now have the option to delete all media, selected media, or unused media files.
 
 == Screenshots ==
 
@@ -52,13 +54,17 @@ No, it deletes all media files, both used and unused.
 
 == Changelog ==
 
+= 1.0.1 - 2025-01-10 =
+- Added: Option for users to delete selected media files.
+- Few minor bug fixes & improvements.
+
 = 1.0.0 =
-* Initial release.
+- Initial release.
 
 == Upgrade Notice ==
 
-= 1.0.0 =
-First release of Media Wipe. Use with caution and always back up your site.
+= 1.0.1 =
+Added new features to delete selected media and unused media files. Back up your site before upgrading.
 
 == License ==
 
