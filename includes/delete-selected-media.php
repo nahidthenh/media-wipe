@@ -44,7 +44,7 @@ function media_wipe_unused_media_page() {
                     <?php if (!empty($unused_media)) : ?>
                         <?php foreach ($unused_media as $media) : ?>
                             <tr>
-                                <td><input type="checkbox" name="delete_media[]" value="<?php echo esc_attr($media->ID); ?>" class="media-checkbox"></td>
+                                <td><input type="checkbox" name="delete_media[]" value="<?php echo esc_attr($media->ID); ?>"></td>
                                 <td><?php echo esc_html($media->post_title); ?></td>
                                 <td><img src="<?php echo esc_url($media->guid); ?>" style="width:50px;height:auto;"></td>
                             </tr>
@@ -58,29 +58,73 @@ function media_wipe_unused_media_page() {
             </table>
 
             <p>
+                <button type="button" id="open-delete-modal" class="media-wipe-btn button button-danger"><?php esc_attr_e('Delete Selected Media', 'media-wipe'); ?></button>
                 <input type="submit" name="fetch_all_media" class="media-wipe-btn button button-primary" value="<?php esc_attr_e('Fetch All Media', 'media-wipe'); ?>" />
-                <button type="button" id="delete-media-btn" class="media-wipe-btn button button-danger"><?php esc_attr_e('Delete Selected Media', 'media-wipe'); ?></button>
             </p>
         </form>
     </div>
 
-    <!-- Modal HTML -->
-    <div id="deleteModal" style="display:none;" class="media-wipe-modal">
-        <div class="media-wipe-modal-content">
-            <span class="media-wipe-close-btn">&times;</span>
-            <h2><?php esc_html_e('Are you sure you want to delete the selected media?', 'media-wipe'); ?></h2>
-            <p><?php esc_html_e('This action cannot be undone.', 'media-wipe'); ?></p>
-            <button id="confirm-delete" class="button button-danger"><?php esc_html_e('Yes, Delete', 'media-wipe'); ?></button>
-            <button id="cancel-delete" class="button"><?php esc_html_e('Cancel', 'media-wipe'); ?></button>
+    <!-- Modal -->
+    <div id="delete-confirmation-modal" style="display:none;">
+        <div class="modal-content">
+            <p>Are you sure you want to delete the selected media files?</p>
+            <button id="delete-confirmation-yes">Yes</button>
+            <button id="delete-confirmation-no">No</button>
         </div>
     </div>
 
-    <?php
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            var mediaIds = [];
 
-    // Handle the deletion of selected media
-    if (isset($_POST['delete_unused_media']) && check_admin_referer('media_wipe_unused_action', 'media_wipe_unused_nonce')) {
-        media_wipe_delete_unused_media($_POST['delete_media']);
-    }
+            // When the delete button is clicked
+            $('#open-delete-modal').on('click', function(e) {
+                // Prevent default form submission
+                e.preventDefault();
+
+                // Get the selected media IDs
+                mediaIds = [];
+                $('input[name="delete_media[]"]:checked').each(function() {
+                    mediaIds.push($(this).val());
+                });
+
+                // If no media is selected, return
+                if (mediaIds.length === 0) {
+                    alert('Please select media to delete.');
+                    return;
+                }
+
+                // Show the confirmation modal
+                $('#delete-confirmation-modal').fadeIn();
+            });
+
+            // If the user clicks 'Yes', submit the form to delete media
+            $('#delete-confirmation-yes').on('click', function() {
+                // Set the selected media IDs in a hidden input field
+                var mediaIdsString = mediaIds.join(',');
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'media_ids',
+                    value: mediaIdsString
+                }).appendTo('#media-wipe-form');
+
+                // Submit the form to delete the selected media
+                $('#media-wipe-form').submit();
+
+                // Hide the modal
+                $('#delete-confirmation-modal').fadeOut();
+            });
+
+            // If the user clicks 'No', hide the modal
+            $('#delete-confirmation-no').on('click', function() {
+                $('#delete-confirmation-modal').fadeOut();
+            });
+        });
+    </script>
+
+
+
+    <?php
 }
 
 // Fetch all media (both used and unused)

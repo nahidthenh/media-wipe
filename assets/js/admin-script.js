@@ -1,31 +1,46 @@
-(function ($) {
-    $(document).ready(function () {
-        // Add your JavaScript if needed
+jQuery(document).ready(function ($) {
+    var mediaIds = [];
+
+    // When the delete button is clicked
+    $('#open-delete-modal').on('click', function (e) {
+        // Prevent default form submission
+        e.preventDefault();
+
+        // Get the selected media IDs
+        mediaIds = [];
+        $('input[name="delete_media[]"]:checked').each(function () {
+            mediaIds.push($(this).val());
+        });
+
+        // If no media is selected, return
+        if (mediaIds.length === 0) {
+            alert('Please select media to delete.');
+            return;
+        }
 
         // Show the confirmation modal
-        document.getElementById('delete-media-btn').addEventListener('click', function () {
-            var selectedMedia = document.querySelectorAll('.media-checkbox:checked');
-            if (selectedMedia.length > 0) {
-                document.getElementById('deleteModal').style.display = 'block';
-            } else {
-                alert("Please select media to delete.");
-            }
-        });
-
-        // Close modal on cancel
-        document.getElementById('cancel-delete').addEventListener('click', function () {
-            document.getElementById('deleteModal').style.display = 'none';
-        });
-
-        // Confirm deletion and submit the form
-        document.getElementById('confirm-delete').addEventListener('click', function () {
-            document.getElementById('media-wipe-form').submit();
-        });
-
-        // Close modal when clicking on the close button
-        document.querySelector('.media-wipe-close-btn').addEventListener('click', function () {
-            document.getElementById('deleteModal').style.display = 'none';
-        });
-
+        $('#delete-confirmation-modal').fadeIn();
     });
-})(jQuery);
+
+    // If the user clicks 'Yes', submit the form to delete media
+    $('#delete-confirmation-yes').on('click', function () {
+        // Set the selected media IDs in a hidden input field
+        var mediaIdsString = mediaIds.join(',');
+        $('<input>').attr({
+            type: 'hidden',
+            name: 'media_ids',
+            value: mediaIdsString
+        }).appendTo('#media-wipe-form');
+
+        // Submit the form to delete the selected media
+        $('#media-wipe-form').submit();
+
+        // Hide the modal
+        $('#delete-confirmation-modal').fadeOut();
+    });
+
+    // If the user clicks 'No', hide the modal
+    $('#delete-confirmation-no').on('click', function () {
+        $('#delete-confirmation-modal').fadeOut();
+    });
+});
