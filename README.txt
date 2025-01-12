@@ -5,7 +5,7 @@ Tags: media wipe, delete, bulk, media library, cleanup
 Requires at least: 5.0
 Tested up to: 6.7.1
 Requires PHP: 7.4
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,12 +55,16 @@ You now have the option to delete all media, selected media, or unused media fil
 
 == Changelog ==
 
+= 1.0.3 - 2025-01-12 =
+- Added: Assets Updated
+- Few minor bug fixes & improvements.
+
 = 1.0.2 - 2025-01-11 =
 - Added: Fetch All Media Option.
 - Improved: Delete Selected Media
 - Few minor bug fixes & improvements.
 
-= 1.0.2 - 2025-01-10 =
+= 1.0.1 - 2025-01-10 =
 - Added: Option for users to delete selected media files.
 - Few minor bug fixes & improvements.
 
