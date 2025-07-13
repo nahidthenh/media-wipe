@@ -44,3 +44,6 @@ build
 postcss.config.js
 .wordpress-org
 .env
+docs
+.gitattributes
+.gitignore
