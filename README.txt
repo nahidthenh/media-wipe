@@ -3,9 +3,9 @@ Contributors: mdnahidhasan
 Author URI: https://mdnahidhasan.netlify.app
 Tags: media, delete, cleanup, unused, bulk, security, audit, preview
 Requires at least: 5.0
-Tested up to: 6.7.1
+Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.0.4
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -123,7 +123,7 @@ The plugin implements rate limiting to prevent abuse, allowing a maximum number 
 
 == Changelog ==
 
-= 1.0.4 - 2025-01-13 =
+= 1.1.0 - 2025-07-13 =
 * **🚀 MAJOR UPDATE**: Complete plugin overhaul with enterprise-grade features
 * **🎨 NEW**: Dedicated WordPress admin menu with professional dashboard
 * **🛡️ NEW**: Advanced multi-step confirmation system for delete operations

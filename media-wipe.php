@@ -3,17 +3,16 @@
  * Plugin Name: Media Wipe
  * Plugin URI: https://mdnahidhasan.netlify.app/media-wipe
  * Description: A comprehensive WordPress plugin to safely delete media files with advanced confirmation systems, document preview, and security audit logging.
- * Version: 1.0.4
+ * Version: 1.1.0
  * Author: Md. Nahid Hasan
  * Author URI: https://mdnahidhasan.netlify.app
  * Text Domain: media-wipe
  * Domain Path: /languages
  * Requires at least: 5.0
- * Tested up to: 6.7.1
+ * Tested up to: 6.7
  * Requires PHP: 7.4
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Network: false
  *
  * @package MediaWipe
  * @author Md. Nahid Hasan
@@ -31,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Define plugin constants
  */
 if ( ! defined( 'MEDIA_WIPE_VERSION' ) ) {
-    define( 'MEDIA_WIPE_VERSION', '1.0.4' );
+    define( 'MEDIA_WIPE_VERSION', '1.1.0' );
 }
 
 if ( ! defined( 'MEDIA_WIPE_PLUGIN_FILE' ) ) {
