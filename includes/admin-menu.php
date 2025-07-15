@@ -45,7 +45,7 @@ function media_wipe_admin_menu() {
     add_submenu_page(
         'media-wipe',                                      // Parent slug
         __('Delete All Media', 'media-wipe'),              // Page title
-        __('Delete All Media', 'media-wipe'),              // Menu title
+        __('Delete All', 'media-wipe'),                    // Menu title
         'manage_options',                                  // Capability
         'media-wipe-delete-all',                          // Menu slug
         'media_wipe_all_media_page'                       // Function
@@ -55,7 +55,7 @@ function media_wipe_admin_menu() {
     add_submenu_page(
         'media-wipe',                                      // Parent slug
         __('Delete Selected Media', 'media-wipe'),         // Page title
-        __('Delete Selected Media', 'media-wipe'),         // Menu title
+        __('Delete Selected', 'media-wipe'),               // Menu title
         'manage_options',                                  // Capability
         'media-wipe-delete-selected',                     // Menu slug
         'media_wipe_unused_media_page'                    // Function
@@ -75,7 +75,7 @@ function media_wipe_admin_menu() {
     add_submenu_page(
         'media-wipe',                                      // Parent slug
         __('Security Audit', 'media-wipe'),               // Page title
-        __('Security Audit', 'media-wipe'),               // Menu title
+        __('Audit Log', 'media-wipe'),                     // Menu title
         'manage_options',                                  // Capability
         'media-wipe-security',                            // Menu slug
         'media_wipe_security_page'                        // Function
@@ -85,7 +85,7 @@ function media_wipe_admin_menu() {
     add_submenu_page(
         'media-wipe',                                      // Parent slug
         __('Help & Support', 'media-wipe'),               // Page title
-        __('Help & Support', 'media-wipe'),               // Menu title
+        __('Support', 'media-wipe'),                       // Menu title
         'manage_options',                                  // Capability
         'media-wipe-help',                                // Menu slug
         'media_wipe_help_page'                            // Function

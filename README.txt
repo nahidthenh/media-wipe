@@ -5,7 +5,7 @@ Tags: media, delete, cleanup, unused, bulk
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,13 +126,21 @@ The plugin implements rate limiting to prevent abuse, allowing a maximum number 
 
 1. Media Wipe Dashboard with statistics and quick actions
 2. Enhanced Delete All Media page with confirmation system
-3. Document preview in confirmation dialog
-4. Delete Selected Media with enhanced interface
-5. Security Audit log viewer
-6. Settings configuration page
-7. Help and support documentation
+3. Delete Selected Media with enhanced interface
+4. Security Audit log viewer
+5. Settings configuration page
+6. Help and support documentation
 
 == Changelog ==
+
+= 1.1.2 - 2025-07-15 =
+* **IMPROVED**: Simplified sidebar menu item names for better navigation
+* **IMPROVED**: Enhanced rate limiting message with specific 1-hour wait time
+* **IMPROVED**: Removed text-transform uppercase from confirmation input for better UX
+* **IMPROVED**: Fixed CSS styling issues for better visual consistency
+* **IMPROVED**: Updated DataTable class names for proper functionality
+* **ENHANCED**: Plugin information card now displays on dashboard
+* **ENHANCED**: Better user experience with cleaner menu structure
 
 = 1.1.1 - 2025-07-15 =
 * **COMPLIANCE**: Fixed WordPress.org plugin directory compliance issues
