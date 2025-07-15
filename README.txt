@@ -123,7 +123,7 @@ The plugin implements rate limiting to prevent abuse, allowing a maximum number 
 
 == Changelog ==
 
-= 1.1.1 - 2025-01-13 =
+= 1.1.1 - 2025-07-15 =
 * **COMPLIANCE**: Fixed WordPress.org plugin directory compliance issues
 * **FIXED**: Reduced tags from 8 to 5 (removed: security, audit, preview)
 * **FIXED**: Shortened description to meet 150 character limit
