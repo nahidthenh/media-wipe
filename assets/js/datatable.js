@@ -25,6 +25,7 @@
          * Initialize the DataTable
          */
         init() {
+            this.addSpinnerCSS();
             this.initializeDataTable();
             this.bindEvents();
         }
@@ -36,6 +37,11 @@
             if (!$.fn.DataTable) {
                 console.error('DataTables library not loaded');
                 return;
+            }
+
+            // Destroy existing DataTable if it exists
+            if ($.fn.DataTable.isDataTable('#media-datatable')) {
+                $('#media-datatable').DataTable().destroy();
             }
 
             this.table = $('#media-datatable').DataTable({
@@ -75,6 +81,10 @@
                 dom: '<"datatable-top"<"datatable-length"l><"datatable-filter"f>>rt<"datatable-bottom"<"datatable-info"i><"datatable-pagination"p>>',
                 drawCallback: () => {
                     this.updateSelectionState();
+                },
+                initComplete: () => {
+                    console.log('DataTable initialized successfully');
+                    this.updateDeleteButton();
                 }
             });
         }
@@ -83,30 +93,39 @@
          * Bind event handlers
          */
         bindEvents() {
+            console.log('Media Wipe DataTable: Binding events...');
+
             // Bulk selection controls
             $('#select-all-btn').on('click', () => {
+                console.log('Select All clicked');
                 this.selectAll();
             });
 
             $('#select-none-btn').on('click', () => {
+                console.log('Select None clicked');
                 this.selectNone();
             });
 
             // Delete selected button
             $('#delete-selected-btn').on('click', () => {
+                console.log('Delete Selected clicked');
                 this.deleteSelected();
             });
 
             // Individual checkbox selection
             $(document).on('change', '.media-checkbox', (e) => {
+                console.log('Checkbox changed:', e.target.value);
                 this.handleCheckboxChange(e.target);
             });
 
             // Single delete buttons
             $(document).on('click', '.delete-single', (e) => {
                 const mediaId = $(e.target).data('media-id');
+                console.log('Delete single clicked:', mediaId);
                 this.deleteSingle(mediaId);
             });
+
+            console.log('Media Wipe DataTable: Events bound successfully');
         }
 
         /**
@@ -218,11 +237,27 @@
          * Perform actual deletion
          */
         performDeletion(mediaIds) {
+            // Show loading state
+            const $deleteBtn = $('#delete-selected-btn');
+            $deleteBtn.prop('disabled', true).html('<span class="dashicons dashicons-update spin"></span> Deleting...');
+
+            // Add spinner CSS
+            this.addSpinnerCSS();
+
             // Set the selected media IDs in the hidden form
             $('#selected-media-ids').val(mediaIds.join(','));
 
             // Submit the form
             $('#delete-selected-form').submit();
+        }
+
+        /**
+         * Add CSS for spinning icon
+         */
+        addSpinnerCSS() {
+            if (!$('#media-wipe-spinner-css').length) {
+                $('<style id="media-wipe-spinner-css">.spin { animation: spin 1s linear infinite; } @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>').appendTo('head');
+            }
         }
 
         /**
@@ -235,8 +270,13 @@
 
     // Initialize DataTable when document is ready
     $(document).ready(function () {
+        console.log('Media Wipe DataTable: Document ready');
+
         if ($('#media-datatable').length) {
+            console.log('Media Wipe DataTable: Table found, initializing...');
             window.mediaWipeDataTable = new MediaWipeDataTable();
+        } else {
+            console.log('Media Wipe DataTable: Table not found');
         }
     });
 

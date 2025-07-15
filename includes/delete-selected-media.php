@@ -22,6 +22,38 @@ function media_wipe_unused_media_page() {
         wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'media-wipe'));
     }
 
+    // Handle form submission for deleting selected media
+    if (isset($_POST['delete_selected_media']) && wp_verify_nonce($_POST['media_wipe_delete_selected_nonce'], 'media_wipe_delete_selected_action')) {
+        $selected_ids = isset($_POST['selected_media_ids']) ? sanitize_text_field($_POST['selected_media_ids']) : '';
+
+        if (!empty($selected_ids)) {
+            $media_ids = explode(',', $selected_ids);
+            $deleted_count = 0;
+
+            foreach ($media_ids as $media_id) {
+                $media_id = intval($media_id);
+                if ($media_id > 0) {
+                    $deleted = wp_delete_attachment($media_id, true);
+                    if ($deleted) {
+                        $deleted_count++;
+                        // Log the deletion
+                        media_wipe_log_activity('delete_selected', array(
+                            'media_id' => $media_id,
+                            'user_id' => get_current_user_id(),
+                            'timestamp' => current_time('mysql')
+                        ));
+                    }
+                }
+            }
+
+            if ($deleted_count > 0) {
+                echo '<div class="notice notice-success is-dismissible"><p>' .
+                     sprintf(esc_html__('Successfully deleted %d media files.', 'media-wipe'), $deleted_count) .
+                     '</p></div>';
+            }
+        }
+    }
+
     // Handle form submission with proper nonce verification
     $unused_media = array();
     if (isset($_POST['fetch_all_media'])) {
