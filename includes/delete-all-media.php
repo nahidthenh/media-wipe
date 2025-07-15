@@ -133,7 +133,11 @@ function media_wipe_all_media_page() {
 
                 <div class="final-confirmation">
                     <label for="confirmation-text"><?php esc_html_e('Type "DELETE ALL MEDIA" to confirm:', 'media-wipe'); ?></label>
-                    <input type="text" id="confirmation-text" placeholder="<?php esc_attr_e('DELETE ALL MEDIA', 'media-wipe'); ?>" autocomplete="off">
+                    <input type="text" id="confirmation-text" placeholder="<?php esc_attr_e('Type DELETE ALL MEDIA here', 'media-wipe'); ?>" autocomplete="off">
+                    <div class="confirmation-help">
+                        <span class="dashicons dashicons-info"></span>
+                        <span><?php esc_html_e('Type exactly DELETE ALL MEDIA in uppercase or lowercase', 'media-wipe'); ?></span>
+                    </div>
                 </div>
             </div>
 
@@ -338,7 +342,7 @@ function media_wipe_delete_all_media_ajax() {
         media_wipe_log_security_event('rate_limit_exceeded', array(
             'action' => 'delete_all_media'
         ));
-        wp_send_json_error(array('message' => esc_html__('Too many deletion requests. Please wait before trying again.', 'media-wipe')));
+        wp_send_json_error(array('message' => esc_html__('Too many deletion requests. Please wait 1 hour before trying again.', 'media-wipe')));
     }
 
     // Log the deletion attempt

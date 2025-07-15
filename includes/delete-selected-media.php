@@ -246,7 +246,7 @@ function media_wipe_delete_unused_media_ajax() {
 
     // Check rate limiting
     if (!media_wipe_check_rate_limit('delete_selected', count($media_ids))) {
-        wp_send_json_error(array('message' => esc_html__('Too many deletion requests. Please wait before trying again.', 'media-wipe')));
+        wp_send_json_error(array('message' => esc_html__('Too many deletion requests. Please wait 1 hour before trying again.', 'media-wipe')));
     }
 
     // Log the deletion attempt

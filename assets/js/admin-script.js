@@ -168,7 +168,7 @@ jQuery(document).ready(function ($) {
             $('#understand-permanent').is(':checked') &&
             $('#accept-responsibility').is(':checked');
 
-        var confirmationText = $('#confirmation-text').val().trim().toUpperCase();
+        var confirmationText = normalizeText($('#confirmation-text').val());
         var textMatches = confirmationText === 'DELETE ALL MEDIA';
 
         var isValid = allChecked && textMatches;
@@ -387,6 +387,11 @@ jQuery(document).ready(function ($) {
         $button.prop('disabled', false).text('Delete Selected Files');
     }
 
+    // Helper function to normalize text for comparison
+    function normalizeText(text) {
+        return text.trim().toUpperCase().replace(/\s+/g, ' ');
+    }
+
     // Update statistics after deletion
     function updateStatsAfterDeletion(type, count) {
         if (type === 'all') {
@@ -413,8 +418,14 @@ jQuery(document).ready(function ($) {
     // Enhance confirmation text input
     $('#confirmation-text').on('input', function () {
         var $input = $(this);
-        var value = $input.val().trim().toUpperCase();
+        var value = normalizeText($input.val());
         var target = 'DELETE ALL MEDIA';
+
+        // Debug logging
+        console.log('Input value:', '"' + $input.val() + '"');
+        console.log('Normalized value:', '"' + value + '"');
+        console.log('Target:', '"' + target + '"');
+        console.log('Match:', value === target);
 
         // Visual feedback for typing progress
         if (value === target) {
@@ -426,6 +437,9 @@ jQuery(document).ready(function ($) {
         } else {
             $input.css('border-color', '#ffeaa7');
         }
+
+        // Trigger validation check
+        validateDeleteAllForm();
     });
 
     // ================================

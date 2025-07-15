@@ -610,7 +610,6 @@ button {
     border-radius: 4px;
     font-size: 14px;
     font-family: monospace;
-    text-transform: uppercase;
     letter-spacing: 1px;
 }
 
@@ -618,6 +617,24 @@ button {
     outline: none;
     border-color: #f39c12;
     box-shadow: 0 0 0 2px rgba(243, 156, 18, 0.2);
+}
+
+.confirmation-help {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #e7f3ff;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #0073aa;
+}
+
+.confirmation-help .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
 }
 
 /* Modal Footer */
@@ -1034,6 +1051,78 @@ button {
         flex-direction: column;
         gap: 8px;
     }
+}
+
+/* Plugin Information Card */
+.media-wipe-plugin-info {
+    margin: 20px 0;
+}
+
+.plugin-info-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.plugin-info-header {
+    background: linear-gradient(135deg, #2271b1 0%, #135e96 100%);
+    color: #fff;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.plugin-info-header .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.plugin-info-header h3 {
+    color: #fff;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.plugin-info-content {
+    padding: 20px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f1;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.info-label {
+    font-weight: 500;
+    color: #50575e;
+}
+
+.info-value {
+    color: #1d2327;
+    font-weight: 600;
+}
+
+.version-badge {
+    background: #00a32a;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 /* ================================

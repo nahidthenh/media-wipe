@@ -204,6 +204,34 @@ function media_wipe_dashboard_page() {
                 </div>
             </div>
 
+            <!-- Plugin Information -->
+            <div class="media-wipe-plugin-info">
+                <div class="plugin-info-card">
+                    <div class="plugin-info-header">
+                        <span class="dashicons dashicons-admin-plugins"></span>
+                        <h3><?php esc_html_e('Plugin Information', 'media-wipe'); ?></h3>
+                    </div>
+                    <div class="plugin-info-content">
+                        <div class="info-item">
+                            <span class="info-label"><?php esc_html_e('Current Version:', 'media-wipe'); ?></span>
+                            <span class="info-value version-badge"><?php echo esc_html(MEDIA_WIPE_VERSION); ?></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label"><?php esc_html_e('WordPress Version:', 'media-wipe'); ?></span>
+                            <span class="info-value"><?php echo esc_html(get_bloginfo('version')); ?></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label"><?php esc_html_e('PHP Version:', 'media-wipe'); ?></span>
+                            <span class="info-value"><?php echo esc_html(PHP_VERSION); ?></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label"><?php esc_html_e('Last Updated:', 'media-wipe'); ?></span>
+                            <span class="info-value"><?php echo esc_html(date_i18n(get_option('date_format'), filemtime(MEDIA_WIPE_PLUGIN_FILE))); ?></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Safety Notice -->
             <div class="media-wipe-safety-notice">
                 <div class="notice notice-warning">
