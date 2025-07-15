@@ -760,35 +760,35 @@ button {
     line-height: 1.5;
 }
 
-.welcome-panel-column-container {
-    display: grid;
+.mw-welcome-panel-column-container {
+    display: grid !important;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
     margin-top: 25px;
 }
 
-.welcome-panel-column {
+.mw-welcome-panel-column {
     background: #f6f7f7;
     border: 1px solid #dcdcde;
     border-radius: 4px;
     padding: 20px;
 }
 
-.welcome-panel-column h3 {
+.mw-welcome-panel-column h3 {
     color: #1d2327;
     font-size: 16px;
     font-weight: 600;
     margin: 0 0 12px;
 }
 
-.welcome-panel-column p {
+.mw-welcome-panel-column p {
     color: #50575e;
     font-size: 14px;
     margin: 12px 0 0;
     line-height: 1.5;
 }
 
-.welcome-panel-column .button {
+.mw-welcome-panel-column .button {
     margin: 0 0 12px 0;
     display: inline-block;
 }
@@ -987,12 +987,12 @@ button {
 
 /* Responsive Design for Dashboard */
 @media (max-width: 782px) {
-    .welcome-panel-column-container {
+    .mw-welcome-panel-column-container {
         grid-template-columns: 1fr;
         gap: 15px;
     }
 
-    .welcome-panel-column {
+    .mw-welcome-panel-column {
         padding: 15px;
     }
 

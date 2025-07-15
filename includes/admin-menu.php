@@ -129,22 +129,22 @@ function media_wipe_dashboard_page() {
                     <p class="about-description">
                         <?php esc_html_e('Manage your WordPress media library with powerful deletion tools. Clean up unused files, delete selected media, or perform bulk operations safely.', 'media-wipe'); ?>
                     </p>
-                    <div class="welcome-panel-column-container">
-                        <div class="welcome-panel-column">
+                    <div class="mw-welcome-panel-column-container">
+                        <div class="mw-welcome-panel-column">
                             <h3><?php esc_html_e('Quick Actions', 'media-wipe'); ?></h3>
                             <a class="button button-primary button-hero" href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-delete-selected')); ?>">
                                 <?php esc_html_e('Delete Selected Media', 'media-wipe'); ?>
                             </a>
                             <p><?php esc_html_e('Choose specific files to delete from your media library.', 'media-wipe'); ?></p>
                         </div>
-                        <div class="welcome-panel-column">
+                        <div class="mw-welcome-panel-column">
                             <h3><?php esc_html_e('Bulk Operations', 'media-wipe'); ?></h3>
                             <a class="button button-secondary" href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-delete-all')); ?>">
                                 <?php esc_html_e('Delete All Media', 'media-wipe'); ?>
                             </a>
                             <p><?php esc_html_e('Remove all media files from your library (use with caution).', 'media-wipe'); ?></p>
                         </div>
-                        <div class="welcome-panel-column">
+                        <div class="mw-welcome-panel-column">
                             <h3><?php esc_html_e('Need Help?', 'media-wipe'); ?></h3>
                             <a class="button" href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-help')); ?>">
                                 <?php esc_html_e('View Documentation', 'media-wipe'); ?>

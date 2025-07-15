@@ -9,7 +9,7 @@ Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-🚀 The most comprehensive WordPress media management plugin with enterprise-grade security, document preview, and professional admin dashboard. Transform your media cleanup workflow!
+The most comprehensive WordPress media management plugin with enterprise-grade security, document preview, and professional admin dashboard. Transform your media cleanup workflow!
 
 == Description ==
 
