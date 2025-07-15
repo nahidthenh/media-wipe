@@ -124,7 +124,7 @@ function media_wipe_dashboard_page() {
         <div class="media-wipe-dashboard">
             <!-- Welcome Section -->
             <div class="welcome-panel">
-                <div class="welcome-panel-content">
+                <div class="mw-welcome-panel-content">
                     <h2><?php esc_html_e('Welcome to Media Wipe', 'media-wipe'); ?></h2>
                     <p class="about-description">
                         <?php esc_html_e('Manage your WordPress media library with powerful deletion tools. Clean up unused files, delete selected media, or perform bulk operations safely.', 'media-wipe'); ?>

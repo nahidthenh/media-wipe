@@ -5,7 +5,7 @@
 }
 
 .wrap {
-    background-color: #f9f9f9;
+    /* background-color: #f9f9f9; */
     padding: 20px;
 }
 
@@ -736,7 +736,7 @@ button {
     overflow: hidden;
 }
 
-.welcome-panel-content {
+.mw-welcome-panel-content {
     padding: 23px 20px 20px;
     position: relative;
 }
@@ -1016,7 +1016,7 @@ button {
         gap: 10px;
     }
 
-    .welcome-panel-content {
+    .mw-welcome-panel-content {
         padding: 15px;
     }
 
@@ -2168,7 +2168,6 @@ textarea:focus {
 .datatable-controls {
     padding: 15px 20px;
     background: #f6f7f7;
-    border-bottom: 1px solid #c3c4c7;
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
@@ -2592,11 +2591,14 @@ textarea:focus {
     }
 }
 
+.dataTables_wrapper .dataTables_length select {
+    padding-right: 15px !important;
+}
+
 /* Pagination */
 .datatable-pagination {
     padding: 15px 20px;
     background: #f6f7f7;
-    border-top: 1px solid #c3c4c7;
     display: flex;
     justify-content: space-between;
     align-items: center;
