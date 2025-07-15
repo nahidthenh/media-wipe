@@ -432,80 +432,307 @@ function media_wipe_help_page() {
         wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'media-wipe'));
     }
     ?>
-    <div class="wrap">
-        <h1><?php esc_html_e('Media Wipe Help & Support', 'media-wipe'); ?></h1>
-        
-        <div class="media-wipe-help-content">
-            <div class="help-section">
-                <h2><?php esc_html_e('Getting Started', 'media-wipe'); ?></h2>
-                <p><?php esc_html_e('Media Wipe provides powerful tools for managing your WordPress media library. Here\'s how to use each feature safely:', 'media-wipe'); ?></p>
-                
-                <h3><?php esc_html_e('Delete Selected Media', 'media-wipe'); ?></h3>
-                <ol>
-                    <li><?php esc_html_e('Navigate to Media Wipe > Delete Selected Media', 'media-wipe'); ?></li>
-                    <li><?php esc_html_e('Click "Fetch All Media" to load all media files', 'media-wipe'); ?></li>
-                    <li><?php esc_html_e('Select the files you want to delete using checkboxes', 'media-wipe'); ?></li>
-                    <li><?php esc_html_e('Click "Delete Selected Media" and confirm your action', 'media-wipe'); ?></li>
-                </ol>
-                
-                <h3><?php esc_html_e('Delete All Media', 'media-wipe'); ?></h3>
-                <ol>
-                    <li><?php esc_html_e('Navigate to Media Wipe > Delete All Media', 'media-wipe'); ?></li>
-                    <li><?php esc_html_e('Review the media library statistics', 'media-wipe'); ?></li>
-                    <li><?php esc_html_e('Click "Delete All Media Files" to open the confirmation dialog', 'media-wipe'); ?></li>
-                    <li><?php esc_html_e('Complete all confirmation requirements', 'media-wipe'); ?></li>
-                    <li><?php esc_html_e('Type "DELETE ALL MEDIA" to confirm', 'media-wipe'); ?></li>
-                </ol>
-            </div>
-            
-            <div class="help-section">
-                <h2><?php esc_html_e('Safety Guidelines', 'media-wipe'); ?></h2>
-                <div class="notice notice-warning">
-                    <p><strong><?php esc_html_e('Important:', 'media-wipe'); ?></strong> <?php esc_html_e('All deletions performed by Media Wipe are permanent and cannot be undone.', 'media-wipe'); ?></p>
+    <div class="mw-wrap media-wipe-help-page">
+        <!-- Hero Section -->
+        <div class="mw-hero-section">
+            <div class="mw-hero-content">
+                <div class="mw-hero-icon">
+                    <span class="dashicons dashicons-trash"></span>
                 </div>
-                
-                <h3><?php esc_html_e('Before Using Media Wipe:', 'media-wipe'); ?></h3>
-                <ul>
-                    <li><?php esc_html_e('Create a complete backup of your website (files and database)', 'media-wipe'); ?></li>
-                    <li><?php esc_html_e('Test the plugin on a staging site first', 'media-wipe'); ?></li>
-                    <li><?php esc_html_e('Review which files will be deleted', 'media-wipe'); ?></li>
-                    <li><?php esc_html_e('Consider the impact on your content and design', 'media-wipe'); ?></li>
-                    <li><?php esc_html_e('Ensure you have alternative copies of important files', 'media-wipe'); ?></li>
-                </ul>
-            </div>
-            
-            <div class="help-section">
-                <h2><?php esc_html_e('Troubleshooting', 'media-wipe'); ?></h2>
-                
-                <h3><?php esc_html_e('Common Issues:', 'media-wipe'); ?></h3>
-                <dl>
-                    <dt><?php esc_html_e('Files not appearing in the list', 'media-wipe'); ?></dt>
-                    <dd><?php esc_html_e('Make sure to click "Fetch All Media" to load all files. Some files may be filtered based on their attachment status.', 'media-wipe'); ?></dd>
-                    
-                    <dt><?php esc_html_e('Deletion process seems slow', 'media-wipe'); ?></dt>
-                    <dd><?php esc_html_e('Large media libraries may take time to process. The plugin deletes files safely one by one to prevent server timeouts.', 'media-wipe'); ?></dd>
-                    
-                    <dt><?php esc_html_e('Some files couldn\'t be deleted', 'media-wipe'); ?></dt>
-                    <dd><?php esc_html_e('Files may be protected by file permissions or in use by other plugins. Check your server error logs for details.', 'media-wipe'); ?></dd>
-                </dl>
-            </div>
-            
-            <div class="help-section">
-                <h2><?php esc_html_e('Support', 'media-wipe'); ?></h2>
-                <p><?php esc_html_e('If you need additional help or encounter issues:', 'media-wipe'); ?></p>
-                <ul>
-                    <li><?php esc_html_e('Check the plugin documentation', 'media-wipe'); ?></li>
-                    <li><?php esc_html_e('Review your server error logs', 'media-wipe'); ?></li>
-                    <li><?php esc_html_e('Contact the plugin author for support', 'media-wipe'); ?></li>
-                </ul>
-                
-                <p>
-                    <strong><?php esc_html_e('Plugin Version:', 'media-wipe'); ?></strong> 1.0.4<br>
-                    <strong><?php esc_html_e('Author:', 'media-wipe'); ?></strong> Md. Nahid Hasan<br>
-                    <strong><?php esc_html_e('Website:', 'media-wipe'); ?></strong> <a href="https://mdnahidhasan.netlify.app" target="_blank">mdnahidhasan.netlify.app</a>
-                </p>
+                <h1><?php esc_html_e('Media Wipe Help & Support', 'media-wipe'); ?></h1>
+                <p class="mw-hero-subtitle"><?php esc_html_e('Everything you need to know about managing your WordPress media library safely and efficiently.', 'media-wipe'); ?></p>
             </div>
         </div>
+
+        <!-- Quick Navigation -->
+        <div class="mw-quick-nav">
+            <div class="mw-nav-item" data-target="getting-started">
+                <span class="dashicons dashicons-controls-play"></span>
+                <span><?php esc_html_e('Getting Started', 'media-wipe'); ?></span>
+            </div>
+            <div class="mw-nav-item" data-target="features">
+                <span class="dashicons dashicons-star-filled"></span>
+                <span><?php esc_html_e('Features', 'media-wipe'); ?></span>
+            </div>
+            <div class="mw-nav-item" data-target="safety">
+                <span class="dashicons dashicons-shield"></span>
+                <span><?php esc_html_e('Safety Guide', 'media-wipe'); ?></span>
+            </div>
+            <div class="mw-nav-item" data-target="troubleshooting">
+                <span class="dashicons dashicons-sos"></span>
+                <span><?php esc_html_e('Troubleshooting', 'media-wipe'); ?></span>
+            </div>
+            <div class="mw-nav-item" data-target="support">
+                <span class="dashicons dashicons-email"></span>
+                <span><?php esc_html_e('Support', 'media-wipe'); ?></span>
+            </div>
+        </div>
+
+        <!-- Content Sections -->
+        <div class="mw-help-content">
+            <!-- Getting Started Section -->
+            <section id="getting-started" class="mw-help-section">
+                <div class="mw-section-header">
+                    <span class="mw-section-icon dashicons dashicons-controls-play"></span>
+                    <h2><?php esc_html_e('Getting Started', 'media-wipe'); ?></h2>
+                    <p><?php esc_html_e('Learn how to use Media Wipe\'s powerful features to manage your media library effectively.', 'media-wipe'); ?></p>
+                </div>
+
+                <div class="mw-feature-cards">
+                    <div class="mw-feature-card">
+                        <div class="mw-card-icon">
+                            <span class="dashicons dashicons-yes-alt"></span>
+                        </div>
+                        <h3><?php esc_html_e('Delete Selected Media', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Choose specific files to delete with our professional DataTable interface.', 'media-wipe'); ?></p>
+                        <div class="mw-steps">
+                            <div class="mw-step">
+                                <span class="mw-step-number">1</span>
+                                <span><?php esc_html_e('Navigate to Media Wipe → Delete Selected Media', 'media-wipe'); ?></span>
+                            </div>
+                            <div class="mw-step">
+                                <span class="mw-step-number">2</span>
+                                <span><?php esc_html_e('Browse and search your media files', 'media-wipe'); ?></span>
+                            </div>
+                            <div class="mw-step">
+                                <span class="mw-step-number">3</span>
+                                <span><?php esc_html_e('Select files using checkboxes', 'media-wipe'); ?></span>
+                            </div>
+                            <div class="mw-step">
+                                <span class="mw-step-number">4</span>
+                                <span><?php esc_html_e('Click "Delete Selected" and confirm', 'media-wipe'); ?></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mw-feature-card">
+                        <div class="mw-card-icon">
+                            <span class="dashicons dashicons-trash"></span>
+                        </div>
+                        <h3><?php esc_html_e('Delete All Media', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Remove all media files with our secure multi-step confirmation process.', 'media-wipe'); ?></p>
+                        <div class="mw-steps">
+                            <div class="mw-step">
+                                <span class="mw-step-number">1</span>
+                                <span><?php esc_html_e('Navigate to Media Wipe → Delete All Media', 'media-wipe'); ?></span>
+                            </div>
+                            <div class="mw-step">
+                                <span class="mw-step-number">2</span>
+                                <span><?php esc_html_e('Review media library statistics', 'media-wipe'); ?></span>
+                            </div>
+                            <div class="mw-step">
+                                <span class="mw-step-number">3</span>
+                                <span><?php esc_html_e('Complete backup verification', 'media-wipe'); ?></span>
+                            </div>
+                            <div class="mw-step">
+                                <span class="mw-step-number">4</span>
+                                <span><?php esc_html_e('Type confirmation text to proceed', 'media-wipe'); ?></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Features Section -->
+            <section id="features" class="mw-help-section">
+                <div class="mw-section-header">
+                    <span class="mw-section-icon dashicons dashicons-star-filled"></span>
+                    <h2><?php esc_html_e('Key Features', 'media-wipe'); ?></h2>
+                    <p><?php esc_html_e('Discover the powerful capabilities that make Media Wipe the ultimate media management solution.', 'media-wipe'); ?></p>
+                </div>
+
+                <div class="mw-features-grid">
+                    <div class="mw-feature-item">
+                        <span class="dashicons dashicons-admin-customizer"></span>
+                        <h3><?php esc_html_e('Selective Deletion', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Choose specific files to delete with advanced filtering options.', 'media-wipe'); ?></p>
+                    </div>
+                    <div class="mw-feature-item">
+                        <span class="dashicons dashicons-database"></span>
+                        <h3><?php esc_html_e('Bulk Operations', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Process thousands of files with memory-efficient batch operations.', 'media-wipe'); ?></p>
+                    </div>
+                    <div class="mw-feature-item">
+                        <span class="dashicons dashicons-shield"></span>
+                        <h3><?php esc_html_e('Safety Protocols', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Multi-step confirmation process prevents accidental deletions.', 'media-wipe'); ?></p>
+                    </div>
+                    <div class="mw-feature-item">
+                        <span class="dashicons dashicons-visibility"></span>
+                        <h3><?php esc_html_e('File Preview', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Preview documents and images before deletion.', 'media-wipe'); ?></p>
+                    </div>
+                    <div class="mw-feature-item">
+                        <span class="dashicons dashicons-chart-area"></span>
+                        <h3><?php esc_html_e('Media Analytics', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Comprehensive statistics about your media library.', 'media-wipe'); ?></p>
+                    </div>
+                    <div class="mw-feature-item">
+                        <span class="dashicons dashicons-smartphone"></span>
+                        <h3><?php esc_html_e('Mobile Friendly', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Fully responsive interface works on all devices.', 'media-wipe'); ?></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Safety Guidelines Section -->
+            <section id="safety" class="mw-help-section">
+                <div class="mw-section-header">
+                    <span class="mw-section-icon dashicons dashicons-shield"></span>
+                    <h2><?php esc_html_e('Safety Guidelines', 'media-wipe'); ?></h2>
+                    <p><?php esc_html_e('Follow these essential safety practices to protect your website when using Media Wipe.', 'media-wipe'); ?></p>
+                </div>
+
+                <div class="mw-safety-alert">
+                    <div class="mw-alert-icon">
+                        <span class="dashicons dashicons-warning"></span>
+                    </div>
+                    <div class="mw-alert-content">
+                        <h3><?php esc_html_e('Important Warning', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('All deletions performed by Media Wipe are permanent and cannot be undone. Always create backups before proceeding.', 'media-wipe'); ?></p>
+                    </div>
+                </div>
+
+                <div class="mw-safety-checklist">
+                    <h3><?php esc_html_e('Pre-Deletion Checklist', 'media-wipe'); ?></h3>
+                    <div class="mw-checklist-item">
+                        <span class="dashicons dashicons-yes"></span>
+                        <p><?php esc_html_e('Create a complete backup of your website (files and database)', 'media-wipe'); ?></p>
+                    </div>
+                    <div class="mw-checklist-item">
+                        <span class="dashicons dashicons-yes"></span>
+                        <p><?php esc_html_e('Test the plugin on a staging site first', 'media-wipe'); ?></p>
+                    </div>
+                    <div class="mw-checklist-item">
+                        <span class="dashicons dashicons-yes"></span>
+                        <p><?php esc_html_e('Review which files will be deleted', 'media-wipe'); ?></p>
+                    </div>
+                    <div class="mw-checklist-item">
+                        <span class="dashicons dashicons-yes"></span>
+                        <p><?php esc_html_e('Consider the impact on your content and design', 'media-wipe'); ?></p>
+                    </div>
+                    <div class="mw-checklist-item">
+                        <span class="dashicons dashicons-yes"></span>
+                        <p><?php esc_html_e('Ensure you have alternative copies of important files', 'media-wipe'); ?></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Troubleshooting Section -->
+            <section id="troubleshooting" class="mw-help-section">
+                <div class="mw-section-header">
+                    <span class="mw-section-icon dashicons dashicons-sos"></span>
+                    <h2><?php esc_html_e('Troubleshooting', 'media-wipe'); ?></h2>
+                    <p><?php esc_html_e('Solutions for common issues you might encounter while using Media Wipe.', 'media-wipe'); ?></p>
+                </div>
+
+                <div class="mw-faq-container">
+                    <div class="mw-faq-item">
+                        <div class="mw-faq-question">
+                            <span class="dashicons dashicons-plus-alt2"></span>
+                            <h3><?php esc_html_e('Files not appearing in the list', 'media-wipe'); ?></h3>
+                        </div>
+                        <div class="mw-faq-answer">
+                            <p><?php esc_html_e('Make sure to click "Fetch All Media" to load all files. Some files may be filtered based on their attachment status. Try refreshing the page or clearing your browser cache.', 'media-wipe'); ?></p>
+                        </div>
+                    </div>
+                    <div class="mw-faq-item">
+                        <div class="mw-faq-question">
+                            <span class="dashicons dashicons-plus-alt2"></span>
+                            <h3><?php esc_html_e('Deletion process seems slow', 'media-wipe'); ?></h3>
+                        </div>
+                        <div class="mw-faq-answer">
+                            <p><?php esc_html_e('Large media libraries may take time to process. The plugin deletes files safely one by one to prevent server timeouts. For very large libraries, consider deleting in smaller batches.', 'media-wipe'); ?></p>
+                        </div>
+                    </div>
+                    <div class="mw-faq-item">
+                        <div class="mw-faq-question">
+                            <span class="dashicons dashicons-plus-alt2"></span>
+                            <h3><?php esc_html_e('Some files couldn\'t be deleted', 'media-wipe'); ?></h3>
+                        </div>
+                        <div class="mw-faq-answer">
+                            <p><?php esc_html_e('Files may be protected by file permissions or in use by other plugins. Check your server error logs for details. You may need to adjust file permissions or deactivate conflicting plugins.', 'media-wipe'); ?></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Support Section -->
+            <section id="support" class="mw-help-section">
+                <div class="mw-section-header">
+                    <span class="mw-section-icon dashicons dashicons-email"></span>
+                    <h2><?php esc_html_e('Support', 'media-wipe'); ?></h2>
+                    <p><?php esc_html_e('Need help? We\'re here for you. Find out how to get assistance with Media Wipe.', 'media-wipe'); ?></p>
+                </div>
+
+                <div class="mw-support-options">
+                    <div class="mw-support-card">
+                        <div class="mw-support-icon">
+                            <span class="dashicons dashicons-book"></span>
+                        </div>
+                        <h3><?php esc_html_e('Documentation', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Browse our comprehensive documentation for detailed guides and tutorials.', 'media-wipe'); ?></p>
+                        <a href="#" class="mw-button"><?php esc_html_e('View Docs', 'media-wipe'); ?></a>
+                    </div>
+                    <div class="mw-support-card">
+                        <div class="mw-support-icon">
+                            <span class="dashicons dashicons-admin-comments"></span>
+                        </div>
+                        <h3><?php esc_html_e('Contact Support', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Get in touch with our support team for personalized assistance.', 'media-wipe'); ?></p>
+                        <a href="mailto:mail.mdnahidhasan@gmail.com" class="mw-button"><?php esc_html_e('Email Support', 'media-wipe'); ?></a>
+                    </div>
+                </div>
+
+                <div class="mw-plugin-info">
+                    <div class="mw-info-item">
+                        <span class="dashicons dashicons-info"></span>
+                        <span><?php esc_html_e('Plugin Version:', 'media-wipe'); ?></span>
+                        <strong><?php echo esc_html(MEDIA_WIPE_VERSION); ?></strong>
+                    </div>
+                    <div class="mw-info-item">
+                        <span class="dashicons dashicons-admin-users"></span>
+                        <span><?php esc_html_e('Author:', 'media-wipe'); ?></span>
+                        <strong>Md. Nahid Hasan</strong>
+                    </div>
+                    <div class="mw-info-item">
+                        <span class="dashicons dashicons-admin-site"></span>
+                        <span><?php esc_html_e('Website:', 'media-wipe'); ?></span>
+                        <a href="https://mdnahidhasan.netlify.app" target="_blank">mdnahidhasan.netlify.app</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- JavaScript for interactive elements -->
+        <script>
+        jQuery(document).ready(function($) {
+            // Smooth scrolling for navigation
+            $('.mw-nav-item').on('click', function() {
+                var target = $(this).data('target');
+                $('html, body').animate({
+                    scrollTop: $('#' + target).offset().top - 50
+                }, 500);
+
+                // Add active class
+                $('.mw-nav-item').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            // FAQ accordion
+            $('.mw-faq-question').on('click', function() {
+                $(this).parent().toggleClass('active');
+                $(this).find('.dashicons').toggleClass('dashicons-plus-alt2 dashicons-minus');
+                $(this).next('.mw-faq-answer').slideToggle(200);
+            });
+
+            // Set first nav item as active by default
+            $('.mw-nav-item:first-child').addClass('active');
+
+            // Hide all FAQ answers initially
+            $('.mw-faq-answer').hide();
+        });
+        </script>
     </div>
     <?php
 }
