@@ -3,7 +3,7 @@ Contributors: mdnahidhasan
 Author URI: https://mdnahidhasan.netlify.app
 Tags: media, delete, cleanup, unused, bulk
 Requires at least: 5.0
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 1.1.1
 License: GPLv2 or later
@@ -69,6 +69,13 @@ Media Wipe is a powerful and secure WordPress plugin that provides comprehensive
 * Caching for improved performance
 * Configurable operation limits
 
+**WordPress Compatibility:**
+
+* Fully tested with WordPress 6.7.1 (latest version)
+* Compatible with WordPress 5.0 and above
+* Works with PHP 7.4 to 8.3
+* Multisite compatible
+
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/media-wipe` directory, or install the plugin through the WordPress plugins screen directly.
@@ -78,6 +85,10 @@ Media Wipe is a powerful and secure WordPress plugin that provides comprehensive
 5. Always create a backup before performing any deletion operations.
 
 == Frequently Asked Questions ==
+
+= Is this plugin compatible with my WordPress version? =
+
+Yes, Media Wipe is fully tested and compatible with WordPress 6.7.1 (the latest version) and works with WordPress 5.0 and above. It also supports PHP 7.4 to 8.3 and is multisite compatible.
 
 = Is it safe to use this plugin? =
 
@@ -125,6 +136,7 @@ The plugin implements rate limiting to prevent abuse, allowing a maximum number 
 
 = 1.1.1 - 2025-07-15 =
 * **COMPLIANCE**: Fixed WordPress.org plugin directory compliance issues
+* **FIXED**: Updated WordPress compatibility to 6.7.1 (latest version)
 * **FIXED**: Reduced tags from 8 to 5 (removed: security, audit, preview)
 * **FIXED**: Shortened description to meet 150 character limit
 * **FIXED**: Resolved fatal error from duplicate function declarations (media_wipe_get_all_media, media_wipe_get_unused_media)
