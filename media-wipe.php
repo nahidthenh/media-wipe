@@ -3,7 +3,7 @@
  * Plugin Name: Media Wipe
  * Plugin URI: https://mdnahidhasan.netlify.app/media-wipe
  * Description: A comprehensive WordPress plugin to safely delete media files with advanced confirmation systems, document preview, and security audit logging.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Md. Nahid Hasan
  * Author URI: https://mdnahidhasan.netlify.app
  * Text Domain: media-wipe
@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Define plugin constants
  */
 if ( ! defined( 'MEDIA_WIPE_VERSION' ) ) {
-    define( 'MEDIA_WIPE_VERSION', '1.1.0' );
+    define( 'MEDIA_WIPE_VERSION', '1.1.1' );
 }
 
 if ( ! defined( 'MEDIA_WIPE_PLUGIN_FILE' ) ) {
@@ -123,6 +123,8 @@ class Media_Wipe_Plugin {
     private function include_files() {
         $includes = array(
             'includes/helper-functions.php',
+            'includes/class-datatable.php',
+            'includes/class-notifications.php',
             'includes/admin-menu.php',
             'includes/delete-all-media.php',
             'includes/delete-selected-media.php'
@@ -200,6 +202,44 @@ class Media_Wipe_Plugin {
         wp_enqueue_script(
             'media-wipe-admin-script',
             MEDIA_WIPE_PLUGIN_URL . 'assets/js/admin-script.js',
+            array( 'jquery' ),
+            MEDIA_WIPE_VERSION,
+            true
+        );
+
+        // Enqueue DataTables.net library for delete selected media page
+        if (strpos($hook, 'delete-selected') !== false) {
+            // DataTables CSS
+            wp_enqueue_style(
+                'datatables-css',
+                'https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css',
+                array(),
+                '1.13.7'
+            );
+
+            // DataTables JS
+            wp_enqueue_script(
+                'datatables-js',
+                'https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js',
+                array( 'jquery' ),
+                '1.13.7',
+                true
+            );
+
+            // Custom DataTable script
+            wp_enqueue_script(
+                'media-wipe-datatable',
+                MEDIA_WIPE_PLUGIN_URL . 'assets/js/datatable.js',
+                array( 'jquery', 'datatables-js' ),
+                MEDIA_WIPE_VERSION,
+                true
+            );
+        }
+
+        // Enqueue notifications script
+        wp_enqueue_script(
+            'media-wipe-notifications',
+            MEDIA_WIPE_PLUGIN_URL . 'assets/js/notifications.js',
             array( 'jquery' ),
             MEDIA_WIPE_VERSION,
             true

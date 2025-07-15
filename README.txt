@@ -1,21 +1,21 @@
 === Media Wipe ===
 Contributors: mdnahidhasan
 Author URI: https://mdnahidhasan.netlify.app
-Tags: media, delete, cleanup, unused, bulk, security, audit, preview
+Tags: media, delete, cleanup, unused, bulk
 Requires at least: 5.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-The most comprehensive WordPress media management plugin with enterprise-grade security, document preview, and professional admin dashboard. Transform your media cleanup workflow!
+Comprehensive WordPress media management with enterprise security, document preview, and professional dashboard. Transform your cleanup workflow!
 
 == Description ==
 
 Media Wipe is a powerful and secure WordPress plugin that provides comprehensive media library management capabilities. With advanced confirmation systems, document preview functionality, and detailed security audit logging, it's the safest way to clean up your WordPress media library.
 
-**🔥 Key Features:**
+**Key Features:**
 
 * **Enhanced Delete All Media System** - Multi-step confirmation process with backup verification
 * **Document Preview** - Visual preview of PDF, DOC, and other document files before deletion
@@ -26,7 +26,7 @@ Media Wipe is a powerful and secure WordPress plugin that provides comprehensive
 * **Rate Limiting** - Prevents abuse and ensures system stability
 * **Mobile-Friendly Interface** - Responsive design works on all devices
 
-**🛡️ Security Features:**
+**Security Features:**
 
 * Nonce verification for all operations
 * Capability-based access control
@@ -36,7 +36,7 @@ Media Wipe is a powerful and secure WordPress plugin that provides comprehensive
 * Comprehensive audit trails
 * Rate limiting for deletion operations
 
-**📊 Dashboard Features:**
+**Dashboard Features:**
 
 * Media library statistics overview
 * Recent activity tracking
@@ -44,7 +44,7 @@ Media Wipe is a powerful and secure WordPress plugin that provides comprehensive
 * Safety guidelines and best practices
 * Settings management interface
 
-**📄 Document Preview System:**
+**Document Preview System:**
 
 * Support for PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX files
 * Text files (TXT, CSV) preview
@@ -52,7 +52,7 @@ Media Wipe is a powerful and secure WordPress plugin that provides comprehensive
 * Thumbnail generation when available
 * Batch preview for multiple documents
 
-**🎯 Use Cases:**
+**Use Cases:**
 
 * Clean up development sites before going live
 * Remove unused media files to optimize storage
@@ -61,7 +61,7 @@ Media Wipe is a powerful and secure WordPress plugin that provides comprehensive
 * Audit media deletion activities for compliance
 * Safely manage large media collections
 
-**⚡ Performance Optimized:**
+**Performance Optimized:**
 
 * Batch processing for large operations
 * Memory management for bulk deletions
@@ -123,27 +123,51 @@ The plugin implements rate limiting to prevent abuse, allowing a maximum number 
 
 == Changelog ==
 
+= 1.1.1 - 2025-01-13 =
+* **COMPLIANCE**: Fixed WordPress.org plugin directory compliance issues
+* **FIXED**: Reduced tags from 8 to 5 (removed: security, audit, preview)
+* **FIXED**: Shortened description to meet 150 character limit
+* **FIXED**: Resolved fatal error from duplicate function declarations (media_wipe_get_all_media, media_wipe_get_unused_media)
+* **FIXED**: Removed all emoji icons from README.txt for cleaner appearance
+* **NEW**: Professional DataTables.net integration for Delete Selected Media
+* **NEW**: Full-screen layout across all plugin pages
+* **NEW**: Real-time search with instant filtering
+* **NEW**: Multi-column sorting with visual indicators
+* **NEW**: Advanced pagination controls (10, 25, 50, 100 items per page)
+* **NEW**: Bulk selection with working checkboxes and state persistence
+* **NEW**: Enhanced toast notification system with 4 types
+* **NEW**: Auto-dismiss notifications with configurable timing
+* **NEW**: Progress bars for long-running operations
+* **NEW**: Notification queuing system for multiple notifications
+* **NEW**: ARIA live regions for screen reader compatibility
+* **ENHANCED**: Mobile-responsive design with horizontal scrolling
+* **ENHANCED**: Modern UI with WordPress 6.7.1 admin design consistency
+* **ENHANCED**: Performance optimizations for large media libraries
+* **ENHANCED**: Better error handling with user-friendly messages
+* **ENHANCED**: Clean notice styling with proper heading/paragraph structure
+* **ENHANCED**: Professional file type badges and media thumbnails
+
 = 1.1.0 - 2025-07-13 =
-* **🚀 MAJOR UPDATE**: Complete plugin overhaul with enterprise-grade features
-* **🎨 NEW**: Dedicated WordPress admin menu with professional dashboard
-* **🛡️ NEW**: Advanced multi-step confirmation system for delete operations
-* **📄 NEW**: Document preview functionality for PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX files
-* **📊 NEW**: Real-time media library statistics and analytics dashboard
-* **🔒 NEW**: Comprehensive security audit logging and activity tracking
-* **⚙️ NEW**: Settings page for complete plugin configuration
-* **📚 NEW**: Built-in help system with comprehensive documentation
-* **🎯 ENHANCED**: User interface with progress indicators and loading animations
-* **🔐 ENHANCED**: Security measures with nonce verification, CSRF protection, and rate limiting
-* **📱 ENHANCED**: Mobile-responsive design for all devices
-* **⚡ ENHANCED**: Performance optimizations for large media libraries (1000+ files)
-* **🎨 ENHANCED**: WordPress admin design consistency and accessibility (WCAG 2.1 AA)
-* **🔧 ENHANCED**: Error handling with user-friendly messages and graceful degradation
-* **📝 ENHANCED**: Code quality following WordPress coding standards
-* **🌐 ENHANCED**: Translation-ready with proper internationalization
-* **🔄 ENHANCED**: Batch processing for memory-efficient operations
-* **📋 ENHANCED**: Comprehensive logging for compliance and audit purposes
-* **🎪 ENHANCED**: Toast-style notifications with better user feedback
-* **🔍 ENHANCED**: Input validation and sanitization for security
+* **MAJOR UPDATE**: Complete plugin overhaul with enterprise-grade features
+* **NEW**: Dedicated WordPress admin menu with professional dashboard
+* **NEW**: Advanced multi-step confirmation system for delete operations
+* **NEW**: Document preview functionality for PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX files
+* **NEW**: Real-time media library statistics and analytics dashboard
+* **NEW**: Comprehensive security audit logging and activity tracking
+* **NEW**: Settings page for complete plugin configuration
+* **NEW**: Built-in help system with comprehensive documentation
+* **ENHANCED**: User interface with progress indicators and loading animations
+* **ENHANCED**: Security measures with nonce verification, CSRF protection, and rate limiting
+* **ENHANCED**: Mobile-responsive design for all devices
+* **ENHANCED**: Performance optimizations for large media libraries (1000+ files)
+* **ENHANCED**: WordPress admin design consistency and accessibility (WCAG 2.1 AA)
+* **ENHANCED**: Error handling with user-friendly messages and graceful degradation
+* **ENHANCED**: Code quality following WordPress coding standards
+* **ENHANCED**: Translation-ready with proper internationalization
+* **ENHANCED**: Batch processing for memory-efficient operations
+* **ENHANCED**: Comprehensive logging for compliance and audit purposes
+* **ENHANCED**: Toast-style notifications with better user feedback
+* **ENHANCED**: Input validation and sanitization for security
 
 = 1.0.3 - 2025-01-12 =
 - Added: Assets Updated
@@ -164,7 +188,7 @@ The plugin implements rate limiting to prevent abuse, allowing a maximum number 
 == Upgrade Notice ==
 
 = 1.0.4 =
-🚨 MAJOR UPDATE: Complete plugin transformation with enterprise features! New admin menu location, enhanced security, document preview, and comprehensive audit logging. **BACKUP YOUR SITE** before upgrading. Menu moved from Media to dedicated "Media Wipe" section. Review new settings after upgrade.
+MAJOR UPDATE: Complete plugin transformation with enterprise features! New admin menu location, enhanced security, document preview, and comprehensive audit logging. **BACKUP YOUR SITE** before upgrading. Menu moved from Media to dedicated "Media Wipe" section. Review new settings after upgrade.
 
 = 1.0.2 =
 Added new features to delete selected media files. Back up your site before upgrading.

@@ -209,12 +209,7 @@ function media_wipe_dashboard_page() {
                 <div class="notice notice-warning">
                     <h3><?php esc_html_e('⚠️ Important Safety Information', 'media-wipe'); ?></h3>
                     <p><?php esc_html_e('Media Wipe performs permanent deletions that cannot be undone. Always create a complete backup of your website before using any deletion features.', 'media-wipe'); ?></p>
-                    <ul>
-                        <li><?php esc_html_e('Test on a staging site first', 'media-wipe'); ?></li>
-                        <li><?php esc_html_e('Backup your database and files', 'media-wipe'); ?></li>
-                        <li><?php esc_html_e('Review selected files carefully', 'media-wipe'); ?></li>
-                        <li><?php esc_html_e('Consider the impact on your content', 'media-wipe'); ?></li>
-                    </ul>
+                    <p><?php esc_html_e('Essential safety steps: Test on a staging site first, backup your database and files, review selected files carefully, and consider the impact on your content.', 'media-wipe'); ?></p>
                 </div>
             </div>
         </div>

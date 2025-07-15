@@ -516,3 +516,119 @@ function media_wipe_log_security_event($event, $data = array()) {
 
     update_option('media_wipe_security_log', $security_logs);
 }
+
+/**
+ * Get all media files
+ *
+ * @return array Array of all media objects
+ */
+function media_wipe_get_all_media() {
+    $args = array(
+        'post_type' => 'attachment',
+        'numberposts' => -1,
+        'post_status' => 'inherit',
+        'orderby' => 'date',
+        'order' => 'DESC'
+    );
+
+    return get_posts($args);
+}
+
+/**
+ * Get unused media files
+ *
+ * @return array Array of unused media objects
+ */
+function media_wipe_get_unused_media() {
+    global $wpdb;
+
+    // Get all attachments
+    $attachments = get_posts(array(
+        'post_type' => 'attachment',
+        'numberposts' => -1,
+        'post_status' => 'inherit'
+    ));
+
+    $unused_media = array();
+
+    foreach ($attachments as $attachment) {
+        // Check if attachment is used in posts
+        $used_in_posts = $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_content LIKE %s AND post_type != 'attachment'",
+            '%' . $wpdb->esc_like($attachment->guid) . '%'
+        ));
+
+        // Check if attachment is used as featured image
+        $used_as_featured = $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE meta_key = '_thumbnail_id' AND meta_value = %d",
+            $attachment->ID
+        ));
+
+        // If not used anywhere, consider it unused
+        if ($used_in_posts == 0 && $used_as_featured == 0) {
+            $unused_media[] = $attachment;
+        }
+    }
+
+    return $unused_media;
+}
+
+/**
+ * Get file extension from MIME type
+ *
+ * @param string $mime_type MIME type
+ * @return string File extension
+ */
+function media_wipe_get_file_extension($mime_type) {
+    $mime_to_ext = array(
+        'image/jpeg' => 'JPG',
+        'image/jpg' => 'JPG',
+        'image/png' => 'PNG',
+        'image/gif' => 'GIF',
+        'image/webp' => 'WEBP',
+        'image/svg+xml' => 'SVG',
+        'application/pdf' => 'PDF',
+        'application/msword' => 'DOC',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'DOCX',
+        'application/vnd.ms-excel' => 'XLS',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'XLSX',
+        'application/vnd.ms-powerpoint' => 'PPT',
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'PPTX',
+        'video/mp4' => 'MP4',
+        'video/avi' => 'AVI',
+        'video/quicktime' => 'MOV',
+        'audio/mpeg' => 'MP3',
+        'audio/wav' => 'WAV',
+        'text/plain' => 'TXT',
+        'text/csv' => 'CSV'
+    );
+
+    return isset($mime_to_ext[$mime_type]) ? $mime_to_ext[$mime_type] : strtoupper(substr($mime_type, strpos($mime_type, '/') + 1));
+}
+
+/**
+ * Get file icon for MIME type
+ *
+ * @param string $mime_type MIME type
+ * @return string File icon
+ */
+function media_wipe_get_file_icon($mime_type) {
+    $icons = array(
+        'application/pdf' => '📄',
+        'application/msword' => '📝',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => '📝',
+        'application/vnd.ms-excel' => '📊',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => '📊',
+        'application/vnd.ms-powerpoint' => '📽️',
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation' => '📽️',
+        'text/plain' => '📄',
+        'text/csv' => '📊',
+        'image/jpeg' => '🖼️',
+        'image/png' => '🖼️',
+        'image/gif' => '🖼️',
+        'video/mp4' => '🎥',
+        'audio/mpeg' => '🎵'
+    );
+
+    return isset($icons[$mime_type]) ? $icons[$mime_type] : '📄';
+}

@@ -295,39 +295,8 @@ function media_wipe_get_document_preview_html() {
     return $html;
 }
 
-// Get file icon based on MIME type
-function media_wipe_get_file_icon($mime_type) {
-    $icons = array(
-        'application/pdf' => '📄',
-        'application/msword' => '📝',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => '📝',
-        'application/vnd.ms-excel' => '📊',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => '📊',
-        'application/vnd.ms-powerpoint' => '📽️',
-        'application/vnd.openxmlformats-officedocument.presentationml.presentation' => '📽️',
-        'text/plain' => '📄',
-        'text/csv' => '📊'
-    );
-
-    return isset($icons[$mime_type]) ? $icons[$mime_type] : '📄';
-}
-
-// Get file extension display name
-function media_wipe_get_file_extension($mime_type) {
-    $extensions = array(
-        'application/pdf' => 'PDF',
-        'application/msword' => 'DOC',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'DOCX',
-        'application/vnd.ms-excel' => 'XLS',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'XLSX',
-        'application/vnd.ms-powerpoint' => 'PPT',
-        'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'PPTX',
-        'text/plain' => 'TXT',
-        'text/csv' => 'CSV'
-    );
-
-    return isset($extensions[$mime_type]) ? $extensions[$mime_type] : 'FILE';
-}
+// Functions media_wipe_get_file_icon() and media_wipe_get_file_extension()
+// are now defined in includes/helper-functions.php to avoid duplication
 
 // Handle AJAX request for deleting all media
 add_action('wp_ajax_media_wipe_delete_all_media', 'media_wipe_delete_all_media_ajax');

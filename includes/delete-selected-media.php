@@ -30,66 +30,107 @@ function media_wipe_unused_media_page() {
             wp_die(esc_html__('Security check failed.', 'media-wipe'));
         }
         $unused_media = media_wipe_get_all_media();
-    } else {
-        $unused_media = media_wipe_get_unused_media();
     }
 
-    ?>
-    <div class="wrap">
-        <h1><?php esc_html_e('Delete Selected Media', 'media-wipe'); ?></h1>
-        <form method="post" id="media-wipe-form">
-            <?php wp_nonce_field('media_wipe_unused_action', 'media_wipe_unused_nonce'); ?>
-            <p><?php esc_html_e('Warning! Deleted files will be permanently removed', 'media-wipe'); ?></p>
-           
-            <table id="media-wipe-unused-table" class="widefat fixed">
-                <thead>
-                    <tr>
-                        <th><?php esc_html_e('Select', 'media-wipe'); ?></th>
-                        <th><?php esc_html_e('File Name', 'media-wipe'); ?></th>
-                        <th><?php esc_html_e('Preview', 'media-wipe'); ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($unused_media)) : ?>
-                        <?php foreach ($unused_media as $media) :
-                            $media_info = media_wipe_get_media_info($media->ID);
-                            $is_document = media_wipe_is_document_type($media_info['mime_type']);
-                        ?>
-                            <tr data-media-id="<?php echo esc_attr($media->ID); ?>" data-media-type="<?php echo esc_attr($media_info['mime_type']); ?>">
-                                <td><input type="checkbox" name="delete_media[]" value="<?php echo esc_attr($media->ID); ?>"></td>
-                                <td>
-                                    <div class="media-title-info">
-                                        <span class="media-title"><?php echo esc_html($media->post_title); ?></span>
-                                        <span class="media-details">
-                                            <?php echo esc_html($media_info['file_size_formatted']); ?> •
-                                            <?php echo esc_html(media_wipe_get_file_extension($media_info['mime_type'])); ?>
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="media-preview-cell">
-                                    <?php if ($is_document): ?>
-                                        <div class="document-preview-item">
-                                            <div class="document-icon-large"><?php echo media_wipe_get_file_icon($media_info['mime_type']); ?></div>
-                                            <span class="document-type-label"><?php echo esc_html(media_wipe_get_file_extension($media_info['mime_type'])); ?></span>
-                                        </div>
-                                    <?php else: ?>
-                                        <img src="<?php echo esc_url($media->guid); ?>" style="width:50px;height:auto;" alt="<?php echo esc_attr($media->post_title); ?>">
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else : ?>
-                        <tr>
-                            <td colspan="3"><?php esc_html_e('No unused media found.', 'media-wipe'); ?></td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+    // Get all media for DataTable
+    $all_media = media_wipe_get_all_media();
 
-            <p>
-                <button type="button" id="open-delete-modal" class="media-wipe-btn button button-danger"><?php esc_attr_e('Delete Selected Media', 'media-wipe'); ?></button>
-                <input type="submit" name="fetch_all_media" class="media-wipe-btn button button-primary" value="<?php esc_attr_e('Fetch All Media', 'media-wipe'); ?>" />
-            </p>
+    ?>
+    <div class="wrap media-wipe-full-screen">
+        <h1 class="wp-heading-inline">
+            <?php esc_html_e('Delete Selected Media', 'media-wipe'); ?>
+        </h1>
+
+        <div class="media-wipe-delete-selected">
+            <!-- Enhanced Description -->
+            <div class="page-description">
+                <h2><?php esc_html_e('Media Library Management', 'media-wipe'); ?></h2>
+                <p><?php esc_html_e('Select specific media files to delete from your library. Use the search and filter options to find files quickly.', 'media-wipe'); ?></p>
+                <div class="safety-notice">
+                    <h3><?php esc_html_e('⚠️ Warning', 'media-wipe'); ?></h3>
+                    <p><?php esc_html_e('Deleted files will be permanently removed and cannot be recovered. Please ensure you have backups before proceeding.', 'media-wipe'); ?></p>
+                </div>
+            </div>
+
+            <!-- Professional DataTable -->
+            <div class="datatable-container">
+                <div class="datatable-header">
+                    <h3><?php esc_html_e('Media Files', 'media-wipe'); ?></h3>
+                    <div class="datatable-controls">
+                        <button type="button" id="select-all-btn" class="button button-secondary">
+                            <?php esc_html_e('Select All', 'media-wipe'); ?>
+                        </button>
+                        <button type="button" id="select-none-btn" class="button button-secondary">
+                            <?php esc_html_e('Select None', 'media-wipe'); ?>
+                        </button>
+                        <button type="button" id="delete-selected-btn" class="button button-primary" disabled>
+                            <span class="dashicons dashicons-trash"></span>
+                            <?php esc_html_e('Delete Selected', 'media-wipe'); ?>
+                        </button>
+                    </div>
+                </div>
+
+                <table id="media-datatable" class="display nowrap" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th><?php esc_html_e('Select', 'media-wipe'); ?></th>
+                            <th><?php esc_html_e('Preview', 'media-wipe'); ?></th>
+                            <th><?php esc_html_e('Title', 'media-wipe'); ?></th>
+                            <th><?php esc_html_e('Type', 'media-wipe'); ?></th>
+                            <th><?php esc_html_e('Size', 'media-wipe'); ?></th>
+                            <th><?php esc_html_e('Date', 'media-wipe'); ?></th>
+                            <th><?php esc_html_e('Actions', 'media-wipe'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (!empty($all_media)) : ?>
+                            <?php foreach ($all_media as $media) :
+                                $media_info = media_wipe_get_media_info($media->ID);
+                                $is_document = media_wipe_is_document_type($media_info['mime_type']);
+                            ?>
+                                <tr data-media-id="<?php echo esc_attr($media->ID); ?>">
+                                    <td>
+                                        <input type="checkbox" class="media-checkbox" value="<?php echo esc_attr($media->ID); ?>" />
+                                    </td>
+                                    <td>
+                                        <?php if ($is_document): ?>
+                                            <div class="document-preview">
+                                                <span class="file-icon"><?php echo media_wipe_get_file_icon($media_info['mime_type']); ?></span>
+                                            </div>
+                                        <?php else: ?>
+                                            <img src="<?php echo esc_url($media->guid); ?>" class="media-thumbnail" alt="<?php echo esc_attr($media->post_title); ?>">
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <strong><?php echo esc_html($media->post_title); ?></strong>
+                                    </td>
+                                    <td>
+                                        <span class="file-type-badge"><?php echo esc_html(media_wipe_get_file_extension($media_info['mime_type'])); ?></span>
+                                    </td>
+                                    <td data-order="<?php echo esc_attr($media_info['file_size']); ?>">
+                                        <?php echo esc_html($media_info['file_size_formatted']); ?>
+                                    </td>
+                                    <td data-order="<?php echo esc_attr(strtotime($media->post_date)); ?>">
+                                        <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($media->post_date))); ?>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="button button-small delete-single" data-media-id="<?php echo esc_attr($media->ID); ?>">
+                                            <?php esc_html_e('Delete', 'media-wipe'); ?>
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Hidden form for actual deletion -->
+        <form id="delete-selected-form" method="post" style="display: none;">
+            <?php wp_nonce_field('media_wipe_delete_selected_action', 'media_wipe_delete_selected_nonce'); ?>
+            <input type="hidden" name="delete_selected_media" value="1" />
+            <input type="hidden" name="selected_media_ids" id="selected-media-ids" value="" />
         </form>
     </div>
 
@@ -141,68 +182,9 @@ function media_wipe_unused_media_page() {
     <?php
 }
 
-// Fetch all media (both used and unused) with security enhancements
-function media_wipe_get_all_media() {
-    // Check user capabilities
-    if (!current_user_can('manage_options')) {
-        return array();
-    }
+// Function media_wipe_get_all_media() is now defined in includes/helper-functions.php
 
-    global $wpdb;
-
-    // Use prepared statement for security
-    $all_media = $wpdb->get_results($wpdb->prepare("
-        SELECT ID, post_title, guid, post_mime_type
-        FROM {$wpdb->posts}
-        WHERE post_type = %s
-        ORDER BY post_date DESC
-        LIMIT %d
-    ", 'attachment', 1000)); // Limit to prevent memory issues
-
-    // Sanitize results
-    if ($all_media) {
-        foreach ($all_media as &$media) {
-            $media->ID = intval($media->ID);
-            $media->post_title = sanitize_text_field($media->post_title);
-            $media->guid = esc_url_raw($media->guid);
-            $media->post_mime_type = sanitize_mime_type($media->post_mime_type);
-        }
-    }
-
-    return $all_media ? $all_media : array();
-}
-
-// Fetch unused media with security enhancements
-function media_wipe_get_unused_media() {
-    // Check user capabilities
-    if (!current_user_can('manage_options')) {
-        return array();
-    }
-
-    global $wpdb;
-
-    // Use prepared statement for security
-    $unused_media = $wpdb->get_results($wpdb->prepare("
-        SELECT ID, post_title, guid, post_mime_type
-        FROM {$wpdb->posts}
-        WHERE post_type = %s
-        AND post_parent = %d
-        ORDER BY post_date DESC
-        LIMIT %d
-    ", 'attachment', 0, 1000)); // Limit to prevent memory issues
-
-    // Sanitize results
-    if ($unused_media) {
-        foreach ($unused_media as &$media) {
-            $media->ID = intval($media->ID);
-            $media->post_title = sanitize_text_field($media->post_title);
-            $media->guid = esc_url_raw($media->guid);
-            $media->post_mime_type = sanitize_mime_type($media->post_mime_type);
-        }
-    }
-
-    return $unused_media ? $unused_media : array();
-}
+// Function media_wipe_get_unused_media() is now defined in includes/helper-functions.php
 
 // Handle the AJAX request for deleting selected media
 add_action('wp_ajax_media_wipe_delete_unused_media', 'media_wipe_delete_unused_media_ajax');
