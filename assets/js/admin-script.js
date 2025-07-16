@@ -164,22 +164,59 @@ jQuery(document).ready(function ($) {
 
     // Handle checkbox changes and confirmation text
     function validateDeleteAllForm() {
-        var allChecked = $('#backup-confirmed').is(':checked') &&
-            $('#understand-permanent').is(':checked') &&
-            $('#accept-responsibility').is(':checked');
+        var hasAnyValidation = false;
+        var isValid = true;
 
-        var confirmationText = normalizeText($('#confirmation-text').val());
-        var textMatches = confirmationText === 'DELETE ALL MEDIA';
+        // Check backup confirmation checkboxes if they exist
+        if ($('#backup-confirmed').length) {
+            hasAnyValidation = true;
+            var allChecked = $('#backup-confirmed').is(':checked') &&
+                $('#understand-permanent').is(':checked') &&
+                $('#accept-responsibility').is(':checked');
+            isValid = isValid && allChecked;
+        }
 
-        var isValid = allChecked && textMatches;
+        // Check text confirmation if it exists
+        if ($('#confirmation-text').length) {
+            hasAnyValidation = true;
+            var confirmationText = normalizeText($('#confirmation-text').val());
+            var textMatches = confirmationText === 'DELETE ALL MEDIA';
+            isValid = isValid && textMatches;
+        }
+
+        // Check simple confirmation if it exists
+        if ($('#final-confirm').length) {
+            hasAnyValidation = true;
+            var finalConfirmed = $('#final-confirm').is(':checked');
+            isValid = isValid && finalConfirmed;
+        }
+
+        // If no validation elements exist, allow deletion
+        if (!hasAnyValidation) {
+            isValid = true;
+        }
+
+        // Debug logging (remove in production)
+        // console.log('Validation result:', {
+        //     hasAnyValidation: hasAnyValidation,
+        //     isValid: isValid,
+        //     backupExists: $('#backup-confirmed').length > 0,
+        //     textExists: $('#confirmation-text').length > 0,
+        //     simpleExists: $('#final-confirm').length > 0
+        // });
+
         $('#confirm-delete-all').prop('disabled', !isValid);
-
         return isValid;
     }
 
-    // Bind validation to form elements
-    $('#backup-confirmed, #understand-permanent, #accept-responsibility').on('change', validateDeleteAllForm);
-    $('#confirmation-text').on('input', validateDeleteAllForm);
+    // Bind validation to form elements (only if they exist)
+    $(document).on('change', '#backup-confirmed, #understand-permanent, #accept-responsibility, #final-confirm', validateDeleteAllForm);
+    $(document).on('input', '#confirmation-text', validateDeleteAllForm);
+
+    // Initial validation on page load
+    if ($('#delete-all-confirmation-modal').length) {
+        validateDeleteAllForm();
+    }
 
     // Handle delete all confirmation
     $('#confirm-delete-all').on('click', function () {
@@ -195,7 +232,7 @@ jQuery(document).ready(function ($) {
 
         // Get nonce from the form
         var nonce = $('input[name="media_wipe_all_nonce"]').val();
-        var confirmationText = $('#confirmation-text').val().trim();
+        var confirmationText = $('#confirmation-text').length ? $('#confirmation-text').val().trim() : '';
 
         // Make AJAX request with timeout
         $.ajax({
@@ -258,10 +295,25 @@ jQuery(document).ready(function ($) {
 
     // Reset modal to initial state
     function resetDeleteAllModal() {
+        // Reset backup confirmation checkboxes if they exist
         $('#backup-confirmed, #understand-permanent, #accept-responsibility').prop('checked', false);
-        $('#confirmation-text').val('');
-        $('#confirm-delete-all').prop('disabled', true).text('Delete All Media Files');
+
+        // Reset text confirmation if it exists
+        if ($('#confirmation-text').length) {
+            $('#confirmation-text').val('');
+        }
+
+        // Reset simple confirmation if it exists
+        $('#final-confirm').prop('checked', false);
+
+        // Reset button state
+        $('#confirm-delete-all').text('Delete All Media Files');
+
+        // Remove any notifications
         $('.notification').remove();
+
+        // Validate form to set correct button state
+        validateDeleteAllForm();
     }
 
     // Enhanced notification system
@@ -421,11 +473,11 @@ jQuery(document).ready(function ($) {
         var value = normalizeText($input.val());
         var target = 'DELETE ALL MEDIA';
 
-        // Debug logging
-        console.log('Input value:', '"' + $input.val() + '"');
-        console.log('Normalized value:', '"' + value + '"');
-        console.log('Target:', '"' + target + '"');
-        console.log('Match:', value === target);
+        // Debug logging (remove in production)
+        // console.log('Input value:', '"' + $input.val() + '"');
+        // console.log('Normalized value:', '"' + value + '"');
+        // console.log('Target:', '"' + target + '"');
+        // console.log('Match:', value === target);
 
         // Visual feedback for typing progress
         if (value === target) {
@@ -509,5 +561,49 @@ jQuery(document).ready(function ($) {
         html += '</div>';
 
         $container.html(html);
+    }
+
+    // ================================
+    // Settings Page Enhancement
+    // ================================
+
+    // Settings form validation and enhancement
+    if ($('.media-wipe-settings-form').length) {
+        // Add visual feedback for checkbox changes
+        $('.form-table input[type="checkbox"]').on('change', function () {
+            const $label = $(this).closest('label');
+            const $row = $(this).closest('tr');
+
+            if ($(this).is(':checked')) {
+                $label.addClass('setting-enabled');
+                $row.addClass('setting-active');
+            } else {
+                $label.removeClass('setting-enabled');
+                $row.removeClass('setting-active');
+            }
+        });
+
+        // Initialize checkbox states
+        $('.form-table input[type="checkbox"]:checked').each(function () {
+            $(this).closest('label').addClass('setting-enabled');
+            $(this).closest('tr').addClass('setting-active');
+        });
+
+        // Form submission enhancement
+        $('.media-wipe-settings-form').on('submit', function () {
+            const $submitBtn = $(this).find('.button-primary');
+            const originalText = $submitBtn.text();
+
+            $submitBtn.prop('disabled', true)
+                .text('Saving Settings...')
+                .addClass('updating-message');
+
+            // Re-enable after a delay (in case of errors)
+            setTimeout(function () {
+                $submitBtn.prop('disabled', false)
+                    .text(originalText)
+                    .removeClass('updating-message');
+            }, 3000);
+        });
     }
 });

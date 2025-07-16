@@ -266,10 +266,10 @@ function media_wipe_settings_page() {
     ?>
     <div class="wrap">
         <h1><?php esc_html_e('Media Wipe Settings', 'media-wipe'); ?></h1>
-        
+
         <form method="post" action="">
             <?php wp_nonce_field('media_wipe_settings_action', 'media_wipe_settings_nonce'); ?>
-            
+
             <table class="form-table">
                 <tr>
                     <th scope="row"><?php esc_html_e('Confirmation Requirements', 'media-wipe'); ?></th>
@@ -307,7 +307,7 @@ function media_wipe_settings_page() {
                     </td>
                 </tr>
             </table>
-            
+
             <?php submit_button(); ?>
         </form>
     </div>

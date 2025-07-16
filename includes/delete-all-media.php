@@ -115,6 +115,14 @@ function media_wipe_all_media_page() {
                 </div>
                 <?php endif; ?>
 
+                <?php
+                // Get settings to determine what confirmations to show
+                $settings = media_wipe_get_settings();
+                $show_backup_confirmation = $settings['require_backup_confirmation'];
+                $show_text_confirmation = $settings['require_text_confirmation'];
+                ?>
+
+                <?php if ($show_backup_confirmation): ?>
                 <div class="confirmation-checklist">
                     <h4><?php esc_html_e('Before proceeding, please confirm:', 'media-wipe'); ?></h4>
                     <label class="checkbox-item">
@@ -130,7 +138,9 @@ function media_wipe_all_media_page() {
                         <span><?php esc_html_e('I accept full responsibility for this action', 'media-wipe'); ?></span>
                     </label>
                 </div>
+                <?php endif; ?>
 
+                <?php if ($show_text_confirmation): ?>
                 <div class="final-confirmation">
                     <label for="confirmation-text"><?php esc_html_e('Type "DELETE ALL MEDIA" to confirm:', 'media-wipe'); ?></label>
                     <input type="text" id="confirmation-text" placeholder="<?php esc_attr_e('Type DELETE ALL MEDIA here', 'media-wipe'); ?>" autocomplete="off">
@@ -139,6 +149,20 @@ function media_wipe_all_media_page() {
                         <span><?php esc_html_e('Type exactly DELETE ALL MEDIA in uppercase or lowercase', 'media-wipe'); ?></span>
                     </div>
                 </div>
+                <?php endif; ?>
+
+                <?php if (!$show_backup_confirmation && !$show_text_confirmation): ?>
+                <div class="simple-confirmation">
+                    <div class="warning-message">
+                        <span class="dashicons dashicons-warning"></span>
+                        <p><strong><?php esc_html_e('Warning:', 'media-wipe'); ?></strong> <?php esc_html_e('This will permanently delete all media files from your website. This action cannot be undone.', 'media-wipe'); ?></p>
+                    </div>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="final-confirm" required>
+                        <span><?php esc_html_e('I understand and want to proceed with deleting all media files', 'media-wipe'); ?></span>
+                    </label>
+                </div>
+                <?php endif; ?>
             </div>
 
             <div class="modal-footer">
@@ -327,14 +351,19 @@ function media_wipe_delete_all_media_ajax() {
         wp_send_json_error(array('message' => esc_html__('Insufficient permissions.', 'media-wipe')));
     }
 
-    // Verify confirmation text
-    $confirmation = isset($_POST['confirmation']) ? sanitize_text_field($_POST['confirmation']) : '';
-    if ($confirmation !== 'DELETE ALL MEDIA') {
-        media_wipe_log_security_event('invalid_confirmation', array(
-            'action' => 'delete_all_media',
-            'provided_confirmation' => $confirmation
-        ));
-        wp_send_json_error(array('message' => esc_html__('Confirmation text does not match.', 'media-wipe')));
+    // Get settings to check what validations are required
+    $settings = media_wipe_get_settings();
+
+    // Verify confirmation text only if required by settings
+    if ($settings['require_text_confirmation']) {
+        $confirmation = isset($_POST['confirmation']) ? sanitize_text_field($_POST['confirmation']) : '';
+        if ($confirmation !== 'DELETE ALL MEDIA') {
+            media_wipe_log_security_event('invalid_confirmation', array(
+                'action' => 'delete_all_media',
+                'provided_confirmation' => $confirmation
+            ));
+            wp_send_json_error(array('message' => esc_html__('Confirmation text does not match.', 'media-wipe')));
+        }
     }
 
     // Check rate limiting
