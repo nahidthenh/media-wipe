@@ -112,7 +112,14 @@ class MediaWipeUnusedScanner {
         error_log('Media Wipe: POST data: ' . print_r($_POST, true));
 
         // Verify nonce and capabilities
-        if (!wp_verify_nonce($_POST['nonce'], 'media_wipe_delete_unused') || !current_user_can('manage_options')) {
+        $nonce_check = wp_verify_nonce($_POST['nonce'], 'media_wipe_delete_unused');
+        $capability_check = current_user_can('manage_options');
+
+        error_log('Media Wipe: Nonce check result: ' . ($nonce_check ? 'PASS' : 'FAIL'));
+        error_log('Media Wipe: Capability check result: ' . ($capability_check ? 'PASS' : 'FAIL'));
+        error_log('Media Wipe: Received nonce: ' . $_POST['nonce']);
+
+        if (!$nonce_check || !$capability_check) {
             error_log('Media Wipe: Security check failed');
             wp_send_json_error(array('message' => esc_html__('Security check failed.', 'media-wipe')));
         }
@@ -121,7 +128,12 @@ class MediaWipeUnusedScanner {
 
         $selected_ids = isset($_POST['selected_ids']) ? array_map('intval', explode(',', $_POST['selected_ids'])) : array();
 
+        error_log('Media Wipe: Raw selected_ids: ' . $_POST['selected_ids']);
+        error_log('Media Wipe: Processed selected_ids: ' . print_r($selected_ids, true));
+        error_log('Media Wipe: Selected IDs count: ' . count($selected_ids));
+
         if (empty($selected_ids)) {
+            error_log('Media Wipe: No files selected for deletion');
             wp_send_json_error(array('message' => esc_html__('No files selected for deletion.', 'media-wipe')));
         }
 

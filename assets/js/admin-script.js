@@ -958,6 +958,14 @@ jQuery(document).ready(function ($) {
             success: function (response) {
                 debugLog('Delete response:', response);
 
+                // Show detailed error information
+                if (!response.success) {
+                    debugLog('Delete failed - Error details:', response.data);
+                    if (response.data && response.data.message) {
+                        debugLog('Error message:', response.data.message);
+                    }
+                }
+
                 if (response.success) {
                     showNotification('success', response.data.message);
 
