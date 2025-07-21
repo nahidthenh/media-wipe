@@ -860,7 +860,7 @@ jQuery(document).ready(function ($) {
                 type: 'POST',
                 data: {
                     action: 'media_wipe_delete_unused_media',
-                    nonce: $('#media_wipe_delete_unused_nonce').val(),
+                    nonce: mediaWipeAjax.nonce,
                     selected_ids: '123,456' // Test IDs
                 },
                 success: function (response) {
@@ -919,10 +919,11 @@ jQuery(document).ready(function ($) {
         var $button = $(this);
         $button.prop('disabled', true).text('Deleting...');
 
-        // Check nonce availability
-        var nonceValue = $('#media_wipe_delete_unused_nonce').val();
-        debugLog('Nonce field exists:', $('#media_wipe_delete_unused_nonce').length > 0);
-        debugLog('Nonce value:', nonceValue);
+        // Use global nonce instead of form-specific nonce
+        var nonceValue = mediaWipeAjax.nonce;
+        debugLog('Using global nonce:', nonceValue);
+        debugLog('Form nonce exists:', $('#media_wipe_delete_unused_nonce').length > 0);
+        debugLog('Form nonce value:', $('#media_wipe_delete_unused_nonce').val());
 
         if (!nonceValue) {
             showNotification('error', 'Security nonce not found. Please refresh the page.');
