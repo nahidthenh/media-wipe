@@ -1,4 +1,18 @@
 jQuery(document).ready(function ($) {
+    // Debug flag - set to false for production
+    var MEDIA_WIPE_DEBUG = false;
+
+    // Debug logging function
+    function debugLog(message, data) {
+        if (MEDIA_WIPE_DEBUG) {
+            if (data) {
+                console.log('Media Wipe Debug:', message, data);
+            } else {
+                console.log('Media Wipe Debug:', message);
+            }
+        }
+    }
+
     var mediaIds = [];
 
     // ================================
@@ -606,4 +620,450 @@ jQuery(document).ready(function ($) {
             }, 3000);
         });
     }
+
+    // ================================
+    // Remove Unused Media Functionality
+    // ================================
+
+    // Start unused media scan
+    $('#start-unused-scan').on('click', function (e) {
+        e.preventDefault();
+
+        var $button = $(this);
+        var $form = $('#unused-media-scan-form');
+
+        // Get form data
+        var formData = {
+            action: 'media_wipe_start_unused_scan',
+            nonce: $form.find('input[name="media_wipe_unused_scan_nonce"]').val(),
+            exclude_recent: $form.find('input[name="exclude_recent"]:checked').length > 0 ? 1 : 0,
+            exclude_featured: $form.find('input[name="exclude_featured"]:checked').length > 0 ? 1 : 0,
+            scan_depth: $form.find('input[name="scan_depth"]:checked').val()
+        };
+
+        // Show progress container
+        $('#scan-progress-container').show();
+        $('#scan-results-container').hide();
+
+        // Disable scan button
+        $button.prop('disabled', true).text('Scanning...');
+        $('#cancel-unused-scan').show();
+
+        // Start scan
+        $.ajax({
+            url: mediaWipeAjax.ajaxurl,
+            type: 'POST',
+            data: formData,
+            timeout: 300000, // 5 minutes
+            success: function (response) {
+                if (response.success) {
+                    displayUnusedMediaResults(response.data.results);
+                } else {
+                    showNotification('error', response.data.message || 'Scan failed');
+                }
+            },
+            error: function (xhr, status, error) {
+                showNotification('error', 'Scan failed: ' + error);
+            },
+            complete: function () {
+                // Re-enable scan button
+                $button.prop('disabled', false).text('Start Scan');
+                $('#cancel-unused-scan').hide();
+                $('#scan-progress-container').hide();
+            }
+        });
+    });
+
+    // Display unused media results
+    function displayUnusedMediaResults(results) {
+        debugLog('Display results called with:', results);
+
+        if (!results || !results.files || results.files.length === 0) {
+            showNotification('info', 'No unused media files found!');
+            return;
+        }
+
+        // Debug first few files to check data structure
+        debugLog('First file data:', results.files[0]);
+        if (results.files.length > 1) {
+            debugLog('Second file data:', results.files[1]);
+        }
+
+        // Update results summary
+        $('#results-summary-text').text(
+            results.unused_found + ' unused files found out of ' + results.total_scanned + ' scanned'
+        );
+
+        // Show results container
+        $('#scan-results-container').show();
+
+        // Check if DataTables is available
+        if (typeof $.fn.DataTable === 'undefined') {
+            debugLog('DataTables library is not loaded');
+            showNotification('warning', 'DataTables library is not loaded. Displaying basic table.');
+            displayBasicUnusedTable(results.files);
+            return;
+        }
+
+        // Initialize or update DataTable
+        if ($.fn.DataTable.isDataTable('#unused-media-datatable')) {
+            $('#unused-media-datatable').DataTable().destroy();
+        }
+
+        // Prepare data for DataTable
+        var tableData = results.files.map(function (file, index) {
+            // Debug file ID for first few files
+            if (index < 3) {
+                debugLog('File ' + index + ' ID:', file.id, 'Type:', typeof file.id);
+            }
+
+            var confidenceClass = file.confidence_score >= 90 ? 'high' :
+                file.confidence_score >= 75 ? 'medium' : 'low';
+            var confidenceBadge = '<span class="confidence-badge ' + confidenceClass + '">' +
+                file.confidence_score + '%</span>';
+
+            var thumbnail = file.thumbnail ?
+                '<img src="' + file.thumbnail + '" alt="' + file.filename + '" style="max-width: 50px; max-height: 50px;">' :
+                '<span class="dashicons dashicons-media-default"></span>';
+
+            var checkboxHtml = '<input type="checkbox" class="unused-file-checkbox" data-id="' + file.id + '" data-confidence="' + file.confidence_score + '">';
+
+            // Debug checkbox HTML for first file
+            if (index === 0) {
+                debugLog('First checkbox HTML:', checkboxHtml);
+            }
+
+            return [
+                checkboxHtml,
+                thumbnail,
+                '<strong>' + file.filename + '</strong><br><small>' + file.title + '</small>',
+                file.file_type,
+                file.file_size_formatted,
+                file.upload_date,
+                confidenceBadge,
+                '<button class="button button-small view-usage-btn" data-id="' + file.id + '">View Details</button>'
+            ];
+        });
+
+        // Initialize DataTable
+        $('#unused-media-datatable').DataTable({
+            data: tableData,
+            responsive: true,
+            pageLength: 25,
+            order: [[6, 'desc']], // Sort by confidence score
+            columnDefs: [
+                { orderable: false, targets: [0, 1, 7] }
+            ]
+        });
+
+        // Update selection controls
+        updateUnusedSelectionControls();
+    }
+
+    // Fallback function to display basic table without DataTables
+    function displayBasicUnusedTable(files) {
+        var $tbody = $('#unused-media-datatable tbody');
+        $tbody.empty();
+
+        files.forEach(function (file) {
+            var confidenceClass = file.confidence_score >= 90 ? 'high' :
+                file.confidence_score >= 75 ? 'medium' : 'low';
+            var confidenceBadge = '<span class="confidence-badge ' + confidenceClass + '">' +
+                file.confidence_score + '%</span>';
+
+            var thumbnail = file.thumbnail ?
+                '<img src="' + file.thumbnail + '" alt="' + file.filename + '" style="max-width: 50px; max-height: 50px;">' :
+                '<span class="dashicons dashicons-media-default"></span>';
+
+            var row = '<tr>' +
+                '<td><input type="checkbox" class="unused-file-checkbox" data-id="' + file.id + '" data-confidence="' + file.confidence_score + '"></td>' +
+                '<td>' + thumbnail + '</td>' +
+                '<td><strong>' + file.filename + '</strong><br><small>' + file.title + '</small></td>' +
+                '<td>' + file.file_type + '</td>' +
+                '<td>' + file.file_size_formatted + '</td>' +
+                '<td>' + file.upload_date + '</td>' +
+                '<td>' + confidenceBadge + '</td>' +
+                '<td><button class="button button-small view-usage-btn" data-id="' + file.id + '">View Details</button></td>' +
+                '</tr>';
+
+            $tbody.append(row);
+        });
+
+        // Update selection controls
+        updateUnusedSelectionControls();
+    }
+
+    // Selection controls for unused media
+    $('#select-all-unused').on('click', function () {
+        // Handle both DataTable and regular table
+        if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
+            var table = $('#unused-media-datatable').DataTable();
+            table.$('.unused-file-checkbox').prop('checked', true);
+        } else {
+            $('.unused-file-checkbox').prop('checked', true);
+        }
+        updateUnusedSelectionControls();
+    });
+
+    $('#select-none-unused').on('click', function () {
+        // Handle both DataTable and regular table
+        if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
+            var table = $('#unused-media-datatable').DataTable();
+            table.$('.unused-file-checkbox').prop('checked', false);
+        } else {
+            $('.unused-file-checkbox').prop('checked', false);
+        }
+        updateUnusedSelectionControls();
+    });
+
+    $('#select-high-confidence').on('click', function () {
+        // Handle both DataTable and regular table
+        if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
+            var table = $('#unused-media-datatable').DataTable();
+            table.$('.unused-file-checkbox').each(function () {
+                var confidence = parseInt($(this).data('confidence'));
+                $(this).prop('checked', confidence >= 90);
+            });
+        } else {
+            $('.unused-file-checkbox').each(function () {
+                var confidence = parseInt($(this).data('confidence'));
+                $(this).prop('checked', confidence >= 90);
+            });
+        }
+        updateUnusedSelectionControls();
+    });
+
+    // Update selection controls
+    $(document).on('change', '.unused-file-checkbox', updateUnusedSelectionControls);
+
+    function updateUnusedSelectionControls() {
+        var selectedCount = 0;
+
+        // Count selected checkboxes (handle both DataTable and regular table)
+        if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
+            var table = $('#unused-media-datatable').DataTable();
+            selectedCount = table.$('.unused-file-checkbox:checked').length;
+        } else {
+            selectedCount = $('.unused-file-checkbox:checked').length;
+        }
+
+        var $deleteButton = $('#delete-selected-unused');
+        $deleteButton.prop('disabled', selectedCount === 0);
+
+        // Update button text properly
+        var buttonText = 'Delete Selected (' + selectedCount + ')';
+        if ($deleteButton.find('.dashicons').length > 0) {
+            // If button has icon, preserve it
+            $deleteButton.html('<span class="dashicons dashicons-trash"></span>' + buttonText);
+        } else {
+            $deleteButton.text(buttonText);
+        }
+    }
+
+    // Add test button for debugging (temporary)
+    if (MEDIA_WIPE_DEBUG) {
+        $('body').append('<button id="debug-test-delete" style="position: fixed; top: 50px; right: 50px; z-index: 9999; background: red; color: white; padding: 10px;">DEBUG: Test Delete</button>');
+
+        $(document).on('click', '#debug-test-delete', function () {
+            debugLog('Debug test button clicked');
+            debugLog('Checkboxes found:', $('.unused-file-checkbox').length);
+            debugLog('Checked checkboxes:', $('.unused-file-checkbox:checked').length);
+
+            $('.unused-file-checkbox:checked').each(function (index) {
+                debugLog('Checkbox ' + index + ' ID:', $(this).data('id'));
+            });
+
+            // Test AJAX call
+            debugLog('Testing AJAX call...');
+            $.ajax({
+                url: mediaWipeAjax.ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'media_wipe_delete_unused_files',
+                    nonce: $('#media_wipe_delete_unused_nonce').val(),
+                    selected_ids: '123,456' // Test IDs
+                },
+                success: function (response) {
+                    debugLog('Test AJAX success:', response);
+                },
+                error: function (xhr, status, error) {
+                    debugLog('Test AJAX error:', error);
+                }
+            });
+        });
+    }
+
+    // Delete selected unused media (using event delegation)
+    debugLog('Binding delete button event handler with delegation');
+
+    // Debug nonce field availability on page load
+    debugLog('Page load - Current page:', window.location.href);
+    debugLog('Page load - Nonce field exists:', $('#media_wipe_delete_unused_nonce').length > 0);
+    debugLog('Page load - Nonce field value:', $('#media_wipe_delete_unused_nonce').val());
+    debugLog('Page load - Delete unused page?', window.location.href.indexOf('delete-unused') !== -1);
+
+    $(document).on('click', '#delete-selected-unused', function (e) {
+        e.preventDefault();
+
+        debugLog('Delete button clicked');
+        debugLog('Button disabled state:', $(this).prop('disabled'));
+
+        // If button is disabled, don't proceed (unless debugging)
+        if ($(this).prop('disabled') && !MEDIA_WIPE_DEBUG) {
+            debugLog('Button is disabled, not proceeding');
+            return;
+        }
+
+        var selectedIds = [];
+
+        // Debug checkbox availability
+        var totalCheckboxes = $('.unused-file-checkbox').length;
+        var checkedCheckboxes = $('.unused-file-checkbox:checked').length;
+        debugLog('Total checkboxes found:', totalCheckboxes);
+        debugLog('Checked checkboxes found:', checkedCheckboxes);
+
+        // Collect selected IDs (handle both DataTable and regular table)
+        if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
+            var table = $('#unused-media-datatable').DataTable();
+            debugLog('Using DataTable to collect IDs');
+
+            var dtTotalCheckboxes = table.$('.unused-file-checkbox').length;
+            var dtCheckedCheckboxes = table.$('.unused-file-checkbox:checked').length;
+            debugLog('DataTable - Total checkboxes:', dtTotalCheckboxes);
+            debugLog('DataTable - Checked checkboxes:', dtCheckedCheckboxes);
+
+            table.$('.unused-file-checkbox:checked').each(function (index) {
+                var id = $(this).data('id');
+                debugLog('DataTable checkbox ' + index + ' ID:', id, 'Type:', typeof id);
+                selectedIds.push(id);
+            });
+        } else {
+            debugLog('Using regular table to collect IDs');
+            $('.unused-file-checkbox:checked').each(function (index) {
+                var id = $(this).data('id');
+                debugLog('Regular checkbox ' + index + ' ID:', id, 'Type:', typeof id);
+                selectedIds.push(id);
+            });
+        }
+
+        debugLog('Selected IDs collected:', selectedIds);
+
+        if (selectedIds.length === 0) {
+            showNotification('warning', 'Please select files to delete.');
+            return;
+        }
+
+        // Show confirmation dialog
+        if (!confirm('Are you sure you want to delete ' + selectedIds.length + ' unused media files? This action cannot be undone.')) {
+            return;
+        }
+
+        var $button = $(this);
+        $button.prop('disabled', true).text('Deleting...');
+
+        // Use form-specific nonce for delete unused operation, fallback to global nonce
+        var nonceValue = $('#media_wipe_delete_unused_nonce').val();
+        var useGlobalNonce = false;
+
+        debugLog('Form nonce exists:', $('#media_wipe_delete_unused_nonce').length > 0);
+        debugLog('Form nonce value:', nonceValue);
+        debugLog('Global nonce available:', typeof mediaWipeAjax !== 'undefined' && mediaWipeAjax.nonce);
+        debugLog('Global nonce value:', typeof mediaWipeAjax !== 'undefined' ? mediaWipeAjax.nonce : 'N/A');
+
+        // Fallback to global nonce if form nonce is not available
+        if (!nonceValue && typeof mediaWipeAjax !== 'undefined' && mediaWipeAjax.nonce) {
+            nonceValue = mediaWipeAjax.nonce;
+            useGlobalNonce = true;
+            debugLog('Using global nonce as fallback');
+        }
+
+        if (!nonceValue) {
+            showNotification('error', 'Security nonce not found. Please refresh the page.');
+            return;
+        }
+
+        debugLog('Final nonce to use:', nonceValue);
+        debugLog('Using global nonce:', useGlobalNonce);
+
+        // Debug logging
+        debugLog('Delete request data:', {
+            action: 'media_wipe_delete_unused_files',
+            nonce: nonceValue,
+            selected_ids: selectedIds.join(','),
+            selectedIds: selectedIds
+        });
+
+        // Check AJAX object availability
+        if (typeof mediaWipeAjax === 'undefined') {
+            showNotification('error', 'AJAX configuration not found. Please refresh the page.');
+            debugLog('mediaWipeAjax object is undefined');
+            return;
+        }
+
+        debugLog('AJAX URL:', mediaWipeAjax.ajaxurl);
+
+        // Delete files
+        $.ajax({
+            url: mediaWipeAjax.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'media_wipe_delete_unused_files',
+                nonce: $('#media_wipe_delete_unused_nonce').val(),
+                selected_ids: selectedIds.join(',')
+            },
+            success: function (response) {
+                debugLog('Delete response:', response);
+
+                // Show detailed error information
+                if (!response.success) {
+                    debugLog('Delete failed - Error details:', response.data);
+                    if (response.data && response.data.message) {
+                        debugLog('Error message:', response.data.message);
+                    }
+                }
+
+                if (response.success) {
+                    showNotification('success', response.data.message);
+
+                    // Show debug info if available
+                    if (response.data.debug_info) {
+                        debugLog('Debug info:', response.data.debug_info);
+                    }
+
+                    // Show errors if any
+                    if (response.data.errors && response.data.errors.length > 0) {
+                        debugLog('Deletion errors:', response.data.errors);
+                        response.data.errors.forEach(function (error) {
+                            showNotification('warning', error);
+                        });
+                    }
+
+                    // Remove deleted rows from table
+                    if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
+                        var table = $('#unused-media-datatable').DataTable();
+                        selectedIds.forEach(function (id) {
+                            var row = table.$('.unused-file-checkbox[data-id="' + id + '"]').closest('tr');
+                            table.row(row).remove();
+                        });
+                        table.draw();
+                    } else {
+                        selectedIds.forEach(function (id) {
+                            $('.unused-file-checkbox[data-id="' + id + '"]').closest('tr').remove();
+                        });
+                    }
+                    updateUnusedSelectionControls();
+                } else {
+                    showNotification('error', response.data.message || 'Deletion failed');
+                }
+            },
+            error: function (xhr, status, error) {
+                showNotification('error', 'Deletion failed: ' + error);
+            },
+            complete: function () {
+                $button.prop('disabled', false);
+                updateUnusedSelectionControls();
+            }
+        });
+    });
+
 });

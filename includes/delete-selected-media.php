@@ -223,7 +223,7 @@ add_action('wp_ajax_media_wipe_delete_unused_media', 'media_wipe_delete_unused_m
 
 function media_wipe_delete_unused_media_ajax() {
     // Verify nonce for security
-    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'media_wipe_ajax_nonce')) {
+    if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'media_wipe_delete_unused')) {
         wp_send_json_error(array('message' => esc_html__('Security check failed.', 'media-wipe')));
     }
 

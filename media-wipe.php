@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Media Wipe
  * Plugin URI: https://mdnahidhasan.netlify.app/media-wipe
- * Description: A comprehensive WordPress plugin to safely delete media files with advanced confirmation systems, document preview, and security audit logging.
- * Version: 1.1.2
+ * Description: A comprehensive WordPress plugin to safely delete media files with AI-powered unused media detection, advanced confirmation systems, document preview, and security audit logging.
+ * Version: 1.2.0
  * Author: Md. Nahid Hasan
  * Author URI: https://mdnahidhasan.netlify.app
  * Text Domain: media-wipe
@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Define plugin constants
  */
 if ( ! defined( 'MEDIA_WIPE_VERSION' ) ) {
-    define( 'MEDIA_WIPE_VERSION', '1.1.2' );
+    define( 'MEDIA_WIPE_VERSION', '1.2.0' );
 }
 
 if ( ! defined( 'MEDIA_WIPE_PLUGIN_FILE' ) ) {
@@ -115,6 +115,18 @@ class Media_Wipe_Plugin {
     public function init_components() {
         // Include necessary files
         $this->include_files();
+
+        // Initialize components
+        $this->init_scanner();
+    }
+
+    /**
+     * Initialize the unused media scanner
+     */
+    private function init_scanner() {
+        if (class_exists('MediaWipeUnusedScanner')) {
+            new MediaWipeUnusedScanner();
+        }
     }
 
     /**
@@ -125,6 +137,7 @@ class Media_Wipe_Plugin {
             'includes/helper-functions.php',
             'includes/class-datatable.php',
             'includes/class-notifications.php',
+            'includes/class-unused-media-scanner.php',
             'includes/admin-menu.php',
             'includes/delete-all-media.php',
             'includes/delete-selected-media.php'
@@ -199,16 +212,22 @@ class Media_Wipe_Plugin {
             MEDIA_WIPE_VERSION
         );
 
+        // Determine dependencies based on page
+        $script_deps = array( 'jquery' );
+        if (strpos($hook, 'delete-selected') !== false || strpos($hook, 'delete-unused') !== false) {
+            $script_deps[] = 'datatables-js';
+        }
+
         wp_enqueue_script(
             'media-wipe-admin-script',
             MEDIA_WIPE_PLUGIN_URL . 'assets/js/admin-script.js',
-            array( 'jquery' ),
+            $script_deps,
             MEDIA_WIPE_VERSION,
             true
         );
 
-        // Enqueue DataTables.net library for delete selected media page
-        if (strpos($hook, 'delete-selected') !== false) {
+        // Enqueue DataTables.net library for pages that need it
+        if (strpos($hook, 'delete-selected') !== false || strpos($hook, 'delete-unused') !== false) {
             // DataTables CSS
             wp_enqueue_style(
                 'datatables-css',
