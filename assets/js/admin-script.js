@@ -860,7 +860,7 @@ jQuery(document).ready(function ($) {
                 type: 'POST',
                 data: {
                     action: 'media_wipe_delete_unused_media',
-                    nonce: mediaWipeAjax.nonce,
+                    nonce: $('#media_wipe_delete_unused_nonce').val(),
                     selected_ids: '123,456' // Test IDs
                 },
                 success: function (response) {
@@ -875,6 +875,12 @@ jQuery(document).ready(function ($) {
 
     // Delete selected unused media (using event delegation)
     debugLog('Binding delete button event handler with delegation');
+
+    // Debug nonce field availability on page load
+    debugLog('Page load - Current page:', window.location.href);
+    debugLog('Page load - Nonce field exists:', $('#media_wipe_delete_unused_nonce').length > 0);
+    debugLog('Page load - Nonce field value:', $('#media_wipe_delete_unused_nonce').val());
+    debugLog('Page load - Delete unused page?', window.location.href.indexOf('delete-unused') !== -1);
 
     $(document).on('click', '#delete-selected-unused', function (e) {
         e.preventDefault();
@@ -919,16 +925,29 @@ jQuery(document).ready(function ($) {
         var $button = $(this);
         $button.prop('disabled', true).text('Deleting...');
 
-        // Use global nonce instead of form-specific nonce
-        var nonceValue = mediaWipeAjax.nonce;
-        debugLog('Using global nonce:', nonceValue);
+        // Use form-specific nonce for delete unused operation, fallback to global nonce
+        var nonceValue = $('#media_wipe_delete_unused_nonce').val();
+        var useGlobalNonce = false;
+
         debugLog('Form nonce exists:', $('#media_wipe_delete_unused_nonce').length > 0);
-        debugLog('Form nonce value:', $('#media_wipe_delete_unused_nonce').val());
+        debugLog('Form nonce value:', nonceValue);
+        debugLog('Global nonce available:', typeof mediaWipeAjax !== 'undefined' && mediaWipeAjax.nonce);
+        debugLog('Global nonce value:', typeof mediaWipeAjax !== 'undefined' ? mediaWipeAjax.nonce : 'N/A');
+
+        // Fallback to global nonce if form nonce is not available
+        if (!nonceValue && typeof mediaWipeAjax !== 'undefined' && mediaWipeAjax.nonce) {
+            nonceValue = mediaWipeAjax.nonce;
+            useGlobalNonce = true;
+            debugLog('Using global nonce as fallback');
+        }
 
         if (!nonceValue) {
             showNotification('error', 'Security nonce not found. Please refresh the page.');
             return;
         }
+
+        debugLog('Final nonce to use:', nonceValue);
+        debugLog('Using global nonce:', useGlobalNonce);
 
         // Debug logging
         debugLog('Delete request data:', {

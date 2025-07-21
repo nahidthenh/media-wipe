@@ -111,14 +111,18 @@ class MediaWipeUnusedScanner {
         error_log('Media Wipe: ajax_delete_unused called');
         error_log('Media Wipe: POST data: ' . print_r($_POST, true));
 
-        // Verify nonce and capabilities (using global nonce action)
-        $nonce_check = wp_verify_nonce($_POST['nonce'], 'media_wipe_ajax_nonce');
+        // Verify nonce and capabilities (try both specific and global nonce actions)
+        $nonce_check = wp_verify_nonce($_POST['nonce'], 'media_wipe_delete_unused');
+        if (!$nonce_check) {
+            $nonce_check = wp_verify_nonce($_POST['nonce'], 'media_wipe_ajax_nonce');
+            error_log('Media Wipe: Trying global nonce action');
+        }
         $capability_check = current_user_can('manage_options');
 
         error_log('Media Wipe: Nonce check result: ' . ($nonce_check ? 'PASS' : 'FAIL'));
         error_log('Media Wipe: Capability check result: ' . ($capability_check ? 'PASS' : 'FAIL'));
         error_log('Media Wipe: Received nonce: ' . $_POST['nonce']);
-        error_log('Media Wipe: Expected nonce action: media_wipe_ajax_nonce');
+        error_log('Media Wipe: Tried nonce actions: media_wipe_delete_unused, media_wipe_ajax_nonce');
 
         if (!$nonce_check || !$capability_check) {
             error_log('Media Wipe: Security check failed');
