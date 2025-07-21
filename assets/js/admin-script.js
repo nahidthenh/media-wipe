@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
-    // Debug flag - set to false for production
-    var MEDIA_WIPE_DEBUG = false;
+    // Debug flag - set to true for troubleshooting
+    var MEDIA_WIPE_DEBUG = true;
 
     // Debug logging function
     function debugLog(message, data) {
@@ -840,23 +840,38 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    // Delete selected unused media
-    $('#delete-selected-unused').on('click', function (e) {
+    // Delete selected unused media (using event delegation)
+    debugLog('Binding delete button event handler with delegation');
+
+    $(document).on('click', '#delete-selected-unused', function (e) {
         e.preventDefault();
+
+        debugLog('Delete button clicked');
+        debugLog('Button disabled state:', $(this).prop('disabled'));
+
+        // If button is disabled, don't proceed (unless debugging)
+        if ($(this).prop('disabled') && !MEDIA_WIPE_DEBUG) {
+            debugLog('Button is disabled, not proceeding');
+            return;
+        }
 
         var selectedIds = [];
 
         // Collect selected IDs (handle both DataTable and regular table)
         if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
             var table = $('#unused-media-datatable').DataTable();
+            debugLog('Using DataTable to collect IDs');
             table.$('.unused-file-checkbox:checked').each(function () {
                 selectedIds.push($(this).data('id'));
             });
         } else {
+            debugLog('Using regular table to collect IDs');
             $('.unused-file-checkbox:checked').each(function () {
                 selectedIds.push($(this).data('id'));
             });
         }
+
+        debugLog('Selected IDs collected:', selectedIds);
 
         if (selectedIds.length === 0) {
             showNotification('warning', 'Please select files to delete.');
@@ -871,13 +886,32 @@ jQuery(document).ready(function ($) {
         var $button = $(this);
         $button.prop('disabled', true).text('Deleting...');
 
+        // Check nonce availability
+        var nonceValue = $('#media_wipe_delete_unused_nonce').val();
+        debugLog('Nonce field exists:', $('#media_wipe_delete_unused_nonce').length > 0);
+        debugLog('Nonce value:', nonceValue);
+
+        if (!nonceValue) {
+            showNotification('error', 'Security nonce not found. Please refresh the page.');
+            return;
+        }
+
         // Debug logging
         debugLog('Delete request data:', {
             action: 'media_wipe_delete_unused_media',
-            nonce: $('#media_wipe_delete_unused_nonce').val(),
+            nonce: nonceValue,
             selected_ids: selectedIds.join(','),
             selectedIds: selectedIds
         });
+
+        // Check AJAX object availability
+        if (typeof mediaWipeAjax === 'undefined') {
+            showNotification('error', 'AJAX configuration not found. Please refresh the page.');
+            debugLog('mediaWipeAjax object is undefined');
+            return;
+        }
+
+        debugLog('AJAX URL:', mediaWipeAjax.ajaxurl);
 
         // Delete files
         $.ajax({

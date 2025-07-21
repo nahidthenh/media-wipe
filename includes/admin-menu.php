@@ -843,7 +843,7 @@ function media_wipe_delete_unused_page() {
                                     <br>
                                     <label>
                                         <input type="radio" name="scan_depth" value="advanced">
-                                        <?php esc_html_e('Advanced Scan - Includes theme files, slower, less accurate', 'media-wipe'); ?>
+                                        <?php esc_html_e('Advanced Scan - Includes theme files, slower, less accurate (Under Development)', 'media-wipe'); ?>
                                     </label>
                                 </fieldset>
                             </td>

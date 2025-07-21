@@ -107,10 +107,17 @@ class MediaWipeUnusedScanner {
      * Delete unused media via AJAX
      */
     public function ajax_delete_unused() {
+        // Debug logging
+        error_log('Media Wipe: ajax_delete_unused called');
+        error_log('Media Wipe: POST data: ' . print_r($_POST, true));
+
         // Verify nonce and capabilities
         if (!wp_verify_nonce($_POST['nonce'], 'media_wipe_delete_unused') || !current_user_can('manage_options')) {
+            error_log('Media Wipe: Security check failed');
             wp_send_json_error(array('message' => esc_html__('Security check failed.', 'media-wipe')));
         }
+
+        error_log('Media Wipe: Security check passed');
 
         $selected_ids = isset($_POST['selected_ids']) ? array_map('intval', explode(',', $_POST['selected_ids'])) : array();
 
