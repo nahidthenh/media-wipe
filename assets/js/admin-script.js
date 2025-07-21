@@ -676,9 +676,17 @@ jQuery(document).ready(function ($) {
 
     // Display unused media results
     function displayUnusedMediaResults(results) {
+        debugLog('Display results called with:', results);
+
         if (!results || !results.files || results.files.length === 0) {
             showNotification('info', 'No unused media files found!');
             return;
+        }
+
+        // Debug first few files to check data structure
+        debugLog('First file data:', results.files[0]);
+        if (results.files.length > 1) {
+            debugLog('Second file data:', results.files[1]);
         }
 
         // Update results summary
@@ -703,7 +711,12 @@ jQuery(document).ready(function ($) {
         }
 
         // Prepare data for DataTable
-        var tableData = results.files.map(function (file) {
+        var tableData = results.files.map(function (file, index) {
+            // Debug file ID for first few files
+            if (index < 3) {
+                debugLog('File ' + index + ' ID:', file.id, 'Type:', typeof file.id);
+            }
+
             var confidenceClass = file.confidence_score >= 90 ? 'high' :
                 file.confidence_score >= 75 ? 'medium' : 'low';
             var confidenceBadge = '<span class="confidence-badge ' + confidenceClass + '">' +
@@ -713,8 +726,15 @@ jQuery(document).ready(function ($) {
                 '<img src="' + file.thumbnail + '" alt="' + file.filename + '" style="max-width: 50px; max-height: 50px;">' :
                 '<span class="dashicons dashicons-media-default"></span>';
 
+            var checkboxHtml = '<input type="checkbox" class="unused-file-checkbox" data-id="' + file.id + '" data-confidence="' + file.confidence_score + '">';
+
+            // Debug checkbox HTML for first file
+            if (index === 0) {
+                debugLog('First checkbox HTML:', checkboxHtml);
+            }
+
             return [
-                '<input type="checkbox" class="unused-file-checkbox" data-id="' + file.id + '" data-confidence="' + file.confidence_score + '">',
+                checkboxHtml,
                 thumbnail,
                 '<strong>' + file.filename + '</strong><br><small>' + file.title + '</small>',
                 file.file_type,
@@ -896,17 +916,33 @@ jQuery(document).ready(function ($) {
 
         var selectedIds = [];
 
+        // Debug checkbox availability
+        var totalCheckboxes = $('.unused-file-checkbox').length;
+        var checkedCheckboxes = $('.unused-file-checkbox:checked').length;
+        debugLog('Total checkboxes found:', totalCheckboxes);
+        debugLog('Checked checkboxes found:', checkedCheckboxes);
+
         // Collect selected IDs (handle both DataTable and regular table)
         if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
             var table = $('#unused-media-datatable').DataTable();
             debugLog('Using DataTable to collect IDs');
-            table.$('.unused-file-checkbox:checked').each(function () {
-                selectedIds.push($(this).data('id'));
+
+            var dtTotalCheckboxes = table.$('.unused-file-checkbox').length;
+            var dtCheckedCheckboxes = table.$('.unused-file-checkbox:checked').length;
+            debugLog('DataTable - Total checkboxes:', dtTotalCheckboxes);
+            debugLog('DataTable - Checked checkboxes:', dtCheckedCheckboxes);
+
+            table.$('.unused-file-checkbox:checked').each(function (index) {
+                var id = $(this).data('id');
+                debugLog('DataTable checkbox ' + index + ' ID:', id, 'Type:', typeof id);
+                selectedIds.push(id);
             });
         } else {
             debugLog('Using regular table to collect IDs');
-            $('.unused-file-checkbox:checked').each(function () {
-                selectedIds.push($(this).data('id'));
+            $('.unused-file-checkbox:checked').each(function (index) {
+                var id = $(this).data('id');
+                debugLog('Regular checkbox ' + index + ' ID:', id, 'Type:', typeof id);
+                selectedIds.push(id);
             });
         }
 
