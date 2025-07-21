@@ -1,4 +1,18 @@
 jQuery(document).ready(function ($) {
+    // Debug flag - set to false for production
+    var MEDIA_WIPE_DEBUG = false;
+
+    // Debug logging function
+    function debugLog(message, data) {
+        if (MEDIA_WIPE_DEBUG) {
+            if (data) {
+                console.log('Media Wipe Debug:', message, data);
+            } else {
+                console.log('Media Wipe Debug:', message);
+            }
+        }
+    }
+
     var mediaIds = [];
 
     // ================================
@@ -677,7 +691,7 @@ jQuery(document).ready(function ($) {
 
         // Check if DataTables is available
         if (typeof $.fn.DataTable === 'undefined') {
-            console.error('DataTables library is not loaded');
+            debugLog('DataTables library is not loaded');
             showNotification('warning', 'DataTables library is not loaded. Displaying basic table.');
             displayBasicUnusedTable(results.files);
             return;
@@ -761,20 +775,41 @@ jQuery(document).ready(function ($) {
 
     // Selection controls for unused media
     $('#select-all-unused').on('click', function () {
-        $('.unused-file-checkbox').prop('checked', true);
+        // Handle both DataTable and regular table
+        if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
+            var table = $('#unused-media-datatable').DataTable();
+            table.$('.unused-file-checkbox').prop('checked', true);
+        } else {
+            $('.unused-file-checkbox').prop('checked', true);
+        }
         updateUnusedSelectionControls();
     });
 
     $('#select-none-unused').on('click', function () {
-        $('.unused-file-checkbox').prop('checked', false);
+        // Handle both DataTable and regular table
+        if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
+            var table = $('#unused-media-datatable').DataTable();
+            table.$('.unused-file-checkbox').prop('checked', false);
+        } else {
+            $('.unused-file-checkbox').prop('checked', false);
+        }
         updateUnusedSelectionControls();
     });
 
     $('#select-high-confidence').on('click', function () {
-        $('.unused-file-checkbox').each(function () {
-            var confidence = parseInt($(this).data('confidence'));
-            $(this).prop('checked', confidence >= 90);
-        });
+        // Handle both DataTable and regular table
+        if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
+            var table = $('#unused-media-datatable').DataTable();
+            table.$('.unused-file-checkbox').each(function () {
+                var confidence = parseInt($(this).data('confidence'));
+                $(this).prop('checked', confidence >= 90);
+            });
+        } else {
+            $('.unused-file-checkbox').each(function () {
+                var confidence = parseInt($(this).data('confidence'));
+                $(this).prop('checked', confidence >= 90);
+            });
+        }
         updateUnusedSelectionControls();
     });
 
@@ -782,9 +817,17 @@ jQuery(document).ready(function ($) {
     $(document).on('change', '.unused-file-checkbox', updateUnusedSelectionControls);
 
     function updateUnusedSelectionControls() {
-        var selectedCount = $('.unused-file-checkbox:checked').length;
-        var $deleteButton = $('#delete-selected-unused');
+        var selectedCount = 0;
 
+        // Count selected checkboxes (handle both DataTable and regular table)
+        if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
+            var table = $('#unused-media-datatable').DataTable();
+            selectedCount = table.$('.unused-file-checkbox:checked').length;
+        } else {
+            selectedCount = $('.unused-file-checkbox:checked').length;
+        }
+
+        var $deleteButton = $('#delete-selected-unused');
         $deleteButton.prop('disabled', selectedCount === 0);
 
         // Update button text properly
@@ -802,9 +845,18 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
 
         var selectedIds = [];
-        $('.unused-file-checkbox:checked').each(function () {
-            selectedIds.push($(this).data('id'));
-        });
+
+        // Collect selected IDs (handle both DataTable and regular table)
+        if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
+            var table = $('#unused-media-datatable').DataTable();
+            table.$('.unused-file-checkbox:checked').each(function () {
+                selectedIds.push($(this).data('id'));
+            });
+        } else {
+            $('.unused-file-checkbox:checked').each(function () {
+                selectedIds.push($(this).data('id'));
+            });
+        }
 
         if (selectedIds.length === 0) {
             showNotification('warning', 'Please select files to delete.');
@@ -820,7 +872,7 @@ jQuery(document).ready(function ($) {
         $button.prop('disabled', true).text('Deleting...');
 
         // Debug logging
-        console.log('Delete request data:', {
+        debugLog('Delete request data:', {
             action: 'media_wipe_delete_unused_media',
             nonce: $('#media_wipe_delete_unused_nonce').val(),
             selected_ids: selectedIds.join(','),
@@ -837,28 +889,37 @@ jQuery(document).ready(function ($) {
                 selected_ids: selectedIds.join(',')
             },
             success: function (response) {
-                console.log('Delete response:', response);
+                debugLog('Delete response:', response);
 
                 if (response.success) {
                     showNotification('success', response.data.message);
 
                     // Show debug info if available
                     if (response.data.debug_info) {
-                        console.log('Debug info:', response.data.debug_info);
+                        debugLog('Debug info:', response.data.debug_info);
                     }
 
                     // Show errors if any
                     if (response.data.errors && response.data.errors.length > 0) {
-                        console.log('Deletion errors:', response.data.errors);
+                        debugLog('Deletion errors:', response.data.errors);
                         response.data.errors.forEach(function (error) {
                             showNotification('warning', error);
                         });
                     }
 
                     // Remove deleted rows from table
-                    selectedIds.forEach(function (id) {
-                        $('.unused-file-checkbox[data-id="' + id + '"]').closest('tr').remove();
-                    });
+                    if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
+                        var table = $('#unused-media-datatable').DataTable();
+                        selectedIds.forEach(function (id) {
+                            var row = table.$('.unused-file-checkbox[data-id="' + id + '"]').closest('tr');
+                            table.row(row).remove();
+                        });
+                        table.draw();
+                    } else {
+                        selectedIds.forEach(function (id) {
+                            $('.unused-file-checkbox[data-id="' + id + '"]').closest('tr').remove();
+                        });
+                    }
                     updateUnusedSelectionControls();
                 } else {
                     showNotification('error', response.data.message || 'Deletion failed');

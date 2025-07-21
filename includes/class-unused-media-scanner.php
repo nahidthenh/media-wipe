@@ -124,13 +124,20 @@ class MediaWipeUnusedScanner {
 
         foreach ($selected_ids as $attachment_id) {
             $safety_check = $this->is_safe_to_delete($attachment_id);
-            $debug_info[] = "ID $attachment_id: Safe to delete = " . ($safety_check ? 'Yes' : 'No');
+
+            // Debug info only in debug mode
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                $debug_info[] = "ID $attachment_id: Safe to delete = " . ($safety_check ? 'Yes' : 'No');
+            }
 
             if ($safety_check) {
                 $deleted = wp_delete_attachment($attachment_id, true);
                 if ($deleted) {
                     $deleted_count++;
-                    $debug_info[] = "ID $attachment_id: Successfully deleted";
+
+                    if (defined('WP_DEBUG') && WP_DEBUG) {
+                        $debug_info[] = "ID $attachment_id: Successfully deleted";
+                    }
 
                     // Log the deletion
                     if (function_exists('media_wipe_log_activity')) {
@@ -142,11 +149,17 @@ class MediaWipeUnusedScanner {
                     }
                 } else {
                     $errors[] = sprintf(esc_html__('Failed to delete file ID: %d', 'media-wipe'), $attachment_id);
-                    $debug_info[] = "ID $attachment_id: wp_delete_attachment failed";
+
+                    if (defined('WP_DEBUG') && WP_DEBUG) {
+                        $debug_info[] = "ID $attachment_id: wp_delete_attachment failed";
+                    }
                 }
             } else {
                 $errors[] = sprintf(esc_html__('File ID %d is not safe to delete.', 'media-wipe'), $attachment_id);
-                $debug_info[] = "ID $attachment_id: Failed safety check";
+
+                if (defined('WP_DEBUG') && WP_DEBUG) {
+                    $debug_info[] = "ID $attachment_id: Failed safety check";
+                }
             }
         }
 
@@ -154,12 +167,18 @@ class MediaWipeUnusedScanner {
             sprintf(esc_html__('Successfully deleted %d unused media files.', 'media-wipe'), $deleted_count) :
             esc_html__('No files were deleted.', 'media-wipe');
 
-        wp_send_json_success(array(
+        $response_data = array(
             'deleted_count' => $deleted_count,
             'errors' => $errors,
-            'debug_info' => $debug_info,
             'message' => $message
-        ));
+        );
+
+        // Only include debug info in debug mode
+        if (defined('WP_DEBUG') && WP_DEBUG && !empty($debug_info)) {
+            $response_data['debug_info'] = $debug_info;
+        }
+
+        wp_send_json_success($response_data);
     }
     
     /**
@@ -518,12 +537,14 @@ class MediaWipeUnusedScanner {
         // Re-scan to ensure it's still unused
         $usage_data = $this->scan_media_usage($attachment_id);
 
-        // Log debug info
-        error_log("Media Wipe Debug - Attachment $attachment_id: " . json_encode(array(
-            'is_unused' => $usage_data['is_unused'],
-            'confidence_score' => $usage_data['confidence_score'],
-            'usage_contexts' => array_keys($usage_data['usage_contexts'])
-        )));
+        // Debug logging (disabled in production)
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log("Media Wipe Debug - Attachment $attachment_id: " . json_encode(array(
+                'is_unused' => $usage_data['is_unused'],
+                'confidence_score' => $usage_data['confidence_score'],
+                'usage_contexts' => array_keys($usage_data['usage_contexts'])
+            )));
+        }
 
         // Only delete if still unused and confidence is reasonable (lowered threshold for testing)
         return $usage_data['is_unused'] && $usage_data['confidence_score'] >= 60;
