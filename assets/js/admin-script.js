@@ -840,6 +840,39 @@ jQuery(document).ready(function ($) {
         }
     }
 
+    // Add test button for debugging (temporary)
+    if (MEDIA_WIPE_DEBUG) {
+        $('body').append('<button id="debug-test-delete" style="position: fixed; top: 50px; right: 50px; z-index: 9999; background: red; color: white; padding: 10px;">DEBUG: Test Delete</button>');
+
+        $(document).on('click', '#debug-test-delete', function () {
+            debugLog('Debug test button clicked');
+            debugLog('Checkboxes found:', $('.unused-file-checkbox').length);
+            debugLog('Checked checkboxes:', $('.unused-file-checkbox:checked').length);
+
+            $('.unused-file-checkbox:checked').each(function (index) {
+                debugLog('Checkbox ' + index + ' ID:', $(this).data('id'));
+            });
+
+            // Test AJAX call
+            debugLog('Testing AJAX call...');
+            $.ajax({
+                url: mediaWipeAjax.ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'media_wipe_delete_unused_media',
+                    nonce: $('#media_wipe_delete_unused_nonce').val(),
+                    selected_ids: '123,456' // Test IDs
+                },
+                success: function (response) {
+                    debugLog('Test AJAX success:', response);
+                },
+                error: function (xhr, status, error) {
+                    debugLog('Test AJAX error:', error);
+                }
+            });
+        });
+    }
+
     // Delete selected unused media (using event delegation)
     debugLog('Binding delete button event handler with delegation');
 
