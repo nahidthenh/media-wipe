@@ -48,7 +48,7 @@ class MediaWipeUnusedScanner {
         add_action('wp_ajax_media_wipe_start_unused_scan', array($this, 'ajax_start_scan'));
         add_action('wp_ajax_media_wipe_get_scan_progress', array($this, 'ajax_get_progress'));
         add_action('wp_ajax_media_wipe_get_unused_results', array($this, 'ajax_get_results'));
-        add_action('wp_ajax_media_wipe_delete_unused_media', array($this, 'ajax_delete_unused'));
+        add_action('wp_ajax_media_wipe_delete_unused_files', array($this, 'ajax_delete_unused'));
     }
     
     /**
@@ -107,9 +107,11 @@ class MediaWipeUnusedScanner {
      * Delete unused media via AJAX
      */
     public function ajax_delete_unused() {
-        // Debug logging
-        error_log('Media Wipe: ajax_delete_unused called');
-        error_log('Media Wipe: POST data: ' . print_r($_POST, true));
+        // Debug logging (disabled in production)
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('Media Wipe: ajax_delete_unused called');
+            error_log('Media Wipe: POST data: ' . print_r($_POST, true));
+        }
 
         // Verify nonce and capabilities (try both specific and global nonce actions)
         $nonce_check = wp_verify_nonce($_POST['nonce'], 'media_wipe_delete_unused');
@@ -119,26 +121,36 @@ class MediaWipeUnusedScanner {
         }
         $capability_check = current_user_can('manage_options');
 
-        error_log('Media Wipe: Nonce check result: ' . ($nonce_check ? 'PASS' : 'FAIL'));
-        error_log('Media Wipe: Capability check result: ' . ($capability_check ? 'PASS' : 'FAIL'));
-        error_log('Media Wipe: Received nonce: ' . $_POST['nonce']);
-        error_log('Media Wipe: Tried nonce actions: media_wipe_delete_unused, media_wipe_ajax_nonce');
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('Media Wipe: Nonce check result: ' . ($nonce_check ? 'PASS' : 'FAIL'));
+            error_log('Media Wipe: Capability check result: ' . ($capability_check ? 'PASS' : 'FAIL'));
+            error_log('Media Wipe: Received nonce: ' . $_POST['nonce']);
+            error_log('Media Wipe: Tried nonce actions: media_wipe_delete_unused, media_wipe_ajax_nonce');
+        }
 
         if (!$nonce_check || !$capability_check) {
-            error_log('Media Wipe: Security check failed');
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Media Wipe: Security check failed');
+            }
             wp_send_json_error(array('message' => esc_html__('Security check failed.', 'media-wipe')));
         }
 
-        error_log('Media Wipe: Security check passed');
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('Media Wipe: Security check passed');
+        }
 
         $selected_ids = isset($_POST['selected_ids']) ? array_map('intval', explode(',', $_POST['selected_ids'])) : array();
 
-        error_log('Media Wipe: Raw selected_ids: ' . $_POST['selected_ids']);
-        error_log('Media Wipe: Processed selected_ids: ' . print_r($selected_ids, true));
-        error_log('Media Wipe: Selected IDs count: ' . count($selected_ids));
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('Media Wipe: Raw selected_ids: ' . $_POST['selected_ids']);
+            error_log('Media Wipe: Processed selected_ids: ' . print_r($selected_ids, true));
+            error_log('Media Wipe: Selected IDs count: ' . count($selected_ids));
+        }
 
         if (empty($selected_ids)) {
-            error_log('Media Wipe: No files selected for deletion');
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log('Media Wipe: No files selected for deletion');
+            }
             wp_send_json_error(array('message' => esc_html__('No files selected for deletion.', 'media-wipe')));
         }
 

@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
-    // Debug flag - set to true for troubleshooting
-    var MEDIA_WIPE_DEBUG = true;
+    // Debug flag - set to false for production
+    var MEDIA_WIPE_DEBUG = false;
 
     // Debug logging function
     function debugLog(message, data) {
@@ -879,7 +879,7 @@ jQuery(document).ready(function ($) {
                 url: mediaWipeAjax.ajaxurl,
                 type: 'POST',
                 data: {
-                    action: 'media_wipe_delete_unused_media',
+                    action: 'media_wipe_delete_unused_files',
                     nonce: $('#media_wipe_delete_unused_nonce').val(),
                     selected_ids: '123,456' // Test IDs
                 },
@@ -987,7 +987,7 @@ jQuery(document).ready(function ($) {
 
         // Debug logging
         debugLog('Delete request data:', {
-            action: 'media_wipe_delete_unused_media',
+            action: 'media_wipe_delete_unused_files',
             nonce: nonceValue,
             selected_ids: selectedIds.join(','),
             selectedIds: selectedIds
@@ -1007,7 +1007,7 @@ jQuery(document).ready(function ($) {
             url: mediaWipeAjax.ajaxurl,
             type: 'POST',
             data: {
-                action: 'media_wipe_delete_unused_media',
+                action: 'media_wipe_delete_unused_files',
                 nonce: $('#media_wipe_delete_unused_nonce').val(),
                 selected_ids: selectedIds.join(',')
             },
