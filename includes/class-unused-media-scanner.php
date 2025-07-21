@@ -348,6 +348,8 @@ class MediaWipeUnusedScanner {
         if (!empty($customizer_usage)) {
             $usage_contexts['customizer'] = $customizer_usage;
         }
+
+
         
         // Advanced scan if configured
         if ($this->config['scan_depth'] === 'advanced') {
@@ -371,8 +373,10 @@ class MediaWipeUnusedScanner {
         );
     }
 
+
+
     /**
-     * Scan post content for media usage
+     * Simple and effective scan for post content and media usage
      */
     private function scan_post_content($attachment_id) {
         global $wpdb;
@@ -383,59 +387,106 @@ class MediaWipeUnusedScanner {
 
         $usage = array();
 
-        // 1. Search in post content (all post statuses, all post types)
-        $posts = $wpdb->get_results($wpdb->prepare("
-            SELECT ID, post_title, post_type, post_status
-            FROM {$wpdb->posts}
-            WHERE (post_content LIKE %s OR post_content LIKE %s OR post_excerpt LIKE %s OR post_excerpt LIKE %s)
-            AND post_status IN ('publish', 'draft', 'private', 'future', 'pending')
-            AND post_type NOT IN ('attachment', 'revision', 'nav_menu_item', 'customize_changeset', 'oembed_cache')
-        ", '%' . $filename . '%', '%' . $attachment_url . '%', '%' . $filename . '%', '%' . $attachment_url . '%'));
+        // Get all image sizes for this attachment
+        $all_urls = array($attachment_url);
+        if (wp_attachment_is_image($attachment_id)) {
+            $image_sizes = array('thumbnail', 'medium', 'medium_large', 'large');
+            foreach ($image_sizes as $size) {
+                $image_data = wp_get_attachment_image_src($attachment_id, $size);
+                if ($image_data && !empty($image_data[0])) {
+                    $all_urls[] = $image_data[0];
+                }
+            }
+        }
+        $all_urls = array_unique($all_urls);
 
-        if (!empty($posts)) {
-            $usage['posts'] = $posts;
+        // 1. Search in post content (all post statuses, all post types)
+        $content_found = false;
+        foreach ($all_urls as $url) {
+            if (!$content_found) {
+                $posts = $wpdb->get_results($wpdb->prepare("
+                    SELECT ID, post_title, post_type, post_status
+                    FROM {$wpdb->posts}
+                    WHERE (post_content LIKE %s OR post_excerpt LIKE %s)
+                    AND post_status IN ('publish', 'draft', 'private', 'future', 'pending')
+                    AND post_type NOT IN ('attachment', 'revision', 'nav_menu_item', 'customize_changeset', 'oembed_cache')
+                    LIMIT 1
+                ", '%' . $wpdb->esc_like($url) . '%', '%' . $wpdb->esc_like($url) . '%'));
+
+                if (!empty($posts)) {
+                    $usage['posts'] = $posts;
+                    $content_found = true;
+                }
+            }
+        }
+
+        // Also check filename
+        if (!$content_found) {
+            $posts = $wpdb->get_results($wpdb->prepare("
+                SELECT ID, post_title, post_type, post_status
+                FROM {$wpdb->posts}
+                WHERE (post_content LIKE %s OR post_excerpt LIKE %s)
+                AND post_status IN ('publish', 'draft', 'private', 'future', 'pending')
+                AND post_type NOT IN ('attachment', 'revision', 'nav_menu_item', 'customize_changeset', 'oembed_cache')
+                LIMIT 1
+            ", '%' . $wpdb->esc_like($filename) . '%', '%' . $wpdb->esc_like($filename) . '%'));
+
+            if (!empty($posts)) {
+                $usage['posts'] = $posts;
+                $content_found = true;
+            }
         }
 
         // 2. Search in post meta (custom fields, ACF fields, etc.)
-        $meta_usage = $wpdb->get_results($wpdb->prepare("
-            SELECT p.ID, p.post_title, p.post_type, pm.meta_key, pm.meta_value
-            FROM {$wpdb->postmeta} pm
-            JOIN {$wpdb->posts} p ON pm.post_id = p.ID
-            WHERE (pm.meta_value LIKE %s OR pm.meta_value LIKE %s OR pm.meta_value = %s)
-            AND p.post_status IN ('publish', 'draft', 'private', 'future', 'pending')
-            AND p.post_type NOT IN ('attachment', 'revision', 'nav_menu_item')
-            AND pm.meta_key NOT LIKE '\_%'
-        ", '%' . $filename . '%', '%' . $attachment_url . '%', $attachment_id_str));
+        if (!$content_found) {
+            $meta_usage = $wpdb->get_results($wpdb->prepare("
+                SELECT p.ID, p.post_title, p.post_type, pm.meta_key, pm.meta_value
+                FROM {$wpdb->postmeta} pm
+                JOIN {$wpdb->posts} p ON pm.post_id = p.ID
+                WHERE (pm.meta_value LIKE %s OR pm.meta_value LIKE %s OR pm.meta_value = %s)
+                AND p.post_status IN ('publish', 'draft', 'private', 'future', 'pending')
+                AND p.post_type NOT IN ('attachment', 'revision', 'nav_menu_item')
+                LIMIT 1
+            ", '%' . $wpdb->esc_like($filename) . '%', '%' . $wpdb->esc_like($attachment_url) . '%', $attachment_id_str));
 
-        if (!empty($meta_usage)) {
-            $usage['meta'] = $meta_usage;
+            if (!empty($meta_usage)) {
+                $usage['meta'] = $meta_usage;
+                $content_found = true;
+            }
         }
 
         // 3. Search in serialized meta data (for complex fields)
-        $serialized_meta = $wpdb->get_results($wpdb->prepare("
-            SELECT p.ID, p.post_title, p.post_type, pm.meta_key
-            FROM {$wpdb->postmeta} pm
-            JOIN {$wpdb->posts} p ON pm.post_id = p.ID
-            WHERE (pm.meta_value LIKE %s OR pm.meta_value LIKE %s)
-            AND p.post_status IN ('publish', 'draft', 'private', 'future', 'pending')
-            AND p.post_type NOT IN ('attachment', 'revision', 'nav_menu_item')
-        ", '%"' . $attachment_id_str . '"%', '%"' . $filename . '"%'));
+        if (!$content_found) {
+            $serialized_meta = $wpdb->get_results($wpdb->prepare("
+                SELECT p.ID, p.post_title, p.post_type, pm.meta_key
+                FROM {$wpdb->postmeta} pm
+                JOIN {$wpdb->posts} p ON pm.post_id = p.ID
+                WHERE (pm.meta_value LIKE %s OR pm.meta_value LIKE %s)
+                AND p.post_status IN ('publish', 'draft', 'private', 'future', 'pending')
+                AND p.post_type NOT IN ('attachment', 'revision', 'nav_menu_item')
+                LIMIT 1
+            ", '%"' . $attachment_id_str . '"%', '%"' . $wpdb->esc_like($filename) . '"%'));
 
-        if (!empty($serialized_meta)) {
-            $usage['serialized_meta'] = $serialized_meta;
+            if (!empty($serialized_meta)) {
+                $usage['serialized_meta'] = $serialized_meta;
+                $content_found = true;
+            }
         }
 
         // 4. Check for gallery shortcodes and attachment IDs
-        $gallery_usage = $wpdb->get_results($wpdb->prepare("
-            SELECT ID, post_title, post_type
-            FROM {$wpdb->posts}
-            WHERE post_content LIKE %s
-            AND post_status IN ('publish', 'draft', 'private', 'future', 'pending')
-            AND post_type NOT IN ('attachment', 'revision', 'nav_menu_item')
-        ", '%ids="' . $attachment_id . '"%'));
+        if (!$content_found) {
+            $gallery_usage = $wpdb->get_results($wpdb->prepare("
+                SELECT ID, post_title, post_type
+                FROM {$wpdb->posts}
+                WHERE (post_content LIKE %s OR post_content LIKE %s OR post_content LIKE %s)
+                AND post_status IN ('publish', 'draft', 'private', 'future', 'pending')
+                AND post_type NOT IN ('attachment', 'revision', 'nav_menu_item')
+                LIMIT 1
+            ", '%ids="' . $attachment_id . '"%', '%ids="' . $attachment_id . ',%', '%,' . $attachment_id . ',%'));
 
-        if (!empty($gallery_usage)) {
-            $usage['galleries'] = $gallery_usage;
+            if (!empty($gallery_usage)) {
+                $usage['galleries'] = $gallery_usage;
+            }
         }
 
         return $usage;
@@ -460,10 +511,12 @@ class MediaWipeUnusedScanner {
     }
 
     /**
-     * Scan widget content
+     * Simple widget content scanning
      */
     private function scan_widget_content($attachment_id) {
         $usage = array();
+        $attachment_url = wp_get_attachment_url($attachment_id);
+        $filename = basename($attachment_url);
 
         // Check media widgets
         $media_widgets = get_option('widget_media_image', array());
@@ -474,6 +527,25 @@ class MediaWipeUnusedScanner {
                     'widget_id' => $widget_id,
                     'title' => isset($widget_data['title']) ? $widget_data['title'] : ''
                 );
+                break; // Found usage, no need to continue
+            }
+        }
+
+        // Check text widgets if no usage found yet
+        if (empty($usage)) {
+            $text_widgets = get_option('widget_text', array());
+            foreach ($text_widgets as $widget_id => $widget_data) {
+                if (isset($widget_data['text'])) {
+                    if (strpos($widget_data['text'], $attachment_url) !== false ||
+                        strpos($widget_data['text'], $filename) !== false) {
+                        $usage[] = array(
+                            'widget_type' => 'text',
+                            'widget_id' => $widget_id,
+                            'title' => isset($widget_data['title']) ? $widget_data['title'] : ''
+                        );
+                        break;
+                    }
+                }
             }
         }
 
@@ -560,6 +632,47 @@ class MediaWipeUnusedScanner {
             'usage_contexts' => $usage_data['usage_contexts']
         );
     }
+
+    /**
+     * Simple theme file scanning for media usage (Advanced mode)
+     */
+    private function scan_theme_files($attachment_id) {
+        $usage = array();
+        $attachment_url = wp_get_attachment_url($attachment_id);
+        $filename = basename($attachment_url);
+
+        // Get active theme directory
+        $theme_dir = get_template_directory();
+
+        // Only scan main theme files to avoid performance issues
+        $files_to_scan = array(
+            $theme_dir . '/style.css',
+            $theme_dir . '/functions.php',
+            $theme_dir . '/index.php',
+            $theme_dir . '/header.php',
+            $theme_dir . '/footer.php'
+        );
+
+        foreach ($files_to_scan as $file_path) {
+            if (file_exists($file_path) && is_readable($file_path)) {
+                $file_content = @file_get_contents($file_path);
+                if ($file_content !== false) {
+                    if (strpos($file_content, $attachment_url) !== false ||
+                        strpos($file_content, $filename) !== false) {
+                        $usage[] = array(
+                            'file' => str_replace(ABSPATH, '', $file_path),
+                            'type' => 'theme_file'
+                        );
+                        break; // Found usage, no need to continue
+                    }
+                }
+            }
+        }
+
+        return $usage;
+    }
+
+
 
     /**
      * Check if attachment is safe to delete
