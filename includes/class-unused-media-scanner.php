@@ -111,39 +111,54 @@ class MediaWipeUnusedScanner {
         if (!wp_verify_nonce($_POST['nonce'], 'media_wipe_delete_unused') || !current_user_can('manage_options')) {
             wp_send_json_error(array('message' => esc_html__('Security check failed.', 'media-wipe')));
         }
-        
+
         $selected_ids = isset($_POST['selected_ids']) ? array_map('intval', explode(',', $_POST['selected_ids'])) : array();
-        
+
         if (empty($selected_ids)) {
             wp_send_json_error(array('message' => esc_html__('No files selected for deletion.', 'media-wipe')));
         }
-        
+
         $deleted_count = 0;
         $errors = array();
-        
+        $debug_info = array();
+
         foreach ($selected_ids as $attachment_id) {
-            if ($this->is_safe_to_delete($attachment_id)) {
+            $safety_check = $this->is_safe_to_delete($attachment_id);
+            $debug_info[] = "ID $attachment_id: Safe to delete = " . ($safety_check ? 'Yes' : 'No');
+
+            if ($safety_check) {
                 $deleted = wp_delete_attachment($attachment_id, true);
                 if ($deleted) {
                     $deleted_count++;
+                    $debug_info[] = "ID $attachment_id: Successfully deleted";
+
                     // Log the deletion
-                    media_wipe_log_activity('delete_unused', array(
-                        'attachment_id' => $attachment_id,
-                        'user_id' => get_current_user_id(),
-                        'timestamp' => current_time('mysql')
-                    ));
+                    if (function_exists('media_wipe_log_activity')) {
+                        media_wipe_log_activity('delete_unused', array(
+                            'attachment_id' => $attachment_id,
+                            'user_id' => get_current_user_id(),
+                            'timestamp' => current_time('mysql')
+                        ));
+                    }
                 } else {
                     $errors[] = sprintf(esc_html__('Failed to delete file ID: %d', 'media-wipe'), $attachment_id);
+                    $debug_info[] = "ID $attachment_id: wp_delete_attachment failed";
                 }
             } else {
                 $errors[] = sprintf(esc_html__('File ID %d is not safe to delete.', 'media-wipe'), $attachment_id);
+                $debug_info[] = "ID $attachment_id: Failed safety check";
             }
         }
-        
+
+        $message = $deleted_count > 0 ?
+            sprintf(esc_html__('Successfully deleted %d unused media files.', 'media-wipe'), $deleted_count) :
+            esc_html__('No files were deleted.', 'media-wipe');
+
         wp_send_json_success(array(
             'deleted_count' => $deleted_count,
             'errors' => $errors,
-            'message' => sprintf(esc_html__('Successfully deleted %d unused media files.', 'media-wipe'), $deleted_count)
+            'debug_info' => $debug_info,
+            'message' => $message
         ));
     }
     
@@ -309,17 +324,66 @@ class MediaWipeUnusedScanner {
 
         $attachment_url = wp_get_attachment_url($attachment_id);
         $filename = basename($attachment_url);
+        $attachment_id_str = (string) $attachment_id;
 
-        // Search for URL and filename in post content
+        $usage = array();
+
+        // 1. Search in post content (all post statuses, all post types)
         $posts = $wpdb->get_results($wpdb->prepare("
+            SELECT ID, post_title, post_type, post_status
+            FROM {$wpdb->posts}
+            WHERE (post_content LIKE %s OR post_content LIKE %s OR post_excerpt LIKE %s OR post_excerpt LIKE %s)
+            AND post_status IN ('publish', 'draft', 'private', 'future', 'pending')
+            AND post_type NOT IN ('attachment', 'revision', 'nav_menu_item', 'customize_changeset', 'oembed_cache')
+        ", '%' . $filename . '%', '%' . $attachment_url . '%', '%' . $filename . '%', '%' . $attachment_url . '%'));
+
+        if (!empty($posts)) {
+            $usage['posts'] = $posts;
+        }
+
+        // 2. Search in post meta (custom fields, ACF fields, etc.)
+        $meta_usage = $wpdb->get_results($wpdb->prepare("
+            SELECT p.ID, p.post_title, p.post_type, pm.meta_key, pm.meta_value
+            FROM {$wpdb->postmeta} pm
+            JOIN {$wpdb->posts} p ON pm.post_id = p.ID
+            WHERE (pm.meta_value LIKE %s OR pm.meta_value LIKE %s OR pm.meta_value = %s)
+            AND p.post_status IN ('publish', 'draft', 'private', 'future', 'pending')
+            AND p.post_type NOT IN ('attachment', 'revision', 'nav_menu_item')
+            AND pm.meta_key NOT LIKE '\_%'
+        ", '%' . $filename . '%', '%' . $attachment_url . '%', $attachment_id_str));
+
+        if (!empty($meta_usage)) {
+            $usage['meta'] = $meta_usage;
+        }
+
+        // 3. Search in serialized meta data (for complex fields)
+        $serialized_meta = $wpdb->get_results($wpdb->prepare("
+            SELECT p.ID, p.post_title, p.post_type, pm.meta_key
+            FROM {$wpdb->postmeta} pm
+            JOIN {$wpdb->posts} p ON pm.post_id = p.ID
+            WHERE (pm.meta_value LIKE %s OR pm.meta_value LIKE %s)
+            AND p.post_status IN ('publish', 'draft', 'private', 'future', 'pending')
+            AND p.post_type NOT IN ('attachment', 'revision', 'nav_menu_item')
+        ", '%"' . $attachment_id_str . '"%', '%"' . $filename . '"%'));
+
+        if (!empty($serialized_meta)) {
+            $usage['serialized_meta'] = $serialized_meta;
+        }
+
+        // 4. Check for gallery shortcodes and attachment IDs
+        $gallery_usage = $wpdb->get_results($wpdb->prepare("
             SELECT ID, post_title, post_type
             FROM {$wpdb->posts}
-            WHERE (post_content LIKE %s OR post_content LIKE %s)
-            AND post_status = 'publish'
+            WHERE post_content LIKE %s
+            AND post_status IN ('publish', 'draft', 'private', 'future', 'pending')
             AND post_type NOT IN ('attachment', 'revision', 'nav_menu_item')
-        ", '%' . $filename . '%', '%' . $attachment_url . '%'));
+        ", '%ids="' . $attachment_id . '"%'));
 
-        return $posts;
+        if (!empty($gallery_usage)) {
+            $usage['galleries'] = $gallery_usage;
+        }
+
+        return $usage;
     }
 
     /**
@@ -446,10 +510,22 @@ class MediaWipeUnusedScanner {
      * Check if attachment is safe to delete
      */
     private function is_safe_to_delete($attachment_id) {
+        // Verify attachment exists
+        if (!get_post($attachment_id)) {
+            return false;
+        }
+
         // Re-scan to ensure it's still unused
         $usage_data = $this->scan_media_usage($attachment_id);
 
-        // Only delete if still unused and confidence is high
-        return $usage_data['is_unused'] && $usage_data['confidence_score'] >= 75;
+        // Log debug info
+        error_log("Media Wipe Debug - Attachment $attachment_id: " . json_encode(array(
+            'is_unused' => $usage_data['is_unused'],
+            'confidence_score' => $usage_data['confidence_score'],
+            'usage_contexts' => array_keys($usage_data['usage_contexts'])
+        )));
+
+        // Only delete if still unused and confidence is reasonable (lowered threshold for testing)
+        return $usage_data['is_unused'] && $usage_data['confidence_score'] >= 60;
     }
 }

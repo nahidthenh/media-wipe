@@ -786,7 +786,15 @@ jQuery(document).ready(function ($) {
         var $deleteButton = $('#delete-selected-unused');
 
         $deleteButton.prop('disabled', selectedCount === 0);
-        $deleteButton.find('span').text('Delete Selected (' + selectedCount + ')');
+
+        // Update button text properly
+        var buttonText = 'Delete Selected (' + selectedCount + ')';
+        if ($deleteButton.find('.dashicons').length > 0) {
+            // If button has icon, preserve it
+            $deleteButton.html('<span class="dashicons dashicons-trash"></span>' + buttonText);
+        } else {
+            $deleteButton.text(buttonText);
+        }
     }
 
     // Delete selected unused media
@@ -811,6 +819,14 @@ jQuery(document).ready(function ($) {
         var $button = $(this);
         $button.prop('disabled', true).text('Deleting...');
 
+        // Debug logging
+        console.log('Delete request data:', {
+            action: 'media_wipe_delete_unused_media',
+            nonce: $('#media_wipe_delete_unused_nonce').val(),
+            selected_ids: selectedIds.join(','),
+            selectedIds: selectedIds
+        });
+
         // Delete files
         $.ajax({
             url: mediaWipeAjax.ajaxurl,
@@ -821,8 +837,24 @@ jQuery(document).ready(function ($) {
                 selected_ids: selectedIds.join(',')
             },
             success: function (response) {
+                console.log('Delete response:', response);
+
                 if (response.success) {
                     showNotification('success', response.data.message);
+
+                    // Show debug info if available
+                    if (response.data.debug_info) {
+                        console.log('Debug info:', response.data.debug_info);
+                    }
+
+                    // Show errors if any
+                    if (response.data.errors && response.data.errors.length > 0) {
+                        console.log('Deletion errors:', response.data.errors);
+                        response.data.errors.forEach(function (error) {
+                            showNotification('warning', error);
+                        });
+                    }
+
                     // Remove deleted rows from table
                     selectedIds.forEach(function (id) {
                         $('.unused-file-checkbox[data-id="' + id + '"]').closest('tr').remove();
@@ -836,7 +868,8 @@ jQuery(document).ready(function ($) {
                 showNotification('error', 'Deletion failed: ' + error);
             },
             complete: function () {
-                $button.prop('disabled', false).text('Delete Selected (0)');
+                $button.prop('disabled', false);
+                updateUnusedSelectionControls();
             }
         });
     });
