@@ -5,18 +5,22 @@ Tags: media, delete, cleanup, unused, bulk
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.1.2
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Comprehensive WordPress media management with enterprise security, document preview, and professional dashboard. Transform your cleanup workflow!
+AI-powered WordPress media management with intelligent unused media detection, enterprise security, and professional dashboard. Transform your cleanup workflow!
 
 == Description ==
 
-Media Wipe is a powerful and secure WordPress plugin that provides comprehensive media library management capabilities. With advanced confirmation systems, document preview functionality, and detailed security audit logging, it's the safest way to clean up your WordPress media library.
+Media Wipe is a powerful and secure WordPress plugin that provides comprehensive media library management capabilities. With revolutionary AI-powered unused media detection, advanced confirmation systems, document preview functionality, and detailed security audit logging, it's the smartest and safest way to clean up your WordPress media library.
 
 **Key Features:**
 
+* **AI-Powered Unused Media Detection** - Revolutionary intelligent scanning identifies truly unused media files with confidence scoring
+* **Smart Content Analysis** - Scans posts, pages, widgets, menus, and theme files for comprehensive media usage detection
+* **Confidence Scoring System** - 0-100% confidence scores help you make safe deletion decisions
+* **Advanced Scan Options** - Basic scan (fast) or Advanced scan (includes theme files) for different needs
 * **Enhanced Delete All Media System** - Multi-step confirmation process with backup verification
 * **Document Preview** - Visual preview of PDF, DOC, and other document files before deletion
 * **WordPress Admin Menu Integration** - Dedicated admin menu with dashboard and statistics
@@ -54,12 +58,13 @@ Media Wipe is a powerful and secure WordPress plugin that provides comprehensive
 
 **Use Cases:**
 
-* Clean up development sites before going live
-* Remove unused media files to optimize storage
-* Bulk delete media files during website redesigns
-* Maintain organized and efficient media libraries
+* Intelligently identify and remove unused media files from multiple site imports
+* Clean up development sites before going live with AI-powered detection
+* Optimize storage by removing truly unused media files with confidence
+* Bulk delete media files during website redesigns safely
+* Maintain organized and efficient media libraries automatically
 * Audit media deletion activities for compliance
-* Safely manage large media collections
+* Safely manage large media collections with smart detection
 
 **Performance Optimized:**
 
@@ -122,6 +127,18 @@ Currently, the plugin is designed for single-site installations. Multisite suppo
 
 The plugin implements rate limiting to prevent abuse, allowing a maximum number of operations per hour. This helps maintain system stability and security.
 
+= How accurate is the unused media detection? =
+
+The AI-powered detection system is highly accurate, scanning posts, pages, widgets, menus, and theme files. Files with 90%+ confidence scores are very safe to delete. For maximum safety, always start with "Select High Confidence Only" and review lower-confidence files manually.
+
+= Should I use Basic or Advanced scan? =
+
+Basic scan is recommended for most users as it's faster and covers posts, pages, and widgets. Use Advanced scan if you have custom themes with hardcoded media references, but note it's slower and may have false positives due to theme file complexity.
+
+= What does the confidence score mean? =
+
+The confidence score (0-100%) indicates how certain the system is that a file is unused. 90-100% = very safe to delete, 75-89% = review recommended, 0-74% = manual review required. Higher scores mean safer deletions.
+
 == Screenshots ==
 
 1. Media Wipe Dashboard with statistics and quick actions
@@ -132,6 +149,34 @@ The plugin implements rate limiting to prevent abuse, allowing a maximum number 
 6. Help and support documentation
 
 == Changelog ==
+
+= 1.2.1 - 2025-07-21 =
+* **MAJOR FEATURE**: Revolutionary AI-Powered Unused Media Detection system
+* **NEW**: Smart Content Analysis - Scans posts, pages, widgets, menus, and theme files
+* **NEW**: Confidence Scoring System - 0-100% confidence scores for safe deletion decisions
+* **NEW**: Advanced Scan Options - Basic (fast) vs Advanced (thorough) scanning modes
+* **NEW**: "Select High Confidence Only" button for safest automated cleanup
+* **NEW**: Real-time scan progress tracking with file counts and status updates
+* **NEW**: Professional results interface with DataTables integration
+* **NEW**: Multiple image size detection - Finds usage of thumbnails, medium, large sizes
+* **NEW**: WordPress Blocks scanning - Gutenberg image, gallery, media-text blocks
+* **NEW**: Enhanced widget scanning - All widget types including text and custom HTML
+* **NEW**: Theme file scanning - Advanced mode checks theme files for hardcoded references
+* **NEW**: Gallery shortcode detection - WordPress gallery usage patterns
+* **NEW**: Serialized data scanning - Complex field and plugin data structures
+* **ENHANCED**: Bulk selection now works across DataTables pagination
+* **ENHANCED**: Improved AJAX handling with proper error management and nonce security
+* **ENHANCED**: Production-ready logging system with debug mode controls
+* **ENHANCED**: Cross-page selection support for large result sets
+* **ENHANCED**: Memory-efficient scanning for large media libraries (1000+ files)
+* **ENHANCED**: Smart filtering by confidence level for targeted cleanup
+* **FIXED**: Resolved AJAX action conflicts between different deletion methods
+* **FIXED**: Improved nonce handling for enhanced security across all operations
+* **FIXED**: DataTables integration issues affecting checkbox selection and deletion
+* **FIXED**: Console logging cleanup for production environments
+* **PERFORMANCE**: Optimized database queries for faster scanning
+* **PERFORMANCE**: Early exit scanning when usage is detected for speed improvement
+* **PERFORMANCE**: Efficient batch processing for large media collections
 
 = 1.1.2 - 2025-07-15 =
 * **IMPROVED**: Simplified sidebar menu item names for better navigation
@@ -206,6 +251,9 @@ The plugin implements rate limiting to prevent abuse, allowing a maximum number 
 - Initial release.
 
 == Upgrade Notice ==
+
+= 1.2.1 =
+REVOLUTIONARY UPDATE: AI-Powered Unused Media Detection! Intelligently identifies truly unused media files with confidence scoring. Perfect for cleaning up sites with multiple imports. **BACKUP YOUR SITE** before using new detection features. New "Delete Unused" menu item available.
 
 = 1.0.4 =
 MAJOR UPDATE: Complete plugin transformation with enterprise features! New admin menu location, enhanced security, document preview, and comprehensive audit logging. **BACKUP YOUR SITE** before upgrading. Menu moved from Media to dedicated "Media Wipe" section. Review new settings after upgrade.

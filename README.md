@@ -5,7 +5,7 @@
 [![WordPress Plugin Version](https://img.shields.io/badge/WordPress-6.8%20tested-blue.svg)](https://wordpress.org/)
 [![PHP Version](https://img.shields.io/badge/PHP-7.4%2B-purple.svg)](https://php.net/)
 [![License](https://img.shields.io/badge/License-GPL%20v2%2B-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![Plugin Version](https://img.shields.io/badge/Version-1.2.0-orange.svg)](https://github.com/mdnahidhasan/media-wipe)
+[![Plugin Version](https://img.shields.io/badge/Version-1.2.1-orange.svg)](https://github.com/mdnahidhasan/media-wipe)
 
 **Media Wipe** is a powerful WordPress plugin designed for intelligent media library management. Clean up your WordPress media library with confidence using AI-powered unused media detection, advanced safety features, professional DataTable interface, and comprehensive audit logging.
 
@@ -159,7 +159,7 @@ git clone https://github.com/mdnahidhasan/media-wipe.git
 
 ## Changelog
 
-### Version 1.2.0 (2025-07-21) ⭐ **MAJOR RELEASE**
+### Version 1.2.1 (2025-07-21) ⭐ **MAJOR RELEASE**
 - **🎯 NEW**: **Delete Unused Media** - Revolutionary AI-powered unused media detection
 - **🎯 NEW**: **Smart Content Analysis** - Scans posts, pages, widgets, menus, and theme files
 - **🎯 NEW**: **Confidence Scoring System** - 0-100% confidence scores for deletion safety
@@ -167,11 +167,21 @@ git clone https://github.com/mdnahidhasan/media-wipe.git
 - **🎯 NEW**: **Smart Selection Tools** - "Select High Confidence Only" for safest deletions
 - **🎯 NEW**: **Real-time Progress Tracking** - Live scan progress with file counts and status
 - **🎯 NEW**: **Professional Results Interface** - DataTables integration with sorting and filtering
+- **🎯 NEW**: **Multiple Image Size Detection** - Finds usage of thumbnails, medium, large sizes
+- **🎯 NEW**: **WordPress Blocks Scanning** - Gutenberg image, gallery, media-text blocks
+- **🎯 NEW**: **Enhanced Widget Scanning** - All widget types including text and custom HTML
+- **🎯 NEW**: **Theme File Scanning** - Advanced mode checks theme files for hardcoded references
 - **ENHANCED**: Bulk selection now works across DataTables pagination
 - **ENHANCED**: Improved AJAX handling with proper error management
 - **ENHANCED**: Production-ready logging system with debug mode controls
+- **ENHANCED**: Memory-efficient scanning for large media libraries (1000+ files)
+- **ENHANCED**: Smart filtering by confidence level for targeted cleanup
 - **FIXED**: Resolved AJAX action conflicts between different deletion methods
 - **FIXED**: Improved nonce handling for enhanced security
+- **FIXED**: DataTables integration issues affecting checkbox selection and deletion
+- **FIXED**: Console logging cleanup for production environments
+- **PERFORMANCE**: Optimized database queries for faster scanning
+- **PERFORMANCE**: Early exit scanning when usage is detected for speed improvement
 
 ### Version 1.1.2 (2025-07-15)
 - **IMPROVED**: Simplified sidebar menu item names
