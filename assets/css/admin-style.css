@@ -4366,3 +4366,66 @@ textarea:focus {
 /* ================================
     Enhanced Notification System End
 ================================ */
+
+/* ================================
+    Featured Elements CSS Start
+================================ */
+
+/* Featured Card Styling */
+.mw-featured-card {
+    position: relative;
+    border: 2px solid #0073aa !important;
+    box-shadow: 0 4px 12px rgba(0, 115, 170, 0.15) !important;
+}
+
+.mw-featured-card .mw-card-icon.mw-featured-icon {
+    background: linear-gradient(135deg, #0073aa, #005a87);
+    color: white;
+}
+
+.mw-featured-badge {
+    position: absolute;
+    top: -8px;
+    right: 15px;
+    background: linear-gradient(135deg, #d63638, #b32d2e);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(214, 54, 56, 0.3);
+}
+
+/* Featured Feature Items */
+.mw-featured-feature {
+    border-left: 4px solid #0073aa;
+    background: linear-gradient(135deg, #f8fbff, #f0f8ff);
+    position: relative;
+}
+
+.mw-featured-feature::before {
+    content: "NEW";
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #d63638;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-size: 9px;
+    font-weight: bold;
+}
+
+.mw-featured-feature .dashicons {
+    color: #0073aa;
+}
+
+.mw-featured-feature h3 {
+    color: #0073aa;
+}
+
+/* ================================
+    Featured Elements CSS End
+================================ */

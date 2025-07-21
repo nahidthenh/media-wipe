@@ -5,11 +5,19 @@
 [![WordPress Plugin Version](https://img.shields.io/badge/WordPress-6.8%20tested-blue.svg)](https://wordpress.org/)
 [![PHP Version](https://img.shields.io/badge/PHP-7.4%2B-purple.svg)](https://php.net/)
 [![License](https://img.shields.io/badge/License-GPL%20v2%2B-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![Plugin Version](https://img.shields.io/badge/Version-1.1.2-orange.svg)](https://github.com/mdnahidhasan/media-wipe)
+[![Plugin Version](https://img.shields.io/badge/Version-1.2.0-orange.svg)](https://github.com/mdnahidhasan/media-wipe)
 
-**Media Wipe** is a powerful WordPress plugin designed for efficient media library management. Clean up your WordPress media library with confidence using advanced safety features, professional DataTable interface, and comprehensive audit logging.
+**Media Wipe** is a powerful WordPress plugin designed for intelligent media library management. Clean up your WordPress media library with confidence using AI-powered unused media detection, advanced safety features, professional DataTable interface, and comprehensive audit logging.
 
 ## Key Features
+
+### **🎯 Smart Unused Media Detection** ⭐ **NEW & FLAGSHIP FEATURE**
+- **AI-Powered Analysis** - Intelligent scanning to identify truly unused media files
+- **Content Usage Detection** - Scans posts, pages, widgets, menus, and theme files
+- **Confidence Scoring** - Each file gets a confidence score (0-100%) for deletion safety
+- **Advanced Scan Options** - Basic scan (fast) or Advanced scan (includes theme files)
+- **Smart Filtering** - Filter by confidence level to focus on safest deletions
+- **Bulk Operations** - Select and delete multiple unused files efficiently
 
 ### **Selective Media Deletion**
 - **Professional DataTable Interface** - Browse, search, and filter media files with ease
@@ -37,6 +45,26 @@
 - **Mobile Responsive** - Full functionality on mobile devices
 - **Accessibility** - WCAG 2.1 AA compliant design
 - **Help & Support** - Built-in documentation and support system
+
+## 🎯 Unused Media Detection Technology
+
+### **How It Works**
+Media Wipe uses advanced content analysis to identify truly unused media files:
+
+1. **Content Scanning** - Analyzes all posts, pages, custom post types, and widgets
+2. **Menu Analysis** - Checks navigation menus for media usage
+3. **Theme Integration** - Scans theme files for hardcoded media references (Advanced mode)
+4. **Widget Detection** - Examines all active widgets for media usage
+5. **Customizer Settings** - Checks theme customizer for logos, backgrounds, and icons
+
+### **Confidence Scoring System**
+- **90-100%** - High confidence (safest to delete)
+- **75-89%** - Medium confidence (review recommended)
+- **0-74%** - Low confidence (manual review required)
+
+### **Scan Modes**
+- **Basic Scan** - Fast analysis of posts, pages, and widgets (recommended)
+- **Advanced Scan** - Includes theme file analysis (slower, more thorough)
 
 ## Dashboard Features
 
@@ -89,6 +117,15 @@ git clone https://github.com/mdnahidhasan/media-wipe.git
 
 ## Usage Guide
 
+### 🎯 Delete Unused Media ⭐ **RECOMMENDED**
+1. Navigate to **Media Wipe → Delete Unused**
+2. Configure scan settings (Basic or Advanced)
+3. Click **"Start Scan"** and wait for analysis to complete
+4. Review unused files with confidence scores
+5. Use **"Select High Confidence Only"** for safest deletions
+6. Select additional files manually if desired
+7. Click **"Delete Selected"** and confirm
+
 ### Delete Selected Media
 1. Navigate to **Media Wipe → Delete Selected**
 2. Browse your media files using the DataTable
@@ -121,6 +158,20 @@ git clone https://github.com/mdnahidhasan/media-wipe.git
 - **Activity Logging**: Keep detailed logs of all deletion activities
 
 ## Changelog
+
+### Version 1.2.0 (2025-07-21) ⭐ **MAJOR RELEASE**
+- **🎯 NEW**: **Delete Unused Media** - Revolutionary AI-powered unused media detection
+- **🎯 NEW**: **Smart Content Analysis** - Scans posts, pages, widgets, menus, and theme files
+- **🎯 NEW**: **Confidence Scoring System** - 0-100% confidence scores for deletion safety
+- **🎯 NEW**: **Advanced Scan Options** - Basic (fast) vs Advanced (thorough) scanning modes
+- **🎯 NEW**: **Smart Selection Tools** - "Select High Confidence Only" for safest deletions
+- **🎯 NEW**: **Real-time Progress Tracking** - Live scan progress with file counts and status
+- **🎯 NEW**: **Professional Results Interface** - DataTables integration with sorting and filtering
+- **ENHANCED**: Bulk selection now works across DataTables pagination
+- **ENHANCED**: Improved AJAX handling with proper error management
+- **ENHANCED**: Production-ready logging system with debug mode controls
+- **FIXED**: Resolved AJAX action conflicts between different deletion methods
+- **FIXED**: Improved nonce handling for enhanced security
 
 ### Version 1.1.2 (2025-07-15)
 - **IMPROVED**: Simplified sidebar menu item names

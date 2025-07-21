@@ -517,6 +517,33 @@ function media_wipe_help_page() {
                 </div>
 
                 <div class="mw-feature-cards">
+                    <div class="mw-feature-card mw-featured-card">
+                        <div class="mw-card-icon mw-featured-icon">
+                            <span class="dashicons dashicons-search"></span>
+                        </div>
+                        <div class="mw-featured-badge"><?php esc_html_e('NEW & RECOMMENDED', 'media-wipe'); ?></div>
+                        <h3><?php esc_html_e('Delete Unused Media', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('AI-powered detection of truly unused media files with confidence scoring for safe deletion.', 'media-wipe'); ?></p>
+                        <div class="mw-steps">
+                            <div class="mw-step">
+                                <span class="mw-step-number">1</span>
+                                <span><?php esc_html_e('Navigate to Media Wipe → Delete Unused', 'media-wipe'); ?></span>
+                            </div>
+                            <div class="mw-step">
+                                <span class="mw-step-number">2</span>
+                                <span><?php esc_html_e('Configure scan settings and click "Start Scan"', 'media-wipe'); ?></span>
+                            </div>
+                            <div class="mw-step">
+                                <span class="mw-step-number">3</span>
+                                <span><?php esc_html_e('Review results and use "Select High Confidence Only"', 'media-wipe'); ?></span>
+                            </div>
+                            <div class="mw-step">
+                                <span class="mw-step-number">4</span>
+                                <span><?php esc_html_e('Click "Delete Selected" and confirm', 'media-wipe'); ?></span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="mw-feature-card">
                         <div class="mw-card-icon">
                             <span class="dashicons dashicons-yes-alt"></span>
@@ -526,7 +553,7 @@ function media_wipe_help_page() {
                         <div class="mw-steps">
                             <div class="mw-step">
                                 <span class="mw-step-number">1</span>
-                                <span><?php esc_html_e('Navigate to Media Wipe → Delete Selected Media', 'media-wipe'); ?></span>
+                                <span><?php esc_html_e('Navigate to Media Wipe → Delete Selected', 'media-wipe'); ?></span>
                             </div>
                             <div class="mw-step">
                                 <span class="mw-step-number">2</span>
@@ -580,6 +607,21 @@ function media_wipe_help_page() {
                 </div>
 
                 <div class="mw-features-grid">
+                    <div class="mw-feature-item mw-featured-feature">
+                        <span class="dashicons dashicons-search"></span>
+                        <h3><?php esc_html_e('AI-Powered Detection', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Intelligent scanning identifies truly unused media files with confidence scoring.', 'media-wipe'); ?></p>
+                    </div>
+                    <div class="mw-feature-item mw-featured-feature">
+                        <span class="dashicons dashicons-analytics"></span>
+                        <h3><?php esc_html_e('Content Analysis', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Scans posts, pages, widgets, menus, and theme files for media usage.', 'media-wipe'); ?></p>
+                    </div>
+                    <div class="mw-feature-item mw-featured-feature">
+                        <span class="dashicons dashicons-star-filled"></span>
+                        <h3><?php esc_html_e('Confidence Scoring', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('0-100% confidence scores help you make safe deletion decisions.', 'media-wipe'); ?></p>
+                    </div>
                     <div class="mw-feature-item">
                         <span class="dashicons dashicons-admin-customizer"></span>
                         <h3><?php esc_html_e('Selective Deletion', 'media-wipe'); ?></h3>
@@ -665,6 +707,24 @@ function media_wipe_help_page() {
                 </div>
 
                 <div class="mw-faq-container">
+                    <div class="mw-faq-item">
+                        <div class="mw-faq-question">
+                            <span class="dashicons dashicons-plus-alt2"></span>
+                            <h3><?php esc_html_e('How accurate is the unused media detection?', 'media-wipe'); ?></h3>
+                        </div>
+                        <div class="mw-faq-answer">
+                            <p><?php esc_html_e('The detection system is highly accurate, scanning posts, pages, widgets, menus, and theme files. Files with 90%+ confidence scores are very safe to delete. For maximum safety, always start with "Select High Confidence Only" and review lower-confidence files manually.', 'media-wipe'); ?></p>
+                        </div>
+                    </div>
+                    <div class="mw-faq-item">
+                        <div class="mw-faq-question">
+                            <span class="dashicons dashicons-plus-alt2"></span>
+                            <h3><?php esc_html_e('Should I use Basic or Advanced scan?', 'media-wipe'); ?></h3>
+                        </div>
+                        <div class="mw-faq-answer">
+                            <p><?php esc_html_e('Basic scan is recommended for most users as it\'s faster and covers posts, pages, and widgets. Use Advanced scan if you have custom themes with hardcoded media references, but note it\'s slower and may be less accurate due to false positives in theme files.', 'media-wipe'); ?></p>
+                        </div>
+                    </div>
                     <div class="mw-faq-item">
                         <div class="mw-faq-question">
                             <span class="dashicons dashicons-plus-alt2"></span>
