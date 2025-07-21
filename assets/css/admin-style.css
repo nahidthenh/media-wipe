@@ -675,6 +675,237 @@ button {
     margin: 0;
 }
 
+/* Remove Unused Media Styles */
+.media-wipe-unused-intro {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.media-wipe-unused-intro h2 {
+    margin-top: 0;
+    color: #1d2327;
+}
+
+.media-wipe-accuracy-notice {
+    margin-bottom: 20px;
+}
+
+.media-wipe-accuracy-notice .notice {
+    padding: 15px;
+}
+
+.media-wipe-accuracy-notice h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.media-wipe-scan-config {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.config-card {
+    padding: 20px;
+}
+
+.config-card h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #1d2327;
+}
+
+.scan-actions {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #dcdcde;
+}
+
+.scan-actions .button {
+    margin-right: 10px;
+}
+
+.scan-actions .dashicons {
+    margin-right: 5px;
+}
+
+/* Progress Styles */
+.progress-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.progress-card h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #1d2327;
+}
+
+.progress-bar-container {
+    margin-bottom: 15px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #f0f0f1;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar #progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00a32a, #4caf50);
+    transition: width 0.3s ease;
+    border-radius: 10px;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.progress-stats {
+    color: #646970;
+    font-size: 13px;
+}
+
+.progress-stats .separator {
+    margin: 0 8px;
+}
+
+/* Results Styles */
+.results-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 6px;
+    padding: 20px;
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dcdcde;
+}
+
+.results-header h3 {
+    margin: 0;
+    color: #1d2327;
+}
+
+.results-summary {
+    color: #646970;
+    font-size: 14px;
+}
+
+.results-controls {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dcdcde;
+}
+
+.results-controls .button {
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.results-controls .dashicons {
+    margin-right: 5px;
+}
+
+/* Confidence Badge Styles */
+.confidence-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.confidence-badge.high {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border: 1px solid #badbcc;
+}
+
+.confidence-badge.medium {
+    background-color: #fff3cd;
+    color: #664d03;
+    border: 1px solid #ffecb5;
+}
+
+.confidence-badge.low {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c2c7;
+}
+
+/* DataTable Customizations for Unused Media */
+#unused-media-datatable {
+    font-size: 13px;
+}
+
+#unused-media-datatable th {
+    background-color: #f6f7f7;
+    font-weight: 600;
+}
+
+#unused-media-datatable td {
+    vertical-align: middle;
+}
+
+#unused-media-datatable .unused-file-checkbox {
+    margin: 0;
+}
+
+#unused-media-datatable img {
+    border-radius: 3px;
+    border: 1px solid #dcdcde;
+}
+
+#unused-media-datatable .dashicons-media-default {
+    font-size: 40px;
+    color: #c3c4c7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 782px) {
+    .results-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .results-controls .button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .scan-actions .button {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+}
+
 /* Modal Footer */
 .modal-footer {
     padding: 15px 20px;

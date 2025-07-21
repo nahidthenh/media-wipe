@@ -606,4 +606,198 @@ jQuery(document).ready(function ($) {
             }, 3000);
         });
     }
+
+    // ================================
+    // Remove Unused Media Functionality
+    // ================================
+
+    // Start unused media scan
+    $('#start-unused-scan').on('click', function (e) {
+        e.preventDefault();
+
+        var $button = $(this);
+        var $form = $('#unused-media-scan-form');
+
+        // Get form data
+        var formData = {
+            action: 'media_wipe_start_unused_scan',
+            nonce: $form.find('input[name="media_wipe_unused_scan_nonce"]').val(),
+            exclude_recent: $form.find('input[name="exclude_recent"]:checked').length > 0 ? 1 : 0,
+            exclude_featured: $form.find('input[name="exclude_featured"]:checked').length > 0 ? 1 : 0,
+            scan_depth: $form.find('input[name="scan_depth"]:checked').val()
+        };
+
+        // Show progress container
+        $('#scan-progress-container').show();
+        $('#scan-results-container').hide();
+
+        // Disable scan button
+        $button.prop('disabled', true).text('Scanning...');
+        $('#cancel-unused-scan').show();
+
+        // Start scan
+        $.ajax({
+            url: mediaWipeAjax.ajaxurl,
+            type: 'POST',
+            data: formData,
+            timeout: 300000, // 5 minutes
+            success: function (response) {
+                if (response.success) {
+                    displayUnusedMediaResults(response.data.results);
+                } else {
+                    showNotification('error', response.data.message || 'Scan failed');
+                }
+            },
+            error: function (xhr, status, error) {
+                showNotification('error', 'Scan failed: ' + error);
+            },
+            complete: function () {
+                // Re-enable scan button
+                $button.prop('disabled', false).text('Start Scan');
+                $('#cancel-unused-scan').hide();
+                $('#scan-progress-container').hide();
+            }
+        });
+    });
+
+    // Display unused media results
+    function displayUnusedMediaResults(results) {
+        if (!results || !results.files || results.files.length === 0) {
+            showNotification('info', 'No unused media files found!');
+            return;
+        }
+
+        // Update results summary
+        $('#results-summary-text').text(
+            results.unused_found + ' unused files found out of ' + results.total_scanned + ' scanned'
+        );
+
+        // Show results container
+        $('#scan-results-container').show();
+
+        // Initialize or update DataTable
+        if ($.fn.DataTable.isDataTable('#unused-media-datatable')) {
+            $('#unused-media-datatable').DataTable().destroy();
+        }
+
+        // Prepare data for DataTable
+        var tableData = results.files.map(function (file) {
+            var confidenceClass = file.confidence_score >= 90 ? 'high' :
+                file.confidence_score >= 75 ? 'medium' : 'low';
+            var confidenceBadge = '<span class="confidence-badge ' + confidenceClass + '">' +
+                file.confidence_score + '%</span>';
+
+            var thumbnail = file.thumbnail ?
+                '<img src="' + file.thumbnail + '" alt="' + file.filename + '" style="max-width: 50px; max-height: 50px;">' :
+                '<span class="dashicons dashicons-media-default"></span>';
+
+            return [
+                '<input type="checkbox" class="unused-file-checkbox" data-id="' + file.id + '" data-confidence="' + file.confidence_score + '">',
+                thumbnail,
+                '<strong>' + file.filename + '</strong><br><small>' + file.title + '</small>',
+                file.file_type,
+                file.file_size_formatted,
+                file.upload_date,
+                confidenceBadge,
+                '<button class="button button-small view-usage-btn" data-id="' + file.id + '">View Details</button>'
+            ];
+        });
+
+        // Initialize DataTable
+        $('#unused-media-datatable').DataTable({
+            data: tableData,
+            responsive: true,
+            pageLength: 25,
+            order: [[6, 'desc']], // Sort by confidence score
+            columnDefs: [
+                { orderable: false, targets: [0, 1, 7] }
+            ]
+        });
+
+        // Update selection controls
+        updateUnusedSelectionControls();
+    }
+
+    // Selection controls for unused media
+    $('#select-all-unused').on('click', function () {
+        $('.unused-file-checkbox').prop('checked', true);
+        updateUnusedSelectionControls();
+    });
+
+    $('#select-none-unused').on('click', function () {
+        $('.unused-file-checkbox').prop('checked', false);
+        updateUnusedSelectionControls();
+    });
+
+    $('#select-high-confidence').on('click', function () {
+        $('.unused-file-checkbox').each(function () {
+            var confidence = parseInt($(this).data('confidence'));
+            $(this).prop('checked', confidence >= 90);
+        });
+        updateUnusedSelectionControls();
+    });
+
+    // Update selection controls
+    $(document).on('change', '.unused-file-checkbox', updateUnusedSelectionControls);
+
+    function updateUnusedSelectionControls() {
+        var selectedCount = $('.unused-file-checkbox:checked').length;
+        var $deleteButton = $('#delete-selected-unused');
+
+        $deleteButton.prop('disabled', selectedCount === 0);
+        $deleteButton.find('span').text('Delete Selected (' + selectedCount + ')');
+    }
+
+    // Delete selected unused media
+    $('#delete-selected-unused').on('click', function (e) {
+        e.preventDefault();
+
+        var selectedIds = [];
+        $('.unused-file-checkbox:checked').each(function () {
+            selectedIds.push($(this).data('id'));
+        });
+
+        if (selectedIds.length === 0) {
+            showNotification('warning', 'Please select files to delete.');
+            return;
+        }
+
+        // Show confirmation dialog
+        if (!confirm('Are you sure you want to delete ' + selectedIds.length + ' unused media files? This action cannot be undone.')) {
+            return;
+        }
+
+        var $button = $(this);
+        $button.prop('disabled', true).text('Deleting...');
+
+        // Delete files
+        $.ajax({
+            url: mediaWipeAjax.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'media_wipe_delete_unused_media',
+                nonce: $('#media_wipe_delete_unused_nonce').val(),
+                selected_ids: selectedIds.join(',')
+            },
+            success: function (response) {
+                if (response.success) {
+                    showNotification('success', response.data.message);
+                    // Remove deleted rows from table
+                    selectedIds.forEach(function (id) {
+                        $('.unused-file-checkbox[data-id="' + id + '"]').closest('tr').remove();
+                    });
+                    updateUnusedSelectionControls();
+                } else {
+                    showNotification('error', response.data.message || 'Deletion failed');
+                }
+            },
+            error: function (xhr, status, error) {
+                showNotification('error', 'Deletion failed: ' + error);
+            },
+            complete: function () {
+                $button.prop('disabled', false).text('Delete Selected (0)');
+            }
+        });
+    });
+
 });

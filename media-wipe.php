@@ -115,6 +115,18 @@ class Media_Wipe_Plugin {
     public function init_components() {
         // Include necessary files
         $this->include_files();
+
+        // Initialize components
+        $this->init_scanner();
+    }
+
+    /**
+     * Initialize the unused media scanner
+     */
+    private function init_scanner() {
+        if (class_exists('MediaWipeUnusedScanner')) {
+            new MediaWipeUnusedScanner();
+        }
     }
 
     /**
@@ -125,6 +137,7 @@ class Media_Wipe_Plugin {
             'includes/helper-functions.php',
             'includes/class-datatable.php',
             'includes/class-notifications.php',
+            'includes/class-unused-media-scanner.php',
             'includes/admin-menu.php',
             'includes/delete-all-media.php',
             'includes/delete-selected-media.php'
