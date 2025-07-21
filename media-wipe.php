@@ -212,16 +212,22 @@ class Media_Wipe_Plugin {
             MEDIA_WIPE_VERSION
         );
 
+        // Determine dependencies based on page
+        $script_deps = array( 'jquery' );
+        if (strpos($hook, 'delete-selected') !== false || strpos($hook, 'delete-unused') !== false) {
+            $script_deps[] = 'datatables-js';
+        }
+
         wp_enqueue_script(
             'media-wipe-admin-script',
             MEDIA_WIPE_PLUGIN_URL . 'assets/js/admin-script.js',
-            array( 'jquery' ),
+            $script_deps,
             MEDIA_WIPE_VERSION,
             true
         );
 
-        // Enqueue DataTables.net library for delete selected media page
-        if (strpos($hook, 'delete-selected') !== false) {
+        // Enqueue DataTables.net library for pages that need it
+        if (strpos($hook, 'delete-selected') !== false || strpos($hook, 'delete-unused') !== false) {
             // DataTables CSS
             wp_enqueue_style(
                 'datatables-css',

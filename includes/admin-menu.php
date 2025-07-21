@@ -61,14 +61,14 @@ function media_wipe_admin_menu() {
         'media_wipe_unused_media_page'                    // Function
     );
 
-    // Add Remove Unused Media submenu
+    // Add Delete Unused Media submenu
     add_submenu_page(
         'media-wipe',                                      // Parent slug
-        __('Remove Unused Media', 'media-wipe'),           // Page title
-        __('Remove Unused', 'media-wipe'),                 // Menu title
+        __('Delete Unused Media', 'media-wipe'),           // Page title
+        __('Delete Unused', 'media-wipe'),                 // Menu title
         'manage_options',                                  // Capability
-        'media-wipe-remove-unused',                       // Menu slug
-        'media_wipe_remove_unused_page'                   // Function
+        'media-wipe-delete-unused',                       // Menu slug
+        'media_wipe_delete_unused_page'                   // Function
     );
 
     // Add Settings submenu
@@ -776,9 +776,9 @@ function media_wipe_help_page() {
 }
 
 /**
- * Remove Unused Media page
+ * Delete Unused Media page
  */
-function media_wipe_remove_unused_page() {
+function media_wipe_delete_unused_page() {
     // Set security headers
     media_wipe_set_security_headers();
 
@@ -787,12 +787,12 @@ function media_wipe_remove_unused_page() {
     }
     ?>
     <div class="wrap">
-        <h1><?php esc_html_e('Remove Unused Media', 'media-wipe'); ?></h1>
+        <h1><?php esc_html_e('Delete Unused Media', 'media-wipe'); ?></h1>
 
         <!-- Feature Introduction -->
         <div class="media-wipe-unused-intro">
             <div class="intro-content">
-                <h2><?php esc_html_e('Identify and Remove Unused Media Files', 'media-wipe'); ?></h2>
+                <h2><?php esc_html_e('Identify and Delete Unused Media Files', 'media-wipe'); ?></h2>
                 <p><?php esc_html_e('This feature scans your media library to identify files that are not being used anywhere on your website. This is particularly useful for cleaning up demo content from imported themes or removing old, forgotten media files.', 'media-wipe'); ?></p>
             </div>
         </div>

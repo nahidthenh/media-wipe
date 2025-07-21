@@ -675,6 +675,14 @@ jQuery(document).ready(function ($) {
         // Show results container
         $('#scan-results-container').show();
 
+        // Check if DataTables is available
+        if (typeof $.fn.DataTable === 'undefined') {
+            console.error('DataTables library is not loaded');
+            showNotification('warning', 'DataTables library is not loaded. Displaying basic table.');
+            displayBasicUnusedTable(results.files);
+            return;
+        }
+
         // Initialize or update DataTable
         if ($.fn.DataTable.isDataTable('#unused-media-datatable')) {
             $('#unused-media-datatable').DataTable().destroy();
@@ -712,6 +720,39 @@ jQuery(document).ready(function ($) {
             columnDefs: [
                 { orderable: false, targets: [0, 1, 7] }
             ]
+        });
+
+        // Update selection controls
+        updateUnusedSelectionControls();
+    }
+
+    // Fallback function to display basic table without DataTables
+    function displayBasicUnusedTable(files) {
+        var $tbody = $('#unused-media-datatable tbody');
+        $tbody.empty();
+
+        files.forEach(function (file) {
+            var confidenceClass = file.confidence_score >= 90 ? 'high' :
+                file.confidence_score >= 75 ? 'medium' : 'low';
+            var confidenceBadge = '<span class="confidence-badge ' + confidenceClass + '">' +
+                file.confidence_score + '%</span>';
+
+            var thumbnail = file.thumbnail ?
+                '<img src="' + file.thumbnail + '" alt="' + file.filename + '" style="max-width: 50px; max-height: 50px;">' :
+                '<span class="dashicons dashicons-media-default"></span>';
+
+            var row = '<tr>' +
+                '<td><input type="checkbox" class="unused-file-checkbox" data-id="' + file.id + '" data-confidence="' + file.confidence_score + '"></td>' +
+                '<td>' + thumbnail + '</td>' +
+                '<td><strong>' + file.filename + '</strong><br><small>' + file.title + '</small></td>' +
+                '<td>' + file.file_type + '</td>' +
+                '<td>' + file.file_size_formatted + '</td>' +
+                '<td>' + file.upload_date + '</td>' +
+                '<td>' + confidenceBadge + '</td>' +
+                '<td><button class="button button-small view-usage-btn" data-id="' + file.id + '">View Details</button></td>' +
+                '</tr>';
+
+            $tbody.append(row);
         });
 
         // Update selection controls
