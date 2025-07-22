@@ -9,7 +9,7 @@ Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-AI-powered WordPress media management with intelligent unused media detection, enterprise security, and professional dashboard. Transform your cleanup workflow!
+AI-powered WordPress media management with intelligent unused media detection and enterprise security. Transform your cleanup workflow!
 
 == Description ==
 
