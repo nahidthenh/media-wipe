@@ -5,7 +5,7 @@ Tags: media, delete, cleanup, unused, bulk
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -149,6 +149,18 @@ The confidence score (0-100%) indicates how certain the system is that a file is
 6. Help and support documentation
 
 == Changelog ==
+
+= 1.2.2 - 2025-07-26 =
+* **NEW**: Dashboard Tabbed Navigation - Modern tabbed interface with Overview, Quick Actions, Statistics, Recent Activity, and System Info sections
+* **NEW**: Plugin Notice Suppression - Clean admin interface by hiding notices from other plugins on Media Wipe pages
+* **NEW**: Release Date Display - Added release date information to Support page for better transparency
+* **ENHANCED**: Dashboard User Experience - Complete overhaul of dashboard navigation and content organization
+* **ENHANCED**: Settings Page Design - Modern aesthetic with improved form layout and styling consistency
+* **FIXED**: Dashboard URL Routing - Resolved URL mismatch between main dashboard and redirect targets
+* **FIXED**: Support Page Styling - Removed left border color from featured feature cards for cleaner appearance
+* **IMPROVED**: Code Organization - Better plugin structure and maintainability
+* **IMPROVED**: CSS Consistency - Standardized styling across all plugin pages
+* **IMPROVED**: JavaScript Enhancement - Added interactive tab functionality for better user experience
 
 = 1.2.1 - 2025-07-21 =
 * **MAJOR FEATURE**: Revolutionary AI-Powered Unused Media Detection system

@@ -16,6 +16,39 @@ jQuery(document).ready(function ($) {
     var mediaIds = [];
 
     // ================================
+    // Collapsible Safety Sections
+    // ================================
+
+    // Initialize collapsible sections
+    function initCollapsibleSections() {
+        // Load saved states from localStorage
+        $('.mw-page-safety-section.collapsible').each(function () {
+            var $section = $(this);
+            var sectionId = $section.data('section');
+            var isCollapsed = localStorage.getItem('mw-safety-' + sectionId) === 'collapsed';
+
+            if (isCollapsed) {
+                $section.addClass('collapsed');
+            }
+        });
+
+        // Handle click events
+        $('.mw-page-safety-section.collapsible .mw-page-safety-header').on('click', function () {
+            var $section = $(this).closest('.mw-page-safety-section');
+            var sectionId = $section.data('section');
+
+            $section.toggleClass('collapsed');
+
+            // Save state to localStorage
+            var isCollapsed = $section.hasClass('collapsed');
+            localStorage.setItem('mw-safety-' + sectionId, isCollapsed ? 'collapsed' : 'expanded');
+        });
+    }
+
+    // Initialize on page load
+    initCollapsibleSections();
+
+    // ================================
     // Selected Media Deletion (Existing)
     // ================================
 

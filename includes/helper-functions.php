@@ -632,3 +632,46 @@ function media_wipe_get_file_icon($mime_type) {
 
     return isset($icons[$mime_type]) ? $icons[$mime_type] : '📄';
 }
+
+
+
+/**
+ * Calculate total media library size
+ *
+ * @return int Total size in bytes
+ */
+function media_wipe_calculate_media_size() {
+    $total_size = 0;
+
+    $attachments = get_posts(array(
+        'post_type' => 'attachment',
+        'numberposts' => -1,
+        'post_status' => 'inherit',
+        'fields' => 'ids'
+    ));
+
+    foreach ($attachments as $attachment_id) {
+        $file_path = get_attached_file($attachment_id);
+        if ($file_path && file_exists($file_path)) {
+            $total_size += filesize($file_path);
+
+            // Also count image sizes
+            $metadata = wp_get_attachment_metadata($attachment_id);
+            if (isset($metadata['sizes']) && is_array($metadata['sizes'])) {
+                $upload_dir = wp_upload_dir();
+                $base_dir = trailingslashit($upload_dir['basedir']);
+
+                foreach ($metadata['sizes'] as $size_data) {
+                    if (isset($size_data['file'])) {
+                        $size_file = $base_dir . dirname($metadata['file']) . '/' . $size_data['file'];
+                        if (file_exists($size_file)) {
+                            $total_size += filesize($size_file);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return $total_size;
+}

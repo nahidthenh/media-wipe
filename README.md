@@ -5,9 +5,19 @@
 [![WordPress Plugin Version](https://img.shields.io/badge/WordPress-6.8%20tested-blue.svg)](https://wordpress.org/)
 [![PHP Version](https://img.shields.io/badge/PHP-7.4%2B-purple.svg)](https://php.net/)
 [![License](https://img.shields.io/badge/License-GPL%20v2%2B-green.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![Plugin Version](https://img.shields.io/badge/Version-1.2.1-orange.svg)](https://github.com/mdnahidhasan/media-wipe)
+[![Plugin Version](https://img.shields.io/badge/Version-1.2.2-orange.svg)](https://github.com/mdnahidhasan/media-wipe)
 
 **Media Wipe** is a powerful WordPress plugin designed for intelligent media library management. Clean up your WordPress media library with confidence using AI-powered unused media detection, advanced safety features, professional DataTable interface, and comprehensive audit logging.
+
+## 🆕 What's New in v1.2.2 (July 26, 2025)
+
+- **🎯 Enhanced Dashboard** - New tabbed navigation system for better organization and user experience
+- **🔧 Fixed URL Routing** - Resolved dashboard navigation inconsistencies
+- **🎨 Improved Interface** - Plugin notice suppression for cleaner admin experience
+- **📋 Better Settings** - Redesigned settings page with modern aesthetic
+- **🎯 Support Page Polish** - Removed visual inconsistencies and improved card styling
+
+[View Full Changelog](CHANGELOG.md)
 
 ## Key Features
 
@@ -39,9 +49,10 @@
 - **Rate Limiting** - Prevents abuse with 1-hour cooldown periods
 - **Audit Logging** - Complete activity logs for compliance
 
-### **Professional Interface**
+### **Professional Interface** ⭐ **ENHANCED IN v1.2.2**
 - **WordPress Admin Integration** - Seamless integration with WordPress admin
-- **Modern Design** - Clean, professional interface matching WordPress standards
+- **Modern Dashboard** - Tabbed navigation system for better organization
+- **Plugin Notice Management** - Clean interface with suppressed third-party notices
 - **Mobile Responsive** - Full functionality on mobile devices
 - **Accessibility** - WCAG 2.1 AA compliant design
 - **Help & Support** - Built-in documentation and support system
@@ -66,12 +77,15 @@ Media Wipe uses advanced content analysis to identify truly unused media files:
 - **Basic Scan** - Fast analysis of posts, pages, and widgets (recommended)
 - **Advanced Scan** - Includes theme file analysis (slower, more thorough)
 
-## Dashboard Features
+## Dashboard Features ⭐ **REDESIGNED IN v1.2.2**
 
-- **Real-time Statistics** - View media library metrics at a glance
-- **Plugin Information** - Current version, WordPress compatibility, PHP version
-- **Quick Actions** - Direct access to all plugin features
-- **Safety Notices** - Important warnings and best practices
+- **Tabbed Navigation** - Overview, Quick Actions, Statistics, Recent Activity, and System Info tabs
+- **Real-time Statistics** - View media library metrics with visual charts and percentages
+- **Plugin Information** - Current version, release date, WordPress compatibility, PHP version
+- **Quick Actions** - Direct access to all plugin features with modern card design
+- **Recent Activity** - View latest plugin actions and operations
+- **System Information** - Comprehensive plugin and system compatibility details
+- **Safety Guidelines** - Important warnings and best practices with collapsible sections
 
 ## Security Features
 

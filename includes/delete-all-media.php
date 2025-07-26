@@ -59,19 +59,36 @@ function media_wipe_all_media_page() {
             </div>
         </div>
 
-        <div class="media-wipe-warning-card">
-            <div class="warning-icon">⚠️</div>
-            <div class="warning-content">
-                <h3><?php esc_html_e('Danger Zone', 'media-wipe'); ?></h3>
-                <p><?php esc_html_e('This action will permanently delete ALL media files in your library. This includes:', 'media-wipe'); ?></p>
-                <ul>
-                    <li><?php esc_html_e('All images, videos, audio files, and documents', 'media-wipe'); ?></li>
-                    <li><?php esc_html_e('All file variations and thumbnails', 'media-wipe'); ?></li>
-                    <li><?php esc_html_e('Database entries and physical files from server', 'media-wipe'); ?></li>
-                </ul>
-                <p class="warning-emphasis"><?php esc_html_e('This action cannot be undone. Please ensure you have a complete backup before proceeding.', 'media-wipe'); ?></p>
+        <!-- Modern Safety Section -->
+        <section class="mw-page-safety-section collapsible" data-section="delete-all-safety">
+            <div class="mw-page-safety-notice">
+                <div class="mw-page-safety-header">
+                    <span class="dashicons dashicons-shield-alt"></span>
+                    <h3><?php esc_html_e('Critical Safety Warning', 'media-wipe'); ?></h3>
+                    <span class="mw-page-safety-toggle dashicons dashicons-arrow-up-alt2"></span>
+                </div>
+                <div class="mw-page-safety-content">
+                    <p><?php esc_html_e('This action will permanently delete ALL media files from your WordPress media library. This includes all images, videos, audio files, documents, file variations, thumbnails, metadata, and attachment records.', 'media-wipe'); ?></p>
+                    <div class="mw-page-safety-grid">
+                        <div class="mw-page-safety-item">
+                            <span class="dashicons dashicons-backup"></span>
+                            <h4><?php esc_html_e('Backup Required', 'media-wipe'); ?></h4>
+                            <p><?php esc_html_e('Create a complete backup of your website before proceeding. This action cannot be undone.', 'media-wipe'); ?></p>
+                        </div>
+                        <div class="mw-page-safety-item">
+                            <span class="dashicons dashicons-admin-site-alt3"></span>
+                            <h4><?php esc_html_e('Test on Staging', 'media-wipe'); ?></h4>
+                            <p><?php esc_html_e('Always test this operation on a staging environment before running on production.', 'media-wipe'); ?></p>
+                        </div>
+                        <div class="mw-page-safety-item">
+                            <span class="dashicons dashicons-warning"></span>
+                            <h4><?php esc_html_e('Permanent Deletion', 'media-wipe'); ?></h4>
+                            <p><?php esc_html_e('All media files will be permanently removed from your server and cannot be recovered.', 'media-wipe'); ?></p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
 
         <form method="post" id="media-wipe-all-form">
             <?php wp_nonce_field('media_wipe_all_action', 'media_wipe_all_nonce'); ?>

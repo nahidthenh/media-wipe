@@ -3,7 +3,7 @@
  * Plugin Name: Media Wipe
  * Plugin URI: https://mdnahidhasan.netlify.app/media-wipe
  * Description: A comprehensive WordPress plugin to safely delete media files with AI-powered unused media detection, advanced confirmation systems, document preview, and security audit logging.
- * Version: 1.2.1
+ * Version: 1.2.2
  * Author: Md. Nahid Hasan
  * Author URI: https://mdnahidhasan.netlify.app
  * Text Domain: media-wipe
@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Define plugin constants
  */
 if ( ! defined( 'MEDIA_WIPE_VERSION' ) ) {
-    define( 'MEDIA_WIPE_VERSION', '1.2.1' );
+    define( 'MEDIA_WIPE_VERSION', '1.2.2' );
 }
 
 if ( ! defined( 'MEDIA_WIPE_PLUGIN_FILE' ) ) {
@@ -96,6 +96,15 @@ class Media_Wipe_Plugin {
 
         // Add admin enqueue scripts
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_assets' ) );
+
+        // Add plugin action links
+        add_filter( 'plugin_action_links_' . plugin_basename( MEDIA_WIPE_PLUGIN_FILE ), array( $this, 'add_plugin_action_links' ) );
+
+        // Add media library menu item
+        add_action( 'admin_menu', array( $this, 'add_media_library_menu_item' ) );
+
+        // Suppress notices from other plugins on Media Wipe pages
+        add_action( 'admin_notices', array( $this, 'suppress_other_plugin_notices' ), 1 );
     }
 
     /**
@@ -277,6 +286,83 @@ class Media_Wipe_Plugin {
                 'deleteError'      => __( 'An error occurred during deletion.', 'media-wipe' ),
             ),
         ) );
+    }
+
+    /**
+     * Add plugin action links to the plugins page
+     *
+     * @param array $links Existing plugin action links
+     * @return array Modified plugin action links
+     */
+    public function add_plugin_action_links( $links ) {
+        $settings_link = sprintf(
+            '<a href="%s">%s</a>',
+            esc_url( admin_url( 'admin.php?page=media-wipe-settings' ) ),
+            esc_html__( 'Settings', 'media-wipe' )
+        );
+
+        $dashboard_link = sprintf(
+            '<a href="%s">%s</a>',
+            esc_url( admin_url( 'admin.php?page=media-wipe' ) ),
+            esc_html__( 'Dashboard', 'media-wipe' )
+        );
+
+        // Add links to the beginning of the array
+        array_unshift( $links, $dashboard_link, $settings_link );
+
+        return $links;
+    }
+
+    /**
+     * Add Advanced Options menu item to Media Library
+     */
+    public function add_media_library_menu_item() {
+        add_submenu_page(
+            'upload.php',                                    // Parent slug (Media Library)
+            esc_html__( 'Advanced Options', 'media-wipe' ), // Page title
+            esc_html__( 'Advanced Options', 'media-wipe' ), // Menu title
+            'manage_options',                                // Capability
+            'media-wipe-advanced-redirect',                  // Menu slug for redirect
+            array( $this, 'redirect_to_dashboard' )         // Callback to handle redirect
+        );
+    }
+
+    /**
+     * Suppress notices from other plugins on Media Wipe pages
+     */
+    public function suppress_other_plugin_notices() {
+        $screen = get_current_screen();
+
+        // Check if we're on a Media Wipe page
+        if ( ! $screen || strpos( $screen->id, 'media-wipe' ) === false ) {
+            return;
+        }
+
+        // Remove all admin notices except our own
+        remove_all_actions( 'admin_notices' );
+        remove_all_actions( 'all_admin_notices' );
+
+        // Re-add our own notice suppression function to maintain priority
+        add_action( 'admin_notices', array( $this, 'suppress_other_plugin_notices' ), 1 );
+
+        // Allow Media Wipe notices to show
+        add_action( 'admin_notices', array( $this, 'show_media_wipe_notices' ), 10 );
+    }
+
+    /**
+     * Show only Media Wipe specific notices
+     */
+    public function show_media_wipe_notices() {
+        // This function allows Media Wipe's own notices to display
+        // Any notices added by Media Wipe after this point will show
+    }
+
+    /**
+     * Redirect to Media Wipe dashboard
+     */
+    public function redirect_to_dashboard() {
+        wp_redirect( admin_url( 'admin.php?page=media-wipe' ) );
+        exit;
     }
 }
 
