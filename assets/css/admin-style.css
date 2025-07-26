@@ -4382,7 +4382,7 @@ textarea:focus {
     left: 0;
     width: 4px;
     height: 100%;
-    background: linear-gradient(to bottom, #3533cd, #135e96);
+    /* background: linear-gradient(to bottom, #3533cd, #135e96); */
 }
 
 .mw-section-header {
@@ -4404,13 +4404,13 @@ textarea:focus {
     font-size: 32px;
     font-weight: 700;
     color: #1d2327;
-    margin: 15px 0 10px;
+    margin: 15px 0 15px;
 }
 
 .mw-section-header p {
     font-size: 16px;
     color: #646970;
-    margin: 0;
+    margin: 0 auto;
     line-height: 1.6;
 }
 

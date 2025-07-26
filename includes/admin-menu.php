@@ -168,6 +168,10 @@ function media_wipe_dashboard_page() {
                         <span class="mw-stat-label" style="color: #fff;"><?php esc_html_e('Total Files', 'media-wipe'); ?></span>
                     </div>
                     <div class="mw-hero-stat">
+                                <span class="mw-stat-number" style="color: #fff;"><?php echo esc_html(size_format($total_size)); ?></span>
+                                <span class="mw-stat-label" style="color: #fff;"><?php esc_html_e('Total Storage Used', 'media-wipe'); ?></span>
+                            </div>
+                    <div class="mw-hero-stat">
                         <span class="mw-stat-number" style="color: #fff;"><?php echo esc_html(MEDIA_WIPE_VERSION); ?></span>
                         <span class="mw-stat-label" style="color: #fff;"><?php esc_html_e('Version', 'media-wipe'); ?></span>
                     </div>
@@ -176,115 +180,8 @@ function media_wipe_dashboard_page() {
         </div>
 
         <div class="mw-dashboard-content">
-            <!-- 1. Quick Links Section -->
-            <section class="mw-help-section">
-                <div class="mw-section-header">
-                    <span class="mw-section-icon dashicons dashicons-admin-links"></span>
-                    <h2><?php esc_html_e('Quick Links', 'media-wipe'); ?></h2>
-                    <p><?php esc_html_e('Navigate quickly to the main plugin features and settings.', 'media-wipe'); ?></p>
-                </div>
 
-                <div class="mw-feature-cards">
-                    <div class="mw-feature-card">
-                        <div class="mw-card-icon">
-                            <span class="dashicons dashicons-search"></span>
-                        </div>
-                        <h3><?php esc_html_e('Delete Unused Media', 'media-wipe'); ?></h3>
-                        <p><?php esc_html_e('AI-powered detection to find and remove unused media files safely.', 'media-wipe'); ?></p>
-                        <a href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-delete-unused')); ?>" class="mw-button"><?php esc_html_e('Start Scan', 'media-wipe'); ?></a>
-                    </div>
-                    <div class="mw-feature-card">
-                        <div class="mw-card-icon">
-                            <span class="dashicons dashicons-yes-alt"></span>
-                        </div>
-                        <h3><?php esc_html_e('Delete Selected Media', 'media-wipe'); ?></h3>
-                        <p><?php esc_html_e('Choose specific files to delete with professional DataTable interface.', 'media-wipe'); ?></p>
-                        <a href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-delete-selected')); ?>" class="mw-button"><?php esc_html_e('Select Files', 'media-wipe'); ?></a>
-                    </div>
-                    <div class="mw-feature-card">
-                        <div class="mw-card-icon">
-                            <span class="dashicons dashicons-trash"></span>
-                        </div>
-                        <h3><?php esc_html_e('Delete All Media', 'media-wipe'); ?></h3>
-                        <p><?php esc_html_e('Remove all media files with secure multi-step confirmation process.', 'media-wipe'); ?></p>
-                        <a href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-delete-all')); ?>" class="mw-button"><?php esc_html_e('Delete All', 'media-wipe'); ?></a>
-                    </div>
-                    <div class="mw-feature-card">
-                        <div class="mw-card-icon">
-                            <span class="dashicons dashicons-admin-settings"></span>
-                        </div>
-                        <h3><?php esc_html_e('Plugin Settings', 'media-wipe'); ?></h3>
-                        <p><?php esc_html_e('Configure plugin behavior and safety options for your workflow.', 'media-wipe'); ?></p>
-                        <a href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-settings')); ?>" class="mw-button"><?php esc_html_e('Settings', 'media-wipe'); ?></a>
-                    </div>
-                    <div class="mw-feature-card">
-                        <div class="mw-card-icon">
-                            <span class="dashicons dashicons-list-view"></span>
-                        </div>
-                        <h3><?php esc_html_e('Audit Log', 'media-wipe'); ?></h3>
-                        <p><?php esc_html_e('Review security events and activity logs for all operations.', 'media-wipe'); ?></p>
-                        <a href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-audit-log')); ?>" class="mw-button"><?php esc_html_e('View Logs', 'media-wipe'); ?></a>
-                    </div>
-                    <div class="mw-feature-card">
-                        <div class="mw-card-icon">
-                            <span class="dashicons dashicons-editor-help"></span>
-                        </div>
-                        <h3><?php esc_html_e('Support & Help', 'media-wipe'); ?></h3>
-                        <p><?php esc_html_e('Get help, documentation, and support for using Media Wipe effectively.', 'media-wipe'); ?></p>
-                        <a href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-help')); ?>" class="mw-button"><?php esc_html_e('Get Help', 'media-wipe'); ?></a>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 2. Media Library Status Section -->
-            <section class="mw-help-section">
-                <div class="mw-section-header">
-                    <span class="mw-section-icon dashicons dashicons-admin-media"></span>
-                    <h2><?php esc_html_e('Media Library Status', 'media-wipe'); ?></h2>
-                    <p><?php esc_html_e('Current overview of your WordPress media library.', 'media-wipe'); ?></p>
-                </div>
-
-                <div class="mw-info-grid">
-                    <div class="mw-info-card">
-                        <div class="mw-info-header">
-                            <span class="dashicons dashicons-portfolio"></span>
-                            <h3><?php esc_html_e('Total Media Files', 'media-wipe'); ?></h3>
-                        </div>
-                        <div class="mw-info-content">
-                            <div class="mw-stat-display">
-                                <span class="mw-stat-number"><?php echo esc_html($total_media); ?></span>
-                                <span class="mw-stat-label"><?php esc_html_e('Files', 'media-wipe'); ?></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mw-info-card">
-                        <div class="mw-info-header">
-                            <span class="dashicons dashicons-database"></span>
-                            <h3><?php esc_html_e('Storage Used', 'media-wipe'); ?></h3>
-                        </div>
-                        <div class="mw-info-content">
-                            <div class="mw-stat-display">
-                                <span class="mw-stat-number"><?php echo esc_html(size_format($total_size)); ?></span>
-                                <span class="mw-stat-label"><?php esc_html_e('Total Size', 'media-wipe'); ?></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mw-info-card">
-                        <div class="mw-info-header">
-                            <span class="dashicons dashicons-yes-alt"></span>
-                            <h3><?php esc_html_e('Library Status', 'media-wipe'); ?></h3>
-                        </div>
-                        <div class="mw-info-content">
-                            <div class="mw-stat-display">
-                                <span class="mw-stat-number mw-status-active"><?php esc_html_e('Active', 'media-wipe'); ?></span>
-                                <span class="mw-stat-label"><?php esc_html_e('Healthy', 'media-wipe'); ?></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 3. Quick Action Cards Section -->
+            <!-- 1. Quick Action Cards Section -->
             <section class="mw-help-section">
                 <div class="mw-section-header">
                     <span class="mw-section-icon dashicons dashicons-controls-play"></span>
@@ -351,67 +248,67 @@ function media_wipe_dashboard_page() {
                 </div>
             </section>
 
-            <!-- 4. Plugin Information Section -->
+            <!-- 2. Quick Links Section -->
             <section class="mw-help-section">
                 <div class="mw-section-header">
-                    <span class="mw-section-icon dashicons dashicons-admin-plugins"></span>
-                    <h2><?php esc_html_e('Plugin Information', 'media-wipe'); ?></h2>
-                    <p><?php esc_html_e('Technical details and version information for Media Wipe plugin.', 'media-wipe'); ?></p>
+                    <span class="mw-section-icon dashicons dashicons-admin-links"></span>
+                    <h2><?php esc_html_e('Quick Links', 'media-wipe'); ?></h2>
+                    <p><?php esc_html_e('Navigate quickly to the main plugin features and settings.', 'media-wipe'); ?></p>
                 </div>
 
-                <div class="mw-info-grid">
-                    <div class="mw-info-card">
-                        <div class="mw-info-header">
-                            <span class="dashicons dashicons-admin-plugins"></span>
-                            <h3><?php esc_html_e('Plugin Version', 'media-wipe'); ?></h3>
+                <div class="mw-feature-cards">
+                    <div class="mw-feature-card">
+                        <div class="mw-card-icon">
+                            <span class="dashicons dashicons-search"></span>
                         </div>
-                        <div class="mw-info-content">
-                            <div class="mw-info-item">
-                                <span class="mw-info-label"><?php esc_html_e('Current Version', 'media-wipe'); ?></span>
-                                <span class="mw-info-value mw-version-badge"><?php echo esc_html(MEDIA_WIPE_VERSION); ?></span>
-                            </div>
-                        </div>
+                        <h3><?php esc_html_e('Delete Unused Media', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('AI-powered detection to find and remove unused media files safely.', 'media-wipe'); ?></p>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-delete-unused')); ?>" class="mw-button"><?php esc_html_e('Start Scan', 'media-wipe'); ?></a>
                     </div>
-                    <div class="mw-info-card">
-                        <div class="mw-info-header">
-                            <span class="dashicons dashicons-calendar-alt"></span>
-                            <h3><?php esc_html_e('Release Information', 'media-wipe'); ?></h3>
+                    <div class="mw-feature-card">
+                        <div class="mw-card-icon">
+                            <span class="dashicons dashicons-yes-alt"></span>
                         </div>
-                        <div class="mw-info-content">
-                            <div class="mw-info-item">
-                                <span class="mw-info-label"><?php esc_html_e('Last Release', 'media-wipe'); ?></span>
-                                <span class="mw-info-value"><?php esc_html_e('July 26, 2025', 'media-wipe'); ?></span>
-                            </div>
-                        </div>
+                        <h3><?php esc_html_e('Delete Selected Media', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Choose specific files to delete with professional DataTable interface.', 'media-wipe'); ?></p>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-delete-selected')); ?>" class="mw-button"><?php esc_html_e('Select Files', 'media-wipe'); ?></a>
                     </div>
-                    <div class="mw-info-card">
-                        <div class="mw-info-header">
-                            <span class="dashicons dashicons-wordpress"></span>
-                            <h3><?php esc_html_e('WordPress Version', 'media-wipe'); ?></h3>
+                    <div class="mw-feature-card">
+                        <div class="mw-card-icon">
+                            <span class="dashicons dashicons-trash"></span>
                         </div>
-                        <div class="mw-info-content">
-                            <div class="mw-info-item">
-                                <span class="mw-info-label"><?php esc_html_e('WordPress', 'media-wipe'); ?></span>
-                                <span class="mw-info-value"><?php echo esc_html(get_bloginfo('version')); ?></span>
-                            </div>
-                        </div>
+                        <h3><?php esc_html_e('Delete All Media', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Remove all media files with secure multi-step confirmation process.', 'media-wipe'); ?></p>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-delete-all')); ?>" class="mw-button"><?php esc_html_e('Delete All', 'media-wipe'); ?></a>
                     </div>
-                    <div class="mw-info-card">
-                        <div class="mw-info-header">
-                            <span class="dashicons dashicons-editor-code"></span>
-                            <h3><?php esc_html_e('PHP Version', 'media-wipe'); ?></h3>
+                    <div class="mw-feature-card">
+                        <div class="mw-card-icon">
+                            <span class="dashicons dashicons-admin-settings"></span>
                         </div>
-                        <div class="mw-info-content">
-                            <div class="mw-info-item">
-                                <span class="mw-info-label"><?php esc_html_e('PHP', 'media-wipe'); ?></span>
-                                <span class="mw-info-value"><?php echo esc_html(PHP_VERSION); ?></span>
-                            </div>
+                        <h3><?php esc_html_e('Plugin Settings', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Configure plugin behavior and safety options for your workflow.', 'media-wipe'); ?></p>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-settings')); ?>" class="mw-button"><?php esc_html_e('Settings', 'media-wipe'); ?></a>
+                    </div>
+                    <div class="mw-feature-card">
+                        <div class="mw-card-icon">
+                            <span class="dashicons dashicons-list-view"></span>
                         </div>
+                        <h3><?php esc_html_e('Audit Log', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Review security events and activity logs for all operations.', 'media-wipe'); ?></p>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-audit-log')); ?>" class="mw-button"><?php esc_html_e('View Logs', 'media-wipe'); ?></a>
+                    </div>
+                    <div class="mw-feature-card">
+                        <div class="mw-card-icon">
+                            <span class="dashicons dashicons-editor-help"></span>
+                        </div>
+                        <h3><?php esc_html_e('Support & Help', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('Get help, documentation, and support for using Media Wipe effectively.', 'media-wipe'); ?></p>
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-help')); ?>" class="mw-button"><?php esc_html_e('Get Help', 'media-wipe'); ?></a>
                     </div>
                 </div>
             </section>
 
-            <!-- 5. Media Library Statistics Section -->
+            <!-- 3. Media Library Statistics Section -->
             <section class="mw-help-section">
                 <div class="mw-section-header">
                     <span class="mw-section-icon dashicons dashicons-chart-bar"></span>
@@ -473,6 +370,66 @@ function media_wipe_dashboard_page() {
                             <span class="mw-stat-label"><?php esc_html_e('Other Files', 'media-wipe'); ?></span>
                         </div>
                         <span class="mw-stat-trend"><?php echo esc_html(round(($media_stats['other'] / max($media_stats['total'], 1)) * 100, 1)); ?>%</span>
+                    </div>
+                </div>
+            </section>
+
+              <!-- 4. Plugin Information Section -->
+            <section class="mw-help-section">
+                <div class="mw-section-header">
+                    <span class="mw-section-icon dashicons dashicons-admin-plugins"></span>
+                    <h2><?php esc_html_e('Plugin Information', 'media-wipe'); ?></h2>
+                    <p><?php esc_html_e('Technical details and version information for Media Wipe plugin.', 'media-wipe'); ?></p>
+                </div>
+
+                <div class="mw-info-grid">
+                    <div class="mw-info-card">
+                        <div class="mw-info-header">
+                            <span class="dashicons dashicons-admin-plugins"></span>
+                            <h3><?php esc_html_e('Plugin Version', 'media-wipe'); ?></h3>
+                        </div>
+                        <div class="mw-info-content">
+                            <div class="mw-info-item">
+                                <span class="mw-info-label"><?php esc_html_e('Current Version', 'media-wipe'); ?></span>
+                                <span class="mw-info-value mw-version-badge"><?php echo esc_html(MEDIA_WIPE_VERSION); ?></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mw-info-card">
+                        <div class="mw-info-header">
+                            <span class="dashicons dashicons-calendar-alt"></span>
+                            <h3><?php esc_html_e('Release Information', 'media-wipe'); ?></h3>
+                        </div>
+                        <div class="mw-info-content">
+                            <div class="mw-info-item">
+                                <span class="mw-info-label"><?php esc_html_e('Last Release', 'media-wipe'); ?></span>
+                                <span class="mw-info-value"><?php esc_html_e('July 26, 2025', 'media-wipe'); ?></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mw-info-card">
+                        <div class="mw-info-header">
+                            <span class="dashicons dashicons-wordpress"></span>
+                            <h3><?php esc_html_e('WordPress Version', 'media-wipe'); ?></h3>
+                        </div>
+                        <div class="mw-info-content">
+                            <div class="mw-info-item">
+                                <span class="mw-info-label"><?php esc_html_e('WordPress', 'media-wipe'); ?></span>
+                                <span class="mw-info-value"><?php echo esc_html(get_bloginfo('version')); ?></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mw-info-card">
+                        <div class="mw-info-header">
+                            <span class="dashicons dashicons-editor-code"></span>
+                            <h3><?php esc_html_e('PHP Version', 'media-wipe'); ?></h3>
+                        </div>
+                        <div class="mw-info-content">
+                            <div class="mw-info-item">
+                                <span class="mw-info-label"><?php esc_html_e('PHP', 'media-wipe'); ?></span>
+                                <span class="mw-info-value"><?php echo esc_html(PHP_VERSION); ?></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
