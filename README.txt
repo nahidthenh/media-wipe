@@ -5,7 +5,7 @@ Tags: media, delete, cleanup, unused, bulk
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.2.2
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -150,7 +150,19 @@ The confidence score (0-100%) indicates how certain the system is that a file is
 
 == Changelog ==
 
-= 1.2.3 - 2025-07-30 =
+= 1.2.4 - 2025-07-30 =
+**Major Interface Improvements & Bug Fixes**
+- **FIXED**: Critical undefined variable error in Deletion History page
+- **ENHANCED**: Professional DataTable interface for Deletion History with search, sort, and pagination
+- **ENHANCED**: Beautiful statistics overview with visual activity counts
+- **SIMPLIFIED**: Removed broken "View Details" functionality for cleaner interface
+- **IMPROVED**: Desktop optimization with max-width constraints for large screens (1920px+)
+- **IMPROVED**: Menu positioning - moved to position 11 (right after Media menu)
+- **PERFORMANCE**: Removed 500+ lines of unused JavaScript and CSS code
+- **DESIGN**: Modern gradient icons and professional button styling
+- **UX**: Enhanced mobile responsiveness across all pages
+
+= 1.2.3 - 2025-07-28 =
 **Streamlined Menu Structure**
 - **Removed Settings page** - moved logging toggle directly to Deletion History page
 - **Removed Support page** - plugin interface is now self-explanatory
