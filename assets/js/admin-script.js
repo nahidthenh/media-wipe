@@ -197,7 +197,7 @@ jQuery(document).ready(function ($) {
     });
 
     // Close modal handlers
-    $('#close-delete-all-modal, #cancel-delete-all, .modal-overlay').on('click', function (e) {
+    $('#close-delete-all-modal, #cancel-delete-all, .mw-modal-overlay').on('click', function (e) {
         if (e.target === this) {
             $('#delete-all-confirmation-modal').fadeOut(300);
             resetDeleteAllModal();
@@ -205,60 +205,19 @@ jQuery(document).ready(function ($) {
     });
 
     // Prevent modal close when clicking inside modal content
-    $('.modal-content-large').on('click', function (e) {
+    $('.mw-modal-content').on('click', function (e) {
         e.stopPropagation();
     });
 
-    // Handle checkbox changes and confirmation text
+    // Handle checkbox changes - simplified validation
     function validateDeleteAllForm() {
-        var hasAnyValidation = false;
-        var isValid = true;
-
-        // Check backup confirmation checkboxes if they exist
-        if ($('#backup-confirmed').length) {
-            hasAnyValidation = true;
-            var allChecked = $('#backup-confirmed').is(':checked') &&
-                $('#understand-permanent').is(':checked') &&
-                $('#accept-responsibility').is(':checked');
-            isValid = isValid && allChecked;
-        }
-
-        // Check text confirmation if it exists
-        if ($('#confirmation-text').length) {
-            hasAnyValidation = true;
-            var confirmationText = normalizeText($('#confirmation-text').val());
-            var textMatches = confirmationText === 'DELETE ALL MEDIA';
-            isValid = isValid && textMatches;
-        }
-
-        // Check simple confirmation if it exists
-        if ($('#final-confirm').length) {
-            hasAnyValidation = true;
-            var finalConfirmed = $('#final-confirm').is(':checked');
-            isValid = isValid && finalConfirmed;
-        }
-
-        // If no validation elements exist, allow deletion
-        if (!hasAnyValidation) {
-            isValid = true;
-        }
-
-        // Debug logging (remove in production)
-        // console.log('Validation result:', {
-        //     hasAnyValidation: hasAnyValidation,
-        //     isValid: isValid,
-        //     backupExists: $('#backup-confirmed').length > 0,
-        //     textExists: $('#confirmation-text').length > 0,
-        //     simpleExists: $('#final-confirm').length > 0
-        // });
-
+        var isValid = $('#final-confirm').is(':checked');
         $('#confirm-delete-all').prop('disabled', !isValid);
         return isValid;
     }
 
-    // Bind validation to form elements (only if they exist)
-    $(document).on('change', '#backup-confirmed, #understand-permanent, #accept-responsibility, #final-confirm', validateDeleteAllForm);
-    $(document).on('input', '#confirmation-text', validateDeleteAllForm);
+    // Bind validation to checkbox
+    $(document).on('change', '#final-confirm', validateDeleteAllForm);
 
     // Initial validation on page load
     if ($('#delete-all-confirmation-modal').length) {
@@ -342,19 +301,11 @@ jQuery(document).ready(function ($) {
 
     // Reset modal to initial state
     function resetDeleteAllModal() {
-        // Reset backup confirmation checkboxes if they exist
-        $('#backup-confirmed, #understand-permanent, #accept-responsibility').prop('checked', false);
-
-        // Reset text confirmation if it exists
-        if ($('#confirmation-text').length) {
-            $('#confirmation-text').val('');
-        }
-
-        // Reset simple confirmation if it exists
+        // Reset checkbox
         $('#final-confirm').prop('checked', false);
 
         // Reset button state
-        $('#confirm-delete-all').text('Delete All Media Files');
+        $('#confirm-delete-all').text('Delete All Files');
 
         // Remove any notifications
         $('.notification').remove();
