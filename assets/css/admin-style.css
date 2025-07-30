@@ -1129,13 +1129,16 @@ button {
     Modern Dashboard Styles v1.2.1
 ================================ */
 
-/* Dashboard Page Layout - WordPress Standard */
+/* Dashboard Page Layout - Constrained Width */
 .media-wipe-dashboard-page {
     background: #fff;
-    margin: 20px 20px auto auto;
+    margin: 20px auto;
     padding: 0;
+    border: 1px solid #c3c4c7;
     border-radius: 4px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+    max-width: 1400px;
+    width: calc(100% - 40px);
 }
 
 /* WordPress-Style Hero Section */
@@ -1272,6 +1275,7 @@ button {
     background: #fff;
     border-radius: 0 0 4px 4px;
     box-sizing: border-box;
+    max-width: 100%;
 }
 
 /* WordPress-Style Section Headers */
@@ -1326,7 +1330,7 @@ button {
 }
 
 .mw-action-card.mw-featured-card {
-    background: linear-gradient(90deg, #000 0%, #3533cd 100%);
+    background: linear-gradient(130deg, #000 0%, #3533cd 100%);
     color: #fff;
     border: none;
 }
@@ -1850,8 +1854,27 @@ button {
     font-size: 14px;
 }
 
+/* Desktop Large Screens - Optimal Width */
+@media (min-width: 1600px) {
+    .media-wipe-dashboard-page {
+        max-width: 1600px;
+    }
+}
+
+@media (min-width: 1920px) {
+    .media-wipe-dashboard-page {
+        max-width: 1800px;
+    }
+}
+
 /* WordPress-Style Responsive Design */
 @media (max-width: 1200px) {
+    .media-wipe-dashboard-page {
+        margin: 20px;
+        max-width: none;
+        width: calc(100% - 40px);
+    }
+
     .mw-dashboard-content {
         padding: 15px;
     }
