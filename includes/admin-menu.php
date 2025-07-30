@@ -329,66 +329,56 @@ function media_wipe_settings_page() {
     ?>
     <div class="wrap">
         <h1><?php esc_html_e('Media Wipe Settings', 'media-wipe'); ?></h1>
-        <p><?php esc_html_e('Configure plugin behavior and safety options.', 'media-wipe'); ?></p>
 
-        <form method="post" action="">
-            <?php wp_nonce_field('media_wipe_settings_action', 'media_wipe_settings_nonce'); ?>
+        <div class="mw-settings-container">
+            <form method="post" action="" class="mw-settings-form">
+                <?php wp_nonce_field('media_wipe_settings_action', 'media_wipe_settings_nonce'); ?>
 
-            <h2><?php esc_html_e('Confirmation Requirements', 'media-wipe'); ?></h2>
-            <table class="form-table">
-                        <tr>
-                            <th scope="row"><?php esc_html_e('Delete All Confirmation', 'media-wipe'); ?></th>
-                            <td>
-                                <fieldset>
-                                    <div class="confirmation-info">
-                                        <span class="dashicons dashicons-yes-alt" style="color: #00a32a;"></span>
-                                        <strong><?php esc_html_e('Simplified Confirmation Process', 'media-wipe'); ?></strong>
-                                        <p class="description"><?php esc_html_e('Delete all operations now use a streamlined confirmation process with a single checkbox and clear warning message. This provides the right balance between safety and usability.', 'media-wipe'); ?></p>
-                                    </div>
-                                </fieldset>
-                            </td>
-                        </tr>
-                    </table>
+                <div class="mw-settings-grid">
+                    <!-- Document Preview Setting -->
+                    <div class="mw-setting-card">
+                        <div class="mw-setting-header">
+                            <div class="mw-setting-icon">
+                                <span class="dashicons dashicons-visibility"></span>
+                            </div>
+                            <div class="mw-setting-title">
+                                <h3><?php esc_html_e('Document Preview', 'media-wipe'); ?></h3>
+                                <p><?php esc_html_e('Show file previews in confirmation dialogs', 'media-wipe'); ?></p>
+                            </div>
+                        </div>
+                        <div class="mw-setting-control">
+                            <label class="mw-toggle">
+                                <input type="checkbox" name="show_document_preview" value="1" <?php checked($settings['show_document_preview'], 1); ?>>
+                                <span class="mw-toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Activity Logging Setting -->
+                    <div class="mw-setting-card">
+                        <div class="mw-setting-header">
+                            <div class="mw-setting-icon">
+                                <span class="dashicons dashicons-admin-tools"></span>
+                            </div>
+                            <div class="mw-setting-title">
+                                <h3><?php esc_html_e('Activity Logging', 'media-wipe'); ?></h3>
+                                <p><?php esc_html_e('Keep detailed logs of all deletion activities', 'media-wipe'); ?></p>
+                            </div>
+                        </div>
+                        <div class="mw-setting-control">
+                            <label class="mw-toggle">
+                                <input type="checkbox" name="enable_logging" value="1" <?php checked($settings['enable_logging'], 1); ?>>
+                                <span class="mw-toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="settings-section">
-                    <h2><?php esc_html_e('Preview & Display Options', 'media-wipe'); ?></h2>
-                    <table class="form-table">
-                        <tr>
-                            <th scope="row"><?php esc_html_e('Document Preview', 'media-wipe'); ?></th>
-                            <td>
-                                <fieldset>
-                                    <label>
-                                        <input type="checkbox" name="show_document_preview" value="1" <?php checked($settings['show_document_preview'], 1); ?>>
-                                        <?php esc_html_e('Show document preview in confirmation dialogs', 'media-wipe'); ?>
-                                    </label>
-                                    <p class="description"><?php esc_html_e('Displays document icons and file information in deletion confirmation dialogs.', 'media-wipe'); ?></p>
-                                </fieldset>
-                            </td>
-                        </tr>
-                    </table>
+                <div class="mw-settings-footer">
+                    <?php submit_button(__('Save Settings', 'media-wipe'), 'primary', 'submit', false, array('class' => 'mw-save-btn')); ?>
                 </div>
-
-                <div class="settings-section">
-                    <h2><?php esc_html_e('Activity Logging', 'media-wipe'); ?></h2>
-                    <table class="form-table">
-                        <tr>
-                            <th scope="row"><?php esc_html_e('Enable Logging', 'media-wipe'); ?></th>
-                            <td>
-                                <fieldset>
-                                    <label>
-                                        <input type="checkbox" name="enable_logging" value="1" <?php checked($settings['enable_logging'], 1); ?>>
-                                        <?php esc_html_e('Enable deletion activity logging', 'media-wipe'); ?>
-                                    </label>
-                                    <p class="description"><?php esc_html_e('Keep a detailed log of all deletion activities for audit and troubleshooting purposes.', 'media-wipe'); ?></p>
-                                </fieldset>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-            <?php submit_button(); ?>
-        </form>
+            </form>
+        </div>
     </div>
     <?php
 }
