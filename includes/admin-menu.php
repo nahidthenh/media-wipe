@@ -876,36 +876,7 @@ function media_wipe_delete_unused_page() {
             </div>
         </div>
 
-        <!-- Modern Safety Section -->
-        <section class="mw-page-safety-section collapsible" data-section="delete-unused-safety">
-            <div class="mw-page-safety-notice">
-                <div class="mw-page-safety-header">
-                    <span class="dashicons dashicons-shield-alt"></span>
-                    <h3><?php esc_html_e('Detection Accuracy & Safety Guidelines', 'media-wipe'); ?></h3>
-                    <span class="mw-page-safety-toggle dashicons dashicons-arrow-up-alt2"></span>
-                </div>
-                <div class="mw-page-safety-content">
-                    <p><?php esc_html_e('Our AI-powered detection system achieves approximately 85-90% accuracy. Some files marked as "unused" may actually be in use by theme templates, plugins, or external services.', 'media-wipe'); ?></p>
-                    <div class="mw-page-safety-grid">
-                        <div class="mw-page-safety-item">
-                            <span class="dashicons dashicons-backup"></span>
-                            <h4><?php esc_html_e('Always Backup First', 'media-wipe'); ?></h4>
-                            <p><?php esc_html_e('Create a complete backup before deleting any files. This is your safety net against false positives.', 'media-wipe'); ?></p>
-                        </div>
-                        <div class="mw-page-safety-item">
-                            <span class="dashicons dashicons-admin-tools"></span>
-                            <h4><?php esc_html_e('Start with Test Batch', 'media-wipe'); ?></h4>
-                            <p><?php esc_html_e('Begin with a small test batch to verify accuracy before processing larger quantities.', 'media-wipe'); ?></p>
-                        </div>
-                        <div class="mw-page-safety-item">
-                            <span class="dashicons dashicons-warning"></span>
-                            <h4><?php esc_html_e('Detection Limitations', 'media-wipe'); ?></h4>
-                            <p><?php esc_html_e('Files used in theme templates, CSS, plugins, or external services may not be detected as "in use".', 'media-wipe'); ?></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- Warning section removed for cleaner interface -->
 
         <!-- Scan Configuration -->
         <div class="media-wipe-scan-config">

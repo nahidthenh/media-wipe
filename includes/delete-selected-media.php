@@ -80,37 +80,6 @@ function media_wipe_unused_media_page() {
                 <p><?php esc_html_e('Select specific media files to delete from your library. Use the search and filter options to find files quickly.', 'media-wipe'); ?></p>
             </div>
 
-            <!-- Modern Safety Section -->
-            <section class="mw-page-safety-section collapsible" data-section="delete-selected-safety">
-                <div class="mw-page-safety-notice">
-                    <div class="mw-page-safety-header">
-                        <span class="dashicons dashicons-shield-alt"></span>
-                        <h3><?php esc_html_e('Safety & Security Guidelines', 'media-wipe'); ?></h3>
-                        <span class="mw-page-safety-toggle dashicons dashicons-arrow-up-alt2"></span>
-                    </div>
-                    <div class="mw-page-safety-content">
-                        <p><?php esc_html_e('Selected media files will be permanently deleted from your WordPress media library. Review your selection carefully before proceeding.', 'media-wipe'); ?></p>
-                        <div class="mw-page-safety-grid">
-                            <div class="mw-page-safety-item">
-                                <span class="dashicons dashicons-backup"></span>
-                                <h4><?php esc_html_e('Always Backup First', 'media-wipe'); ?></h4>
-                                <p><?php esc_html_e('Create complete backups before any deletion operations. All deletions are permanent and irreversible.', 'media-wipe'); ?></p>
-                            </div>
-                            <div class="mw-page-safety-item">
-                                <span class="dashicons dashicons-search"></span>
-                                <h4><?php esc_html_e('Review Carefully', 'media-wipe'); ?></h4>
-                                <p><?php esc_html_e('Use the preview and search features to verify you are selecting the correct files for deletion.', 'media-wipe'); ?></p>
-                            </div>
-                            <div class="mw-page-safety-item">
-                                <span class="dashicons dashicons-warning"></span>
-                                <h4><?php esc_html_e('Permanent Action', 'media-wipe'); ?></h4>
-                                <p><?php esc_html_e('Deleted files cannot be recovered. Content using these files may be affected.', 'media-wipe'); ?></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <!-- Professional DataTable -->
             <div class="datatable-container">
                 <div class="datatable-header">
