@@ -28,7 +28,7 @@ function media_wipe_admin_menu() {
         'media-wipe',                                      // Menu slug
         'media_wipe_dashboard_page',                       // Function
         'dashicons-trash',                                 // Icon (WordPress dashicon)
-        58                                                 // Position (after Media menu)
+        11                                                 // Position (right after Media menu at 10)
     );
 
     // Add Dashboard submenu (rename the first submenu)
