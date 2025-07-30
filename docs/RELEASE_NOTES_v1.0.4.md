@@ -183,7 +183,7 @@
 
 ### Future Roadmap
 - **Multisite support** (v1.2.0)
-- **REST API endpoints** (v1.3.0)
+- **REST API endpoints** (v1.2.3)
 - **CLI commands** for developers (v1.4.0)
 - **Advanced media analysis** (v2.0.0)
 

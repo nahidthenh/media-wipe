@@ -150,6 +150,17 @@ The confidence score (0-100%) indicates how certain the system is that a file is
 
 == Changelog ==
 
+= 1.2.3 - 2025-07-30 =
+**Streamlined Menu Structure**
+- **Removed Settings page** - moved logging toggle directly to Deletion History page
+- **Removed Support page** - plugin interface is now self-explanatory
+- **Removed warning sections** from Delete Selected and Delete Unused pages
+- **Clean 4-page structure**: Dashboard → Delete Selected → Delete Unused → Deletion History
+- **Removed Advanced Scan option** - Basic scan is now the optimal default
+- **Added beautiful "No Files Found" message** for empty media libraries with encouraging feedback
+- **Improved scan result handling** with better user notifications
+- **Safety options unchecked by default** for more comprehensive scanning
+
 = 1.2.2 - 2025-07-26 =
 * **NEW**: Dashboard Tabbed Navigation - Modern tabbed interface with Overview, Quick Actions, Statistics, Recent Activity, and System Info sections
 * **NEW**: Plugin Notice Suppression - Clean admin interface by hiding notices from other plugins on Media Wipe pages

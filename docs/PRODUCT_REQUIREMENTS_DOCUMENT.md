@@ -244,7 +244,7 @@ The plugin uses WordPress options table for configuration storage:
 ### Future Roadmap
 - **Version 1.1.0**: Advanced filtering options
 - **Version 1.2.0**: Bulk operations scheduling
-- **Version 1.3.0**: Integration with popular backup plugins
+- **Version 1.2.3**: Integration with popular backup plugins
 - **Version 2.0.0**: Multi-site support
 
 ## Support and Documentation

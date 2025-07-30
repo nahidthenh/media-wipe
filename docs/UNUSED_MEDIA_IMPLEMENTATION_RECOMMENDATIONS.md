@@ -33,7 +33,7 @@
 - Faster development timeline
 - Easier testing and validation
 
-#### Phase 2: Enhanced Detection (v1.3.0)
+#### Phase 2: Enhanced Detection (v1.2.3)
 **Scope:** Medium-accuracy methods with warnings
 - Theme template file scanning
 - CSS file parsing
