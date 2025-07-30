@@ -504,33 +504,18 @@ function media_wipe_delete_unused_page() {
                             <td>
                                 <fieldset>
                                     <label>
-                                        <input type="checkbox" name="exclude_recent" value="1" checked>
+                                        <input type="checkbox" name="exclude_recent" value="1">
                                         <?php esc_html_e('Exclude files uploaded in the last 30 days', 'media-wipe'); ?>
                                     </label>
                                     <br>
                                     <label>
-                                        <input type="checkbox" name="exclude_featured" value="1" checked>
+                                        <input type="checkbox" name="exclude_featured" value="1">
                                         <?php esc_html_e('Exclude featured images (recommended)', 'media-wipe'); ?>
                                     </label>
                                 </fieldset>
                             </td>
                         </tr>
-                        <tr>
-                            <th scope="row"><?php esc_html_e('Scan Depth', 'media-wipe'); ?></th>
-                            <td>
-                                <fieldset>
-                                    <label>
-                                        <input type="radio" name="scan_depth" value="basic" checked>
-                                        <?php esc_html_e('Basic Scan (Recommended) - High accuracy, faster', 'media-wipe'); ?>
-                                    </label>
-                                    <br>
-                                    <label>
-                                        <input type="radio" name="scan_depth" value="advanced">
-                                        <?php esc_html_e('Advanced Scan - Includes theme files, slower, may have false positives', 'media-wipe'); ?>
-                                    </label>
-                                </fieldset>
-                            </td>
-                        </tr>
+                        <!-- Advanced scan option removed - Basic scan is optimal for most users -->
                     </table>
 
                     <div class="scan-actions">

@@ -640,6 +640,7 @@ jQuery(document).ready(function ($) {
             data: formData,
             timeout: 300000, // 5 minutes
             success: function (response) {
+                console.log('Scan response received:', response);
                 if (response.success) {
                     displayUnusedMediaResults(response.data.results);
                 } else {
@@ -660,12 +661,76 @@ jQuery(document).ready(function ($) {
 
     // Display unused media results
     function displayUnusedMediaResults(results) {
+        console.log('Display results called with:', results);
         debugLog('Display results called with:', results);
 
-        if (!results || !results.files || results.files.length === 0) {
-            showNotification('info', 'No unused media files found!');
+        // Handle different "no results" scenarios
+        var noResults = false;
+        var message = '';
+        var description = '';
+
+        if (!results) {
+            console.log('No results object received');
+            noResults = true;
+            message = 'No Media Files Found';
+            description = 'Your media library appears to be empty. Upload some media files to scan for unused items.';
+        } else if (!results.files || results.files.length === 0) {
+            console.log('Results object exists but no files found');
+
+            // Check if there were any files scanned at all
+            if (results.total_scanned === 0) {
+                noResults = true;
+                message = 'No Media Files Found';
+                description = 'Your media library appears to be empty. Upload some media files to scan for unused items.';
+            } else {
+                noResults = true;
+                message = 'Great News! No Unused Files Found';
+                description = 'Your media library is clean and optimized. All files appear to be in use on your website.';
+            }
+        }
+
+        if (noResults) {
+            console.log('Showing no results message:', message);
+
+            // Show the results container with a "nothing found" message
+            $('#scan-results-container').show();
+            $('#results-summary-text').text(results && results.total_scanned ?
+                `No unused files found out of ${results.total_scanned} scanned` :
+                'No media files found to scan');
+
+            // Hide the table and controls
+            $('.results-table-container').hide();
+            $('.results-controls').hide();
+
+            // Remove existing no-results message if it exists
+            $('#no-results-message').remove();
+
+            // Add the "nothing found" message
+            $('.results-card').append(`
+                <div id="no-results-message" class="no-results-found">
+                    <div class="no-results-icon">
+                        <span class="dashicons dashicons-${results && results.total_scanned > 0 ? 'yes-alt' : 'info'}"></span>
+                    </div>
+                    <h3>${message}</h3>
+                    <p>${description}</p>
+                    <div class="no-results-actions">
+                        <button type="button" id="scan-again-btn" class="button button-primary">
+                            <span class="dashicons dashicons-update"></span>
+                            Scan Again
+                        </button>
+                    </div>
+                </div>
+            `);
+
+            showNotification(results && results.total_scanned > 0 ? 'success' : 'info',
+                results && results.total_scanned > 0 ? 'Scan completed - no unused files found!' : 'No media files found to scan');
             return;
         }
+
+        // Hide the "no results" message if it exists and show table/controls
+        $('#no-results-message').remove();
+        $('.results-table-container').show();
+        $('.results-controls').show();
 
         // Debug first few files to check data structure
         debugLog('First file data:', results.files[0]);
@@ -776,6 +841,16 @@ jQuery(document).ready(function ($) {
         // Update selection controls
         updateUnusedSelectionControls();
     }
+
+    // Scan Again button functionality
+    $(document).on('click', '#scan-again-btn', function () {
+        // Hide the no results message
+        $('#no-results-message').hide();
+        $('#scan-results-container').hide();
+
+        // Trigger the scan again
+        $('#start-unused-scan').trigger('click');
+    });
 
     // Selection controls for unused media
     $('#select-all-unused').on('click', function () {
