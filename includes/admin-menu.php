@@ -160,20 +160,22 @@ function media_wipe_dashboard_page() {
                 <div class="mw-hero-icon">
                     <span class="dashicons dashicons-trash"></span>
                 </div>
-                <h1><?php esc_html_e('Media Wipe Dashboard', 'media-wipe'); ?></h1>
-                <p class="mw-hero-subtitle"><?php esc_html_e('AI-powered WordPress media management with intelligent unused media detection and enterprise-grade security.', 'media-wipe'); ?></p>
+                <div class="mw-hero-text">
+                    <h1><?php esc_html_e('Media Wipe Dashboard', 'media-wipe'); ?></h1>
+                    <p class="mw-hero-subtitle"><?php esc_html_e('AI-powered WordPress media management with intelligent unused media detection and enterprise-grade security.', 'media-wipe'); ?></p>
+                </div>
                 <div class="mw-hero-stats">
                     <div class="mw-hero-stat">
-                        <span class="mw-stat-number" style="color: #fff;"><?php echo esc_html($media_stats['total']); ?></span>
-                        <span class="mw-stat-label" style="color: #fff;"><?php esc_html_e('Total Files', 'media-wipe'); ?></span>
+                        <span class="mw-stat-number"><?php echo esc_html($media_stats['total']); ?></span>
+                        <span class="mw-stat-label"><?php esc_html_e('Total Files', 'media-wipe'); ?></span>
                     </div>
                     <div class="mw-hero-stat">
-                                <span class="mw-stat-number" style="color: #fff;"><?php echo esc_html(size_format($total_size)); ?></span>
-                                <span class="mw-stat-label" style="color: #fff;"><?php esc_html_e('Total Storage Used', 'media-wipe'); ?></span>
-                            </div>
+                        <span class="mw-stat-number"><?php echo esc_html(size_format($total_size)); ?></span>
+                        <span class="mw-stat-label"><?php esc_html_e('Storage Used', 'media-wipe'); ?></span>
+                    </div>
                     <div class="mw-hero-stat">
-                        <span class="mw-stat-number" style="color: #fff;"><?php echo esc_html(MEDIA_WIPE_VERSION); ?></span>
-                        <span class="mw-stat-label" style="color: #fff;"><?php esc_html_e('Version', 'media-wipe'); ?></span>
+                        <span class="mw-stat-number"><?php echo esc_html(MEDIA_WIPE_VERSION); ?></span>
+                        <span class="mw-stat-label"><?php esc_html_e('Version', 'media-wipe'); ?></span>
                     </div>
                 </div>
             </div>
@@ -218,7 +220,7 @@ function media_wipe_dashboard_page() {
                         <span class="mw-stat-trend"><?php echo esc_html(round(($media_stats['documents'] / max($media_stats['total'], 1)) * 100, 1)); ?>%</span>
                     </div>
 
-                    <!-- <div class="mw-stat-card">
+                    <div class="mw-stat-card">
                         <div class="mw-stat-icon">
                             <span class="dashicons dashicons-format-audio"></span>
                         </div>
@@ -227,7 +229,7 @@ function media_wipe_dashboard_page() {
                             <span class="mw-stat-label"><?php esc_html_e('Audio', 'media-wipe'); ?></span>
                         </div>
                         <span class="mw-stat-trend"><?php echo esc_html(round(($media_stats['audio'] / max($media_stats['total'], 1)) * 100, 1)); ?>%</span>
-                    </div> -->
+                    </div>
 
                     <div class="mw-stat-card">
                         <div class="mw-stat-icon">
@@ -295,60 +297,6 @@ function media_wipe_dashboard_page() {
                         <div class="mw-card-features">
                             <span class="mw-feature-tag"><?php esc_html_e('Multi-Step Security', 'media-wipe'); ?></span>
                             <span class="mw-feature-tag"><?php esc_html_e('Backup Verification', 'media-wipe'); ?></span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-              <!-- 4. Plugin Information Section -->
-            <section class="mw-help-section">
-                <div class="mw-info-grid">
-                    <div class="mw-info-card">
-                        <div class="mw-info-header">
-                            <span class="dashicons dashicons-admin-plugins"></span>
-                            <h3><?php esc_html_e('Plugin Version', 'media-wipe'); ?></h3>
-                        </div>
-                        <div class="mw-info-content">
-                            <div class="mw-info-item">
-                                <span class="mw-info-label"><?php esc_html_e('Current Version', 'media-wipe'); ?></span>
-                                <span class="mw-info-value mw-version-badge"><?php echo esc_html(MEDIA_WIPE_VERSION); ?></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mw-info-card">
-                        <div class="mw-info-header">
-                            <span class="dashicons dashicons-calendar-alt"></span>
-                            <h3><?php esc_html_e('Release Information', 'media-wipe'); ?></h3>
-                        </div>
-                        <div class="mw-info-content">
-                            <div class="mw-info-item">
-                                <span class="mw-info-label"><?php esc_html_e('Last Release', 'media-wipe'); ?></span>
-                                <span class="mw-info-value"><?php esc_html_e('July 26, 2025', 'media-wipe'); ?></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mw-info-card">
-                        <div class="mw-info-header">
-                            <span class="dashicons dashicons-wordpress"></span>
-                            <h3><?php esc_html_e('WordPress Version', 'media-wipe'); ?></h3>
-                        </div>
-                        <div class="mw-info-content">
-                            <div class="mw-info-item">
-                                <span class="mw-info-label"><?php esc_html_e('WordPress', 'media-wipe'); ?></span>
-                                <span class="mw-info-value"><?php echo esc_html(get_bloginfo('version')); ?></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mw-info-card">
-                        <div class="mw-info-header">
-                            <span class="dashicons dashicons-editor-code"></span>
-                            <h3><?php esc_html_e('PHP Version', 'media-wipe'); ?></h3>
-                        </div>
-                        <div class="mw-info-content">
-                            <div class="mw-info-item">
-                                <span class="mw-info-label"><?php esc_html_e('PHP', 'media-wipe'); ?></span>
-                                <span class="mw-info-value"><?php echo esc_html(PHP_VERSION); ?></span>
-                            </div>
                         </div>
                     </div>
                 </div>

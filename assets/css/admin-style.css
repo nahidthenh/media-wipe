@@ -1,3 +1,29 @@
+/* ================================
+    Global Horizontal Layout Fixes
+================================ */
+
+/* Prevent horizontal overflow globally */
+* {
+    box-sizing: border-box;
+}
+
+body.toplevel_page_media-wipe,
+body.media-wipe_page_media-wipe-delete-all,
+body.media-wipe_page_media-wipe-delete-selected,
+body.media-wipe_page_media-wipe-settings,
+body.media-wipe_page_media-wipe-security,
+body.media-wipe_page_media-wipe-help {
+    overflow-x: hidden;
+}
+
+#wpwrap {
+    overflow-x: hidden;
+}
+
+/* ================================
+    Global Horizontal Layout Fixes End
+================================ */
+
 #media-wipe-unused-table img {
     border: 1px solid #ddd;
     padding: 5px;
@@ -1109,16 +1135,23 @@ button {
     margin: 0 -20px -10px;
     padding: 0;
     min-height: 100vh;
+    width: calc(100% + 40px);
+    box-sizing: border-box;
 }
 
 /* Modern Hero Section */
 .mw-dashboard-hero {
     background: linear-gradient(90deg, #000 0%, #3533cd 100%);
     color: #fff;
-    padding: 40px 40px;
-    text-align: center;
+    padding: 20px;
+    text-align: left;
     position: relative;
     overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
 }
 
 .mw-dashboard-hero::before {
@@ -1135,62 +1168,92 @@ button {
 .mw-hero-content {
     position: relative;
     z-index: 2;
-    max-width: 800px;
+    max-width: 1400px;
     margin: 0 auto;
-    text-align: center;
+    text-align: left;
+    padding: 0 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 30px;
 }
 
 .mw-hero-icon {
     background: rgba(255, 255, 255, 0.2);
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 30px;
+    margin: 0;
     backdrop-filter: blur(10px);
+    flex-shrink: 0;
 }
 
 .mw-hero-icon .dashicons {
-    font-size: 40px;
-    width: 40px;
-    height: 40px;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
     color: #fff;
+}
+
+/* Hero Text Content */
+.mw-hero-text {
+    flex: 1;
+    min-width: 0;
 }
 
 .mw-dashboard-hero h1 {
-    font-size: 38px;
+    font-size: 28px;
     font-weight: 700;
-    margin-top: 40px;
+    margin: 0 0 8px 0;
     color: #fff;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    line-height: 1.2;
 }
 
 .mw-hero-subtitle {
-    font-size: 20px;
-    margin: 0 0 40px;
+    font-size: 14px;
+    margin: 0;
     opacity: 0.9;
-    line-height: 1.5;
+    line-height: 1.4;
+    max-width: 500px;
 }
 
+/* Hero Stats */
 .mw-hero-stats {
     display: flex;
-    justify-content: center;
-    gap: 60px;
-    margin-top: 40px;
+    gap: 40px;
+    margin: 0;
+    flex-shrink: 0;
 }
 
 .mw-hero-stat {
     text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px 16px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    min-width: 80px;
+    transition: all 0.3s ease;
 }
 
+.mw-hero-stat:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* General stat styles (for other sections) */
 .mw-stat-number {
     display: block;
     font-size: 32px;
     font-weight: 700;
-    color: #fff;
+    color: #1d2327;
     margin-bottom: 8px;
+    line-height: 1;
 }
 
 .mw-stat-label {
@@ -1203,9 +1266,11 @@ button {
 
 /* Dashboard Content */
 .mw-dashboard-content {
-    padding: 40px;
+    padding: 40px 20px;
     max-width: 1400px;
     margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Section Headers */
@@ -1434,7 +1499,7 @@ button {
 /* Statistics Grid */
 .mw-stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 25px;
     /* margin-top: 40px; */
 }
@@ -1509,20 +1574,14 @@ button {
     line-height: 1;
 }
 
-.mw-stat-primary .mw-stat-number {
-    color: #fff;
-}
-
-.mw-stat-label {
+.mw-hero-stat .mw-stat-label {
     display: block;
-    font-size: 14px;
-    color: #646970;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.8);
     font-weight: 500;
-    margin-bottom: 3px;
-}
-
-.mw-stat-primary .mw-stat-label {
-    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .mw-stat-trend {
@@ -1810,92 +1869,124 @@ button {
 
 @media (max-width: 782px) {
     .mw-dashboard-hero {
-        padding: 40px 20px;
+        padding: 15px 20px;
+        min-height: auto;
+    }
+
+    .mw-hero-content {
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+        padding: 0 10px;
     }
 
     .mw-dashboard-hero h1 {
-        font-size: 32px;
-    }
-
-    .mw-hero-subtitle {
-        font-size: 16px;
-    }
-
-    .mw-hero-stats {
-        flex-direction: column;
-        gap: 30px;
-    }
-
-    .mw-dashboard-content {
-        padding: 20px;
-    }
-
-    .mw-section-header h2 {
         font-size: 24px;
     }
 
-    .mw-action-cards,
-    .mw-stats-grid,
-    .mw-info-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
+    .mw-hero-subtitle {
+        font-size: 13px;
     }
 
-    .mw-action-card,
-    .mw-stat-card,
-    .mw-info-card {
-        padding: 25px;
+    .mw-hero-stats {
+        gap: 15px;
+        flex-wrap: wrap;
     }
 
-    .mw-safety-notice {
-        padding: 25px;
-    }
-
-    .mw-safety-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
+    .mw-hero-stat {
+        min-width: 70px;
+        padding: 10px 12px;
     }
 }
+
+.mw-dashboard-content {
+    padding: 20px;
+}
+
+.mw-section-header h2 {
+    font-size: 24px;
+}
+
+.mw-action-cards,
+.mw-stats-grid,
+.mw-info-grid {
+    gap: 20px;
+}
+
+.mw-action-card,
+.mw-stat-card,
+.mw-info-card {
+    padding: 25px;
+}
+
+.mw-safety-notice {
+    padding: 25px;
+}
+
+.mw-safety-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
 
 @media (max-width: 600px) {
     .mw-dashboard-hero {
-        padding: 30px 15px;
+        padding: 15px;
+        min-height: auto;
+    }
+
+    .mw-hero-content {
+        padding: 0;
+        gap: 15px;
     }
 
     .mw-dashboard-hero h1 {
-        font-size: 28px;
+        font-size: 22px;
     }
 
     .mw-hero-subtitle {
-        font-size: 14px;
+        font-size: 12px;
     }
 
-    .mw-dashboard-content {
-        padding: 15px;
+    .mw-hero-stats {
+        gap: 10px;
     }
 
-    .mw-action-card,
-    .mw-stat-card,
-    .mw-info-card {
-        padding: 20px;
+    .mw-hero-stat {
+        min-width: 60px;
+        padding: 8px 10px;
     }
 
-    .mw-stat-card {
-        flex-direction: column;
-        text-align: center;
-        gap: 15px;
+    .mw-hero-stat .mw-stat-number {
+        font-size: 16px;
     }
 
-    .mw-safety-notice {
-        padding: 20px;
-    }
-
-    .mw-safety-header {
-        flex-direction: column;
-        text-align: center;
-        gap: 15px;
+    .mw-hero-stat .mw-stat-label {
+        font-size: 10px;
     }
 }
+
+.mw-dashboard-content {
+    padding: 15px;
+}
+
+
+.mw-stat-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+}
+
+.mw-safety-notice {
+    padding: 20px;
+}
+
+.mw-safety-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+}
+
 
 /* ================================
     Quick Navigation Component
@@ -2369,9 +2460,11 @@ button {
 /* Enhanced Settings Page */
 .media-wipe-settings {
     background: #f0f0f1;
-    margin: 0 -20px;
+    margin: 0;
     padding: 20px;
     min-height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .media-wipe-settings-content {
@@ -2529,7 +2622,7 @@ button {
 /* Responsive Settings */
 @media (max-width: 782px) {
     .media-wipe-settings {
-        margin: 0 -10px;
+        margin: 0;
         padding: 15px;
     }
 
@@ -3592,6 +3685,9 @@ textarea:focus {
 .wrap {
     margin: 0 !important;
     padding: 20px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    max-width: 100% !important;
 }
 
 /* Ensure proper spacing */
@@ -3619,7 +3715,9 @@ textarea:focus {
 
 /* Fix any overflow issues */
 .media-wipe-content {
-    overflow-x: auto;
+    overflow-x: hidden;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Ensure proper text wrapping */
@@ -3652,7 +3750,8 @@ textarea:focus {
     .media-wipe-settings,
     .media-wipe-security,
     .media-wipe-help {
-        padding: 0 10px;
+        padding: 0;
+        margin: 0;
     }
 
     .media-wipe-actions {
@@ -3668,6 +3767,65 @@ textarea:focus {
 }
 
 /* ================================
+    Horizontal Layout Fixes Start
+================================ */
+
+/* Prevent horizontal overflow on all Media Wipe pages */
+.media-wipe-dashboard-page {
+    overflow-x: hidden;
+    max-width: 100vw;
+    box-sizing: border-box;
+}
+
+.media-wipe-delete-all,
+.media-wipe-delete-selected,
+.media-wipe-settings,
+.media-wipe-security,
+.media-wipe-help {
+    overflow-x: hidden;
+    max-width: 100vw;
+    box-sizing: border-box;
+}
+
+/* Ensure all containers respect viewport width */
+.mw-dashboard-content,
+.media-wipe-settings-content,
+.mw-help-content {
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+/* Fix grid layouts to prevent overflow */
+.mw-action-cards,
+.mw-stats-grid,
+.mw-info-grid,
+.mw-safety-grid,
+.mw-page-safety-grid {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Ensure tables are responsive */
+.widefat,
+#media-wipe-unused-table,
+#media-datatable {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Fix modal positioning */
+.media-wipe-modal,
+.modal-content-large {
+    max-width: calc(100vw - 40px);
+    box-sizing: border-box;
+}
+
+/* ================================
+    Horizontal Layout Fixes End
+================================ */
+
+/* ================================
     Final Layout Fixes End
 ================================ */
 
@@ -3676,19 +3834,20 @@ textarea:focus {
 ================================ */
 
 /* Full Screen DataTable Container */
-/* .media-wipe-full-screen {
-    width: calc(100vw - 160px) !important;
-    margin-left: -20px !important;
-    margin-right: -20px !important;
+.media-wipe-full-screen {
+    width: 100% !important;
+    margin: 0 !important;
     padding: 20px !important;
     background: #f0f0f1;
     min-height: 100vh;
-} */
+    box-sizing: border-box;
+}
 
 @media (max-width: 782px) {
     .media-wipe-full-screen {
-        width: 100vw !important;
-        margin-left: -20px !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 15px !important;
     }
 }
 
@@ -4253,9 +4412,11 @@ textarea:focus {
 /* Help Page Container */
 .media-wipe-help-page {
     background: #f0f0f1;
-    margin: 0 -20px;
+    margin: 0;
     padding: 0;
     min-height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Hero Section */
@@ -4817,7 +4978,7 @@ textarea:focus {
 
 @media (max-width: 782px) {
     .media-wipe-help-page {
-        margin: 0 -10px;
+        margin: 0;
     }
 
     .mw-hero-section {
