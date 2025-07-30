@@ -1132,10 +1132,8 @@ button {
 /* Dashboard Page Layout - WordPress Standard */
 .media-wipe-dashboard-page {
     background: #fff;
-    margin: 20px 0;
+    margin: 20px 20px auto auto;
     padding: 0;
-    box-sizing: border-box;
-    /*! border: 1px solid #c3c4c7; */
     border-radius: 4px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }

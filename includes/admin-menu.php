@@ -41,15 +41,8 @@ function media_wipe_admin_menu() {
         'media_wipe_dashboard_page'                        // Function
     );
 
-    // Add Delete All Media submenu
-    add_submenu_page(
-        'media-wipe',                                      // Parent slug
-        __('Delete All Media', 'media-wipe'),              // Page title
-        __('Delete All', 'media-wipe'),                    // Menu title
-        'manage_options',                                  // Capability
-        'media-wipe-delete-all',                          // Menu slug
-        'media_wipe_all_media_page'                       // Function
-    );
+    // Delete All Media functionality is now integrated into the dashboard
+    // No separate submenu needed
 
     // Add Delete Selected Media submenu
     add_submenu_page(
@@ -289,10 +282,10 @@ function media_wipe_dashboard_page() {
                         <h3><?php esc_html_e('Delete All Media', 'media-wipe'); ?></h3>
                         <p><?php esc_html_e('Complete media library cleanup with multi-step security confirmation and backup verification.', 'media-wipe'); ?></p>
                         <div class="mw-card-actions">
-                            <a href="<?php echo esc_url(admin_url('admin.php?page=media-wipe-delete-all')); ?>" class="mw-btn mw-btn-danger">
+                            <button type="button" id="open-delete-all-modal" class="mw-btn mw-btn-danger">
                                 <span class="dashicons dashicons-trash"></span>
                                 <?php esc_html_e('Delete All', 'media-wipe'); ?>
-                            </a>
+                            </button>
                         </div>
                         <div class="mw-card-features">
                             <span class="mw-feature-tag"><?php esc_html_e('Multi-Step Security', 'media-wipe'); ?></span>
@@ -304,6 +297,13 @@ function media_wipe_dashboard_page() {
         </div>
     </div>
 
+    <!-- Delete All Media Modal -->
+    <?php media_wipe_render_delete_all_modal($media_stats); ?>
+
+    <!-- Hidden form for nonce -->
+    <form style="display: none;">
+        <?php wp_nonce_field('media_wipe_all_action', 'media_wipe_all_nonce'); ?>
+    </form>
 
     <?php
 }
@@ -660,19 +660,19 @@ function media_wipe_help_page() {
                         <div class="mw-steps">
                             <div class="mw-step">
                                 <span class="mw-step-number">1</span>
-                                <span><?php esc_html_e('Navigate to Media Wipe → Delete All Media', 'media-wipe'); ?></span>
+                                <span><?php esc_html_e('Click "Delete All" button on the dashboard', 'media-wipe'); ?></span>
                             </div>
                             <div class="mw-step">
                                 <span class="mw-step-number">2</span>
-                                <span><?php esc_html_e('Review media library statistics', 'media-wipe'); ?></span>
+                                <span><?php esc_html_e('Review media library statistics in the modal', 'media-wipe'); ?></span>
                             </div>
                             <div class="mw-step">
                                 <span class="mw-step-number">3</span>
-                                <span><?php esc_html_e('Complete backup verification', 'media-wipe'); ?></span>
+                                <span><?php esc_html_e('Complete backup verification if enabled', 'media-wipe'); ?></span>
                             </div>
                             <div class="mw-step">
                                 <span class="mw-step-number">4</span>
-                                <span><?php esc_html_e('Type confirmation text to proceed', 'media-wipe'); ?></span>
+                                <span><?php esc_html_e('Type confirmation text if required', 'media-wipe'); ?></span>
                             </div>
                         </div>
                     </div>

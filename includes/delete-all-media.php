@@ -343,6 +343,117 @@ function media_wipe_get_document_preview_html() {
 // Functions media_wipe_get_file_icon() and media_wipe_get_file_extension()
 // are now defined in includes/helper-functions.php to avoid duplication
 
+/**
+ * Render the delete all modal for dashboard integration
+ *
+ * @param array $media_stats Media statistics
+ */
+function media_wipe_render_delete_all_modal($media_stats) {
+    // Get settings to determine what confirmations are required
+    $settings = media_wipe_get_settings();
+    $show_backup_confirmation = $settings['require_backup_confirmation'];
+    $show_text_confirmation = $settings['require_text_confirmation'];
+    ?>
+    <!-- Enhanced Confirmation Modal -->
+    <div id="delete-all-confirmation-modal" class="media-wipe-modal" style="display:none;">
+        <div class="modal-overlay"></div>
+        <div class="modal-content-large">
+            <div class="modal-header">
+                <h2><?php esc_html_e('Confirm Deletion of All Media Files', 'media-wipe'); ?></h2>
+                <button type="button" class="modal-close" id="close-delete-all-modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Warning Message -->
+                <div class="confirmation-warning">
+                    <span class="dashicons dashicons-warning"></span>
+                    <div>
+                        <h3><?php esc_html_e('Critical Warning', 'media-wipe'); ?></h3>
+                        <p><?php esc_html_e('You are about to permanently delete ALL media files from your WordPress site. This action cannot be undone and will affect your entire media library.', 'media-wipe'); ?></p>
+                    </div>
+                </div>
+
+                <!-- Media Statistics -->
+                <div class="deletion-summary">
+                    <h4><?php esc_html_e('Media Library Overview', 'media-wipe'); ?></h4>
+                    <div class="summary-stats">
+                        <div class="stat-item">
+                            <span class="stat-label"><?php esc_html_e('Total Files:', 'media-wipe'); ?></span>
+                            <span class="stat-value stat-danger"><?php echo esc_html($media_stats['total']); ?></span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label"><?php esc_html_e('Images:', 'media-wipe'); ?></span>
+                            <span class="stat-value"><?php echo esc_html($media_stats['images']); ?></span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label"><?php esc_html_e('Videos:', 'media-wipe'); ?></span>
+                            <span class="stat-value"><?php echo esc_html($media_stats['videos']); ?></span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label"><?php esc_html_e('Documents:', 'media-wipe'); ?></span>
+                            <span class="stat-value"><?php echo esc_html($media_stats['documents']); ?></span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label"><?php esc_html_e('Other Files:', 'media-wipe'); ?></span>
+                            <span class="stat-value"><?php echo esc_html($media_stats['other']); ?></span>
+                        </div>
+                    </div>
+                </div>
+
+                <?php if ($show_backup_confirmation): ?>
+                <!-- Backup Confirmation -->
+                <div class="confirmation-checklist">
+                    <h4><?php esc_html_e('Backup Verification', 'media-wipe'); ?></h4>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="backup-confirmed" required>
+                        <span><?php esc_html_e('I have created a complete backup of my media files', 'media-wipe'); ?></span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="understand-permanent" required>
+                        <span><?php esc_html_e('I understand this action is permanent and cannot be undone', 'media-wipe'); ?></span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="accept-responsibility" required>
+                        <span><?php esc_html_e('I accept full responsibility for this action', 'media-wipe'); ?></span>
+                    </label>
+                </div>
+                <?php endif; ?>
+
+                <?php if ($show_text_confirmation): ?>
+                <!-- Text Confirmation -->
+                <div class="final-confirmation">
+                    <label for="confirmation-text"><?php esc_html_e('Type "DELETE ALL MEDIA" to confirm:', 'media-wipe'); ?></label>
+                    <input type="text" id="confirmation-text" placeholder="<?php esc_attr_e('DELETE ALL MEDIA', 'media-wipe'); ?>" autocomplete="off">
+                    <div class="confirmation-help">
+                        <span class="dashicons dashicons-info"></span>
+                        <?php esc_html_e('This confirmation helps prevent accidental deletions.', 'media-wipe'); ?>
+                    </div>
+                </div>
+                <?php endif; ?>
+
+                <?php if (!$show_backup_confirmation && !$show_text_confirmation): ?>
+                <div class="simple-confirmation">
+                    <div class="warning-message">
+                        <span class="dashicons dashicons-warning"></span>
+                        <p><strong><?php esc_html_e('Warning:', 'media-wipe'); ?></strong> <?php esc_html_e('This will permanently delete all media files from your website. This action cannot be undone.', 'media-wipe'); ?></p>
+                    </div>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="final-confirm" required>
+                        <span><?php esc_html_e('I understand and want to proceed with deleting all media files', 'media-wipe'); ?></span>
+                    </label>
+                </div>
+                <?php endif; ?>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="button button-secondary" id="close-delete-all-modal"><?php esc_html_e('Cancel', 'media-wipe'); ?></button>
+                <button type="button" class="button button-danger" id="confirm-delete-all" disabled><?php esc_html_e('Delete All Media Files', 'media-wipe'); ?></button>
+            </div>
+        </div>
+    </div>
+    <?php
+}
+
 // Handle AJAX request for deleting all media
 add_action('wp_ajax_media_wipe_delete_all_media', 'media_wipe_delete_all_media_ajax');
 
