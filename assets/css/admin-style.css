@@ -4167,6 +4167,10 @@ textarea:focus {
     gap: 20px;
 }
 
+.mw-settings-single {
+    padding: 24px;
+}
+
 .mw-setting-card {
     display: flex;
     align-items: center;
@@ -4313,7 +4317,8 @@ textarea:focus {
         margin: 10px 0;
     }
 
-    .mw-settings-grid {
+    .mw-settings-grid,
+    .mw-settings-single {
         padding: 16px;
         gap: 16px;
     }
@@ -4345,6 +4350,124 @@ textarea:focus {
 
 /* ================================
     Modern Settings Page Styles End
+================================ */
+
+/* ================================
+    Deletion History Logging Settings
+================================ */
+
+.mw-logging-settings {
+    margin-bottom: 30px;
+}
+
+.mw-logging-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 8px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+}
+
+.mw-logging-card:hover {
+    border-color: #2271b1;
+}
+
+.mw-logging-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+}
+
+.mw-logging-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #2271b1, #135e96);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.mw-logging-icon .dashicons {
+    font-size: 20px;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+}
+
+.mw-logging-title h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1d2327;
+    margin: 0 0 4px;
+    line-height: 1.3;
+}
+
+.mw-logging-title p {
+    font-size: 14px;
+    color: #646970;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.mw-logging-control {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+}
+
+.mw-save-logging-btn {
+    background: linear-gradient(135deg, #2271b1, #135e96) !important;
+    border: none !important;
+    color: #fff !important;
+    padding: 8px 16px !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 8px rgba(34, 113, 177, 0.3) !important;
+    font-size: 13px !important;
+    height: auto !important;
+}
+
+.mw-save-logging-btn:hover {
+    background: linear-gradient(135deg, #135e96, #0f4c75) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(34, 113, 177, 0.4) !important;
+}
+
+/* Responsive Design for Logging Settings */
+@media (max-width: 600px) {
+    .mw-logging-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .mw-logging-header {
+        width: 100%;
+    }
+
+    .mw-logging-control {
+        align-self: flex-end;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .mw-save-logging-btn {
+        width: auto !important;
+    }
+}
+
+/* ================================
+    Deletion History Logging Settings End
 ================================ */
 
 /* ================================

@@ -168,7 +168,6 @@ class Media_Wipe_Plugin {
     public function activate() {
         // Set default options
         $default_settings = array(
-            'show_document_preview' => 1,
             'enable_logging' => 1
         );
 

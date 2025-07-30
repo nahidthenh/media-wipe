@@ -28,7 +28,6 @@ function media_wipe_get_settings() {
     }
 
     $defaults = array(
-        'show_document_preview'       => 1,
         'enable_logging'              => 1,
     );
 
@@ -57,7 +56,6 @@ function media_wipe_save_settings() {
 
     // Validate and sanitize settings
     $settings = array(
-        'show_document_preview'       => isset( $_POST['show_document_preview'] ) ? 1 : 0,
         'enable_logging'              => isset( $_POST['enable_logging'] ) ? 1 : 0,
     );
 

@@ -64,24 +64,16 @@ function media_wipe_admin_menu() {
         'media_wipe_delete_unused_page'                   // Function
     );
 
-    // Add Settings submenu
-    add_submenu_page(
-        'media-wipe',                                      // Parent slug
-        __('Settings', 'media-wipe'),                      // Page title
-        __('Settings', 'media-wipe'),                      // Menu title
-        'manage_options',                                  // Capability
-        'media-wipe-settings',                            // Menu slug
-        'media_wipe_settings_page'                        // Function
-    );
+    // Settings functionality is now integrated into Deletion History page
 
-    // Add Security Audit submenu
+    // Add Deletion History submenu
     add_submenu_page(
         'media-wipe',                                      // Parent slug
-        __('Security Audit', 'media-wipe'),               // Page title
-        __('Audit Log', 'media-wipe'),                     // Menu title
+        __('Deletion History', 'media-wipe'),             // Page title
+        __('Deletion History', 'media-wipe'),             // Menu title
         'manage_options',                                  // Capability
         'media-wipe-security',                            // Menu slug
-        'media_wipe_security_page'                        // Function
+        'media_wipe_deletion_history_page'                // Function
     );
 
     // Add Help & Support submenu
@@ -308,10 +300,12 @@ function media_wipe_dashboard_page() {
     <?php
 }
 
+// Settings page removed - logging settings moved to Deletion History page
+
 /**
- * Settings page content
+ * Deletion History page content
  */
-function media_wipe_settings_page() {
+function media_wipe_deletion_history_page() {
     // Set security headers
     media_wipe_set_security_headers();
 
@@ -319,87 +313,23 @@ function media_wipe_settings_page() {
         wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'media-wipe'));
     }
 
-    // Handle form submission
-    if (isset($_POST['submit']) && check_admin_referer('media_wipe_settings_action', 'media_wipe_settings_nonce')) {
-        media_wipe_save_settings();
-        echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Settings saved successfully.', 'media-wipe') . '</p></div>';
-    }
-
-    $settings = media_wipe_get_settings();
-    ?>
-    <div class="wrap">
-        <h1><?php esc_html_e('Media Wipe Settings', 'media-wipe'); ?></h1>
-
-        <div class="mw-settings-container">
-            <form method="post" action="" class="mw-settings-form">
-                <?php wp_nonce_field('media_wipe_settings_action', 'media_wipe_settings_nonce'); ?>
-
-                <div class="mw-settings-grid">
-                    <!-- Document Preview Setting -->
-                    <div class="mw-setting-card">
-                        <div class="mw-setting-header">
-                            <div class="mw-setting-icon">
-                                <span class="dashicons dashicons-visibility"></span>
-                            </div>
-                            <div class="mw-setting-title">
-                                <h3><?php esc_html_e('Document Preview', 'media-wipe'); ?></h3>
-                                <p><?php esc_html_e('Show file previews in confirmation dialogs', 'media-wipe'); ?></p>
-                            </div>
-                        </div>
-                        <div class="mw-setting-control">
-                            <label class="mw-toggle">
-                                <input type="checkbox" name="show_document_preview" value="1" <?php checked($settings['show_document_preview'], 1); ?>>
-                                <span class="mw-toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Activity Logging Setting -->
-                    <div class="mw-setting-card">
-                        <div class="mw-setting-header">
-                            <div class="mw-setting-icon">
-                                <span class="dashicons dashicons-admin-tools"></span>
-                            </div>
-                            <div class="mw-setting-title">
-                                <h3><?php esc_html_e('Activity Logging', 'media-wipe'); ?></h3>
-                                <p><?php esc_html_e('Keep detailed logs of all deletion activities', 'media-wipe'); ?></p>
-                            </div>
-                        </div>
-                        <div class="mw-setting-control">
-                            <label class="mw-toggle">
-                                <input type="checkbox" name="enable_logging" value="1" <?php checked($settings['enable_logging'], 1); ?>>
-                                <span class="mw-toggle-slider"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mw-settings-footer">
-                    <?php submit_button(__('Save Settings', 'media-wipe'), 'primary', 'submit', false, array('class' => 'mw-save-btn')); ?>
-                </div>
-            </form>
-        </div>
-    </div>
-    <?php
-}
-
-/**
- * Security Audit page content
- */
-function media_wipe_security_page() {
-    // Set security headers
-    media_wipe_set_security_headers();
-
-    if (!current_user_can('manage_options')) {
-        wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'media-wipe'));
+    // Handle logging settings save
+    if (isset($_POST['save_logging']) && check_admin_referer('media_wipe_logging_action', 'media_wipe_logging_nonce')) {
+        $settings = array(
+            'enable_logging' => isset($_POST['enable_logging']) ? 1 : 0,
+        );
+        update_option('media_wipe_settings', $settings);
+        echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Logging settings saved successfully.', 'media-wipe') . '</p></div>';
     }
 
     // Handle log clearing
     if (isset($_POST['clear_logs']) && check_admin_referer('media_wipe_clear_logs', 'clear_logs_nonce')) {
         delete_option('media_wipe_activity_log');
         delete_option('media_wipe_security_log');
-        echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Security logs cleared successfully.', 'media-wipe') . '</p></div>';
+        echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Deletion history cleared successfully.', 'media-wipe') . '</p></div>';
     }
+
+    $settings = media_wipe_get_settings();
 
     $activity_logs = get_option('media_wipe_activity_log', array());
     $security_logs = get_option('media_wipe_security_log', array());
@@ -409,7 +339,32 @@ function media_wipe_security_page() {
     $security_logs = array_reverse($security_logs);
     ?>
     <div class="wrap">
-        <h1><?php esc_html_e('Security Audit Log', 'media-wipe'); ?></h1>
+        <h1><?php esc_html_e('Deletion History', 'media-wipe'); ?></h1>
+
+        <!-- Logging Settings -->
+        <div class="mw-logging-settings">
+            <form method="post" action="">
+                <?php wp_nonce_field('media_wipe_logging_action', 'media_wipe_logging_nonce'); ?>
+                <div class="mw-logging-card">
+                    <div class="mw-logging-header">
+                        <div class="mw-logging-icon">
+                            <span class="dashicons dashicons-admin-tools"></span>
+                        </div>
+                        <div class="mw-logging-title">
+                            <h3><?php esc_html_e('Activity Logging', 'media-wipe'); ?></h3>
+                            <p><?php esc_html_e('Keep detailed logs of all deletion activities for audit and troubleshooting purposes', 'media-wipe'); ?></p>
+                        </div>
+                    </div>
+                    <div class="mw-logging-control">
+                        <label class="mw-toggle">
+                            <input type="checkbox" name="enable_logging" value="1" <?php checked($settings['enable_logging'], 1); ?>>
+                            <span class="mw-toggle-slider"></span>
+                        </label>
+                        <?php submit_button(__('Save', 'media-wipe'), 'primary', 'save_logging', false, array('class' => 'mw-save-logging-btn')); ?>
+                    </div>
+                </div>
+            </form>
+        </div>
 
         <div class="security-audit-overview">
             <div class="audit-stats">
