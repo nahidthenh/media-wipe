@@ -1180,8 +1180,8 @@ button {
 
 .mw-hero-icon {
     background: rgba(255, 255, 255, 0.2);
-    width: 60px;
-    height: 60px;
+    /*! width: 60px; */
+    /*! height: 60px; */
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1192,7 +1192,7 @@ button {
 }
 
 .mw-hero-icon .dashicons {
-    font-size: 28px;
+    font-size: 35px !important;
     width: 28px;
     height: 28px;
     color: #fff;
@@ -1238,6 +1238,10 @@ button {
     border: 1px solid rgba(255, 255, 255, 0.2);
     min-width: 80px;
     transition: all 0.3s ease;
+}
+
+.mw-hero-stat span {
+    color: #fff;
 }
 
 .mw-hero-stat:hover {
@@ -4443,12 +4447,12 @@ textarea:focus {
 .mw-hero-content {
     position: relative;
     z-index: 2;
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 20px auto;
 }
 
 .mw-hero-icon {
-    margin-bottom: 20px;
+    /*! margin-bottom: 20px; */
 }
 
 .mw-hero-icon .dashicons {
@@ -4457,8 +4461,11 @@ textarea:focus {
     height: 64px;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
-    padding: 20px;
     backdrop-filter: blur(10px);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .mw-hero-section h1 {
