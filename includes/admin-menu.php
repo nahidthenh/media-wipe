@@ -326,7 +326,13 @@ function media_wipe_deletion_history_page() {
     $activity_logs = get_option('media_wipe_activity_log', array());
     $security_logs = get_option('media_wipe_security_log', array());
 
-    // Reverse to show most recent first
+    // Combine and sort logs by timestamp
+    $all_logs = array_merge($activity_logs, $security_logs);
+    usort($all_logs, function($a, $b) {
+        return strtotime($b['timestamp']) - strtotime($a['timestamp']);
+    });
+
+    // Reverse individual arrays to show most recent first (for backward compatibility)
     $activity_logs = array_reverse($activity_logs);
     $security_logs = array_reverse($security_logs);
     ?>
@@ -358,109 +364,114 @@ function media_wipe_deletion_history_page() {
             </form>
         </div>
 
-        <div class="security-audit-overview">
-            <div class="audit-stats">
-                <div class="stat-card">
-                    <h3><?php esc_html_e('Activity Logs', 'media-wipe'); ?></h3>
-                    <span class="stat-number"><?php echo count($activity_logs); ?></span>
+        <div class="mw-deletion-history-overview">
+            <div class="mw-history-stats">
+                <div class="mw-stat-card">
+                    <div class="mw-stat-icon">
+                        <span class="dashicons dashicons-admin-tools"></span>
+                    </div>
+                    <div class="mw-stat-content">
+                        <h3><?php esc_html_e('Activity Logs', 'media-wipe'); ?></h3>
+                        <span class="mw-stat-number"><?php echo count($activity_logs); ?></span>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <h3><?php esc_html_e('Security Events', 'media-wipe'); ?></h3>
-                    <span class="stat-number"><?php echo count($security_logs); ?></span>
+                <div class="mw-stat-card">
+                    <div class="mw-stat-icon">
+                        <span class="dashicons dashicons-shield-alt"></span>
+                    </div>
+                    <div class="mw-stat-content">
+                        <h3><?php esc_html_e('Security Events', 'media-wipe'); ?></h3>
+                        <span class="mw-stat-number"><?php echo count($security_logs); ?></span>
+                    </div>
+                </div>
+                <div class="mw-stat-card">
+                    <div class="mw-stat-icon">
+                        <span class="dashicons dashicons-calendar-alt"></span>
+                    </div>
+                    <div class="mw-stat-content">
+                        <h3><?php esc_html_e('Total Events', 'media-wipe'); ?></h3>
+                        <span class="mw-stat-number"><?php echo count($all_logs); ?></span>
+                    </div>
                 </div>
             </div>
 
-            <form method="post" style="margin-top: 20px;">
-                <?php wp_nonce_field('media_wipe_clear_logs', 'clear_logs_nonce'); ?>
-                <input type="submit" name="clear_logs" class="button button-secondary"
-                       value="<?php esc_attr_e('Clear All Logs', 'media-wipe'); ?>"
-                       onclick="return confirm('<?php esc_attr_e('Are you sure you want to clear all logs? This action cannot be undone.', 'media-wipe'); ?>');">
-            </form>
+            <div class="mw-history-actions">
+                <form method="post" style="display: inline-block;">
+                    <?php wp_nonce_field('media_wipe_clear_logs', 'clear_logs_nonce'); ?>
+                    <button type="submit" name="clear_logs" class="button button-secondary mw-clear-logs-btn"
+                           onclick="return confirm('<?php esc_attr_e('Are you sure you want to clear all logs? This action cannot be undone.', 'media-wipe'); ?>');">
+                        <span class="dashicons dashicons-trash"></span>
+                        <?php esc_html_e('Clear All Logs', 'media-wipe'); ?>
+                    </button>
+                </form>
+            </div>
         </div>
 
-        <!-- Security Events Tab -->
-        <h2><?php esc_html_e('Recent Security Events', 'media-wipe'); ?></h2>
-        <?php if (!empty($security_logs)): ?>
-            <table class="widefat fixed striped">
-                <thead>
-                    <tr>
-                        <th><?php esc_html_e('Timestamp', 'media-wipe'); ?></th>
-                        <th><?php esc_html_e('User', 'media-wipe'); ?></th>
-                        <th><?php esc_html_e('Event', 'media-wipe'); ?></th>
-                        <th><?php esc_html_e('IP Address', 'media-wipe'); ?></th>
-                        <th><?php esc_html_e('Details', 'media-wipe'); ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach (array_slice($security_logs, 0, 20) as $log): ?>
-                        <tr>
-                            <td><?php echo esc_html($log['timestamp']); ?></td>
-                            <td><?php echo esc_html($log['user_login']); ?></td>
-                            <td>
-                                <span class="security-event-<?php echo esc_attr($log['event']); ?>">
-                                    <?php echo esc_html(ucwords(str_replace('_', ' ', $log['event']))); ?>
-                                </span>
-                            </td>
-                            <td><?php echo esc_html($log['ip_address']); ?></td>
-                            <td>
-                                <?php if (!empty($log['data'])): ?>
-                                    <details>
-                                        <summary><?php esc_html_e('View Details', 'media-wipe'); ?></summary>
-                                        <pre><?php echo esc_html(print_r($log['data'], true)); ?></pre>
-                                    </details>
-                                <?php else: ?>
-                                    <em><?php esc_html_e('No additional data', 'media-wipe'); ?></em>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php else: ?>
-            <p><?php esc_html_e('No security events recorded.', 'media-wipe'); ?></p>
-        <?php endif; ?>
+        <!-- Modern Deletion History Table -->
+        <div class="mw-history-table-container">
+            <h2><?php esc_html_e('Deletion History', 'media-wipe'); ?></h2>
 
-        <!-- Activity Logs Tab -->
-        <h2><?php esc_html_e('Recent Activity', 'media-wipe'); ?></h2>
-        <?php if (!empty($activity_logs)): ?>
-            <table class="widefat fixed striped">
-                <thead>
-                    <tr>
-                        <th><?php esc_html_e('Timestamp', 'media-wipe'); ?></th>
-                        <th><?php esc_html_e('User', 'media-wipe'); ?></th>
-                        <th><?php esc_html_e('Action', 'media-wipe'); ?></th>
-                        <th><?php esc_html_e('IP Address', 'media-wipe'); ?></th>
-                        <th><?php esc_html_e('Details', 'media-wipe'); ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach (array_slice($activity_logs, 0, 20) as $log): ?>
-                        <tr>
-                            <td><?php echo esc_html($log['timestamp']); ?></td>
-                            <td><?php echo esc_html($log['user_login']); ?></td>
-                            <td>
-                                <span class="activity-<?php echo esc_attr($log['action']); ?>">
-                                    <?php echo esc_html(ucwords(str_replace('_', ' ', $log['action']))); ?>
-                                </span>
-                            </td>
-                            <td><?php echo esc_html($log['ip_address']); ?></td>
-                            <td>
-                                <?php if (!empty($log['data'])): ?>
-                                    <details>
-                                        <summary><?php esc_html_e('View Details', 'media-wipe'); ?></summary>
-                                        <pre><?php echo esc_html(print_r($log['data'], true)); ?></pre>
-                                    </details>
-                                <?php else: ?>
-                                    <em><?php esc_html_e('No additional data', 'media-wipe'); ?></em>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php else: ?>
-            <p><?php esc_html_e('No activity recorded.', 'media-wipe'); ?></p>
-        <?php endif; ?>
+            <?php if (!empty($all_logs)): ?>
+                <div class="datatable-container">
+                    <table id="deletion-history-datatable" class="display nowrap" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th><?php esc_html_e('Type', 'media-wipe'); ?></th>
+                                <th><?php esc_html_e('Date & Time', 'media-wipe'); ?></th>
+                                <th><?php esc_html_e('User', 'media-wipe'); ?></th>
+                                <th><?php esc_html_e('Action', 'media-wipe'); ?></th>
+                                <th><?php esc_html_e('IP Address', 'media-wipe'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($all_logs as $log):
+                                $log_type = isset($log['event']) ? 'security' : 'activity';
+                                $action = isset($log['event']) ? $log['event'] : $log['action'];
+                                $formatted_date = date('M j, Y g:i A', strtotime($log['timestamp']));
+                                $relative_time = human_time_diff(strtotime($log['timestamp']), current_time('timestamp')) . ' ago';
+                            ?>
+                                <tr>
+                                    <td>
+                                        <span class="mw-log-type mw-log-<?php echo esc_attr($log_type); ?>">
+                                            <span class="dashicons dashicons-<?php echo $log_type === 'security' ? 'shield-alt' : 'admin-tools'; ?>"></span>
+                                            <?php echo esc_html(ucfirst($log_type)); ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="mw-timestamp">
+                                            <strong><?php echo esc_html($formatted_date); ?></strong>
+                                            <small><?php echo esc_html($relative_time); ?></small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="mw-user-info">
+                                            <span class="dashicons dashicons-admin-users"></span>
+                                            <?php echo esc_html($log['user_login']); ?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="mw-action-badge mw-action-<?php echo esc_attr($action); ?>">
+                                            <?php echo esc_html(ucwords(str_replace('_', ' ', $action))); ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <code class="mw-ip-address"><?php echo esc_html($log['ip_address']); ?></code>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php else: ?>
+                <div class="mw-no-logs">
+                    <div class="mw-no-logs-icon">
+                        <span class="dashicons dashicons-admin-tools"></span>
+                    </div>
+                    <h3><?php esc_html_e('No Deletion History', 'media-wipe'); ?></h3>
+                    <p><?php esc_html_e('No deletion activities have been recorded yet. Activity will appear here when you delete media files.', 'media-wipe'); ?></p>
+                </div>
+            <?php endif; ?>
+        </div>
     </div>
     <?php
 }

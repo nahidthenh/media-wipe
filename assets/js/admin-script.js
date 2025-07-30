@@ -1125,4 +1125,31 @@ jQuery(document).ready(function ($) {
         });
     });
 
+    // Initialize Deletion History DataTable
+    if ($('#deletion-history-datatable').length) {
+        $('#deletion-history-datatable').DataTable({
+            responsive: true,
+            pageLength: 25,
+            order: [[1, 'desc']], // Sort by date/time descending (newest first)
+            columnDefs: [
+                { width: "15%", targets: 0 }, // Type column
+                { width: "25%", targets: 1 }, // Date column
+                { width: "20%", targets: 2 }, // User column
+                { width: "20%", targets: 3 }, // Action column
+                { width: "20%", targets: 4 }  // IP column
+            ],
+            language: {
+                search: "Search logs:",
+                lengthMenu: "Show _MENU_ logs per page",
+                info: "Showing _START_ to _END_ of _TOTAL_ log entries",
+                infoEmpty: "No log entries found",
+                infoFiltered: "(filtered from _MAX_ total entries)",
+                emptyTable: "No deletion history available",
+                zeroRecords: "No matching log entries found"
+            }
+        });
+    }
+
+    // Details modal functionality removed - simplified table without details column
+
 });
