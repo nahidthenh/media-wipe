@@ -28,8 +28,6 @@ function media_wipe_get_settings() {
     }
 
     $defaults = array(
-        'require_backup_confirmation' => 1,
-        'require_text_confirmation'   => 1,
         'show_document_preview'       => 1,
         'enable_logging'              => 1,
     );
@@ -59,8 +57,6 @@ function media_wipe_save_settings() {
 
     // Validate and sanitize settings
     $settings = array(
-        'require_backup_confirmation' => isset( $_POST['require_backup_confirmation'] ) ? 1 : 0,
-        'require_text_confirmation'   => isset( $_POST['require_text_confirmation'] ) ? 1 : 0,
         'show_document_preview'       => isset( $_POST['show_document_preview'] ) ? 1 : 0,
         'enable_logging'              => isset( $_POST['enable_logging'] ) ? 1 : 0,
     );

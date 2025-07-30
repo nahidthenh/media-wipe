@@ -4145,6 +4145,42 @@ textarea:focus {
 ================================ */
 
 /* ================================
+    Settings Page Enhancements
+================================ */
+
+.confirmation-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: #f0f6fc;
+    border: 1px solid #c3e4f7;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.confirmation-info .dashicons {
+    margin-top: 2px;
+    font-size: 18px;
+}
+
+.confirmation-info strong {
+    display: block;
+    color: #1d2327;
+    margin-bottom: 4px;
+}
+
+.confirmation-info .description {
+    margin: 0 !important;
+    color: #646970;
+    line-height: 1.5;
+}
+
+/* ================================
+    Settings Page Enhancements End
+================================ */
+
+/* ================================
     Final Layout Fixes End
 ================================ */
 

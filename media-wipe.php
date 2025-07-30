@@ -168,8 +168,6 @@ class Media_Wipe_Plugin {
     public function activate() {
         // Set default options
         $default_settings = array(
-            'require_backup_confirmation' => 1,
-            'require_text_confirmation' => 1,
             'show_document_preview' => 1,
             'enable_logging' => 1
         );

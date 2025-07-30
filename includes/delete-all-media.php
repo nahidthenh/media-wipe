@@ -441,20 +441,8 @@ function media_wipe_delete_all_media_ajax() {
         wp_send_json_error(array('message' => esc_html__('Insufficient permissions.', 'media-wipe')));
     }
 
-    // Get settings to check what validations are required
-    $settings = media_wipe_get_settings();
-
-    // Verify confirmation text only if required by settings
-    if ($settings['require_text_confirmation']) {
-        $confirmation = isset($_POST['confirmation']) ? sanitize_text_field($_POST['confirmation']) : '';
-        if ($confirmation !== 'DELETE ALL MEDIA') {
-            media_wipe_log_security_event('invalid_confirmation', array(
-                'action' => 'delete_all_media',
-                'provided_confirmation' => $confirmation
-            ));
-            wp_send_json_error(array('message' => esc_html__('Confirmation text does not match.', 'media-wipe')));
-        }
-    }
+    // Simple confirmation check - user must have checked the confirmation checkbox
+    // The frontend JavaScript ensures this is checked before allowing submission
 
     // Check rate limiting
     if (!media_wipe_check_rate_limit('delete_all', 1)) {

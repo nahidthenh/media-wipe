@@ -337,26 +337,14 @@ function media_wipe_settings_page() {
             <h2><?php esc_html_e('Confirmation Requirements', 'media-wipe'); ?></h2>
             <table class="form-table">
                         <tr>
-                            <th scope="row"><?php esc_html_e('Backup Confirmation', 'media-wipe'); ?></th>
+                            <th scope="row"><?php esc_html_e('Delete All Confirmation', 'media-wipe'); ?></th>
                             <td>
                                 <fieldset>
-                                    <label>
-                                        <input type="checkbox" name="require_backup_confirmation" value="1" <?php checked($settings['require_backup_confirmation'], 1); ?>>
-                                        <?php esc_html_e('Require backup confirmation for delete all operations', 'media-wipe'); ?>
-                                    </label>
-                                    <p class="description"><?php esc_html_e('Forces users to confirm they have created a backup before proceeding with bulk deletions.', 'media-wipe'); ?></p>
-                                </fieldset>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row"><?php esc_html_e('Text Confirmation', 'media-wipe'); ?></th>
-                            <td>
-                                <fieldset>
-                                    <label>
-                                        <input type="checkbox" name="require_text_confirmation" value="1" <?php checked($settings['require_text_confirmation'], 1); ?>>
-                                        <?php esc_html_e('Require typing confirmation text for delete all operations', 'media-wipe'); ?>
-                                    </label>
-                                    <p class="description"><?php esc_html_e('Requires users to type a confirmation phrase before executing bulk deletions.', 'media-wipe'); ?></p>
+                                    <div class="confirmation-info">
+                                        <span class="dashicons dashicons-yes-alt" style="color: #00a32a;"></span>
+                                        <strong><?php esc_html_e('Simplified Confirmation Process', 'media-wipe'); ?></strong>
+                                        <p class="description"><?php esc_html_e('Delete all operations now use a streamlined confirmation process with a single checkbox and clear warning message. This provides the right balance between safety and usability.', 'media-wipe'); ?></p>
+                                    </div>
                                 </fieldset>
                             </td>
                         </tr>
