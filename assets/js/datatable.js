@@ -31,62 +31,17 @@
         }
 
         /**
-         * Initialize DataTables.net
+         * Initialize WordPress-style list table (no DataTable needed)
          */
         initializeDataTable() {
-            if (!$.fn.DataTable) {
-                console.error('DataTables library not loaded');
-                return;
-            }
+            console.log('Media Wipe List Table: Initializing WordPress-style table...');
 
-            // Destroy existing DataTable if it exists
-            if ($.fn.DataTable.isDataTable('#media-datatable')) {
-                $('#media-datatable').DataTable().destroy();
-            }
+            // No DataTable initialization needed - using native WordPress styling
+            // Just update the initial state
+            this.updateSelectionState();
+            this.updateDeleteButton();
 
-            this.table = $('#media-datatable').DataTable({
-                responsive: true,
-                pageLength: 25,
-                lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
-                order: [[5, 'desc']], // Sort by date column
-                columnDefs: [
-                    {
-                        targets: [0, 6], // Select and Actions columns
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        targets: 1, // Preview column
-                        orderable: false,
-                        width: '80px'
-                    },
-                    {
-                        targets: 4, // Size column
-                        type: 'num'
-                    }
-                ],
-                language: {
-                    search: 'Search media files:',
-                    lengthMenu: 'Show _MENU_ files per page',
-                    info: 'Showing _START_ to _END_ of _TOTAL_ files',
-                    infoEmpty: 'No files found',
-                    infoFiltered: '(filtered from _MAX_ total files)',
-                    paginate: {
-                        first: 'First',
-                        last: 'Last',
-                        next: 'Next',
-                        previous: 'Previous'
-                    }
-                },
-                dom: '<"datatable-top"<"datatable-length"l><"datatable-filter"f>>rt<"datatable-bottom"<"datatable-info"i><"datatable-pagination"p>>',
-                drawCallback: () => {
-                    this.updateSelectionState();
-                },
-                initComplete: () => {
-                    console.log('DataTable initialized successfully');
-                    this.updateDeleteButton();
-                }
-            });
+            console.log('WordPress-style list table initialized successfully');
         }
 
         /**
@@ -126,11 +81,11 @@
                 this.deleteSingle(mediaId);
             });
 
-            // Row click functionality for easier selection
-            $(document).on('click', '#media-datatable tbody tr', (e) => {
+            // Row click functionality for easier selection (WordPress list table)
+            $(document).on('click', '#media-list-table tbody tr', (e) => {
                 // Don't trigger row selection if clicking on buttons, links, or checkboxes
-                if ($(e.target).is('button, a, input[type="checkbox"], .button, .delete-single') ||
-                    $(e.target).closest('button, a, .button, .delete-single').length > 0) {
+                if ($(e.target).is('button, a, input[type="checkbox"], .button, .delete-single, .submitdelete') ||
+                    $(e.target).closest('button, a, .button, .delete-single, .submitdelete, .row-actions').length > 0) {
                     return;
                 }
 
@@ -151,8 +106,8 @@
                 e.stopPropagation();
             });
 
-            // Keyboard accessibility - Space key to toggle selection
-            $(document).on('keydown', '#media-datatable tbody tr', (e) => {
+            // Keyboard accessibility - Space key to toggle selection (WordPress list table)
+            $(document).on('keydown', '#media-list-table tbody tr', (e) => {
                 if (e.key === ' ' || e.keyCode === 32) {
                     e.preventDefault();
                     const $row = $(e.currentTarget);
@@ -166,12 +121,28 @@
                 }
             });
 
-            // Make rows focusable for keyboard navigation
-            $(document).on('focus', '#media-datatable tbody tr', function () {
+            // Make rows focusable for keyboard navigation (WordPress list table)
+            $(document).on('focus', '#media-list-table tbody tr', function () {
                 $(this).attr('tabindex', '0');
             });
 
-            console.log('Media Wipe DataTable: Events bound successfully');
+            // Handle "Select All" checkboxes in header and footer
+            $(document).on('change', '#cb-select-all-1, #cb-select-all-2', (e) => {
+                const isChecked = $(e.target).prop('checked');
+                $('.media-checkbox').prop('checked', isChecked);
+
+                // Update the other "Select All" checkbox to match
+                $('#cb-select-all-1, #cb-select-all-2').prop('checked', isChecked);
+
+                // Update selection state for all checkboxes
+                $('.media-checkbox').each((_, checkbox) => {
+                    this.handleCheckboxChange(checkbox);
+                });
+
+                console.log('Select All toggled:', isChecked);
+            });
+
+            console.log('Media Wipe List Table: Events bound successfully');
         }
 
         /**
@@ -314,15 +285,15 @@
         }
     }
 
-    // Initialize DataTable when document is ready
+    // Initialize WordPress List Table when document is ready
     $(document).ready(function () {
-        console.log('Media Wipe DataTable: Document ready');
+        console.log('Media Wipe List Table: Document ready');
 
-        if ($('#media-datatable').length) {
-            console.log('Media Wipe DataTable: Table found, initializing...');
+        if ($('#media-list-table').length) {
+            console.log('Media Wipe List Table: Table found, initializing...');
             window.mediaWipeDataTable = new MediaWipeDataTable();
         } else {
-            console.log('Media Wipe DataTable: Table not found');
+            console.log('Media Wipe List Table: Table not found');
         }
     });
 

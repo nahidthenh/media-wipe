@@ -74,77 +74,187 @@ function media_wipe_unused_media_page() {
         </h1>
 
         <div class="media-wipe-delete-selected">
-            <!-- Professional DataTable -->
-            <div class="datatable-container">
-                <div class="datatable-header">
-                    <h3><?php esc_html_e('Media Files', 'media-wipe'); ?></h3>
-                    <div class="datatable-controls">
-                        <button type="button" id="select-all-btn" class="button button-secondary">
-                            <?php esc_html_e('Select All', 'media-wipe'); ?>
-                        </button>
-                        <button type="button" id="select-none-btn" class="button button-secondary">
-                            <?php esc_html_e('Select None', 'media-wipe'); ?>
-                        </button>
-                        <button type="button" id="delete-selected-btn" class="button button-primary" disabled>
-                            <span class="dashicons dashicons-trash"></span>
-                            <?php esc_html_e('Delete Selected', 'media-wipe'); ?>
-                        </button>
-                    </div>
+            <!-- WordPress Native List Table -->
+            <div class="tablenav top">
+                <div class="alignleft actions bulkactions">
+                    <label for="bulk-action-selector-top" class="screen-reader-text"><?php esc_html_e('Select bulk action', 'media-wipe'); ?></label>
+                    <select name="action" id="bulk-action-selector-top">
+                        <option value="-1"><?php esc_html_e('Bulk actions', 'media-wipe'); ?></option>
+                        <option value="delete"><?php esc_html_e('Delete permanently', 'media-wipe'); ?></option>
+                    </select>
+                    <input type="submit" id="doaction" class="button action" value="<?php esc_attr_e('Apply', 'media-wipe'); ?>">
                 </div>
 
-                <table id="media-datatable" class="display nowrap" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th><?php esc_html_e('Select', 'media-wipe'); ?></th>
-                            <th><?php esc_html_e('Preview', 'media-wipe'); ?></th>
-                            <th><?php esc_html_e('Title', 'media-wipe'); ?></th>
-                            <th><?php esc_html_e('Type', 'media-wipe'); ?></th>
-                            <th><?php esc_html_e('Size', 'media-wipe'); ?></th>
-                            <th><?php esc_html_e('Date', 'media-wipe'); ?></th>
-                            <th><?php esc_html_e('Actions', 'media-wipe'); ?></th>
+                <div class="alignright actions">
+                    <button type="button" id="select-all-btn" class="button button-secondary">
+                        <?php esc_html_e('Select All', 'media-wipe'); ?>
+                    </button>
+                    <button type="button" id="select-none-btn" class="button button-secondary">
+                        <?php esc_html_e('Select None', 'media-wipe'); ?>
+                    </button>
+                    <button type="button" id="delete-selected-btn" class="button button-primary" disabled>
+                        <span class="dashicons dashicons-trash"></span>
+                        <?php esc_html_e('Delete Selected', 'media-wipe'); ?>
+                    </button>
+                </div>
+
+                <br class="clear">
+            </div>
+
+            <table class="wp-list-table widefat fixed striped media" id="media-list-table">
+                <thead>
+                    <tr>
+                        <td id="cb" class="manage-column column-cb check-column">
+                            <label class="screen-reader-text" for="cb-select-all-1"><?php esc_html_e('Select All', 'media-wipe'); ?></label>
+                            <input id="cb-select-all-1" type="checkbox" />
+                        </td>
+                        <th scope="col" id="icon" class="manage-column column-icon"><?php esc_html_e('File', 'media-wipe'); ?></th>
+                        <th scope="col" id="title" class="manage-column column-title column-primary sortable desc">
+                            <a href="#"><span><?php esc_html_e('File name', 'media-wipe'); ?></span><span class="sorting-indicator"></span></a>
+                        </th>
+                        <th scope="col" id="author" class="manage-column column-author"><?php esc_html_e('Author', 'media-wipe'); ?></th>
+                        <th scope="col" id="parent" class="manage-column column-parent"><?php esc_html_e('Uploaded to', 'media-wipe'); ?></th>
+                        <th scope="col" id="comments" class="manage-column column-comments num"><?php esc_html_e('Comments', 'media-wipe'); ?></th>
+                        <th scope="col" id="date" class="manage-column column-date sortable desc">
+                            <a href="#"><span><?php esc_html_e('Date', 'media-wipe'); ?></span><span class="sorting-indicator"></span></a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="the-list">
+                    <?php if (!empty($all_media)) : ?>
+                        <?php foreach ($all_media as $media) :
+                            $media_info = media_wipe_get_media_info($media->ID);
+                            $is_document = media_wipe_is_document_type($media_info['mime_type']);
+                            $author = get_userdata($media->post_author);
+                            $parent_post = get_post($media->post_parent);
+                        ?>
+                            <tr id="post-<?php echo esc_attr($media->ID); ?>" class="media-item" data-media-id="<?php echo esc_attr($media->ID); ?>">
+                                <th scope="row" class="check-column">
+                                    <label class="screen-reader-text" for="cb-select-<?php echo esc_attr($media->ID); ?>">
+                                        <?php printf(esc_html__('Select %s', 'media-wipe'), esc_html($media->post_title)); ?>
+                                    </label>
+                                    <input type="checkbox" name="media[]" value="<?php echo esc_attr($media->ID); ?>" id="cb-select-<?php echo esc_attr($media->ID); ?>" class="media-checkbox" />
+                                </th>
+
+                                <td class="media-icon">
+                                    <?php if ($is_document): ?>
+                                        <div class="media-icon-container">
+                                            <span class="file-icon"><?php echo media_wipe_get_file_icon($media_info['mime_type']); ?></span>
+                                        </div>
+                                    <?php else: ?>
+                                        <img width="60" height="60" src="<?php echo esc_url($media->guid); ?>" class="attachment-60x60 size-60x60" alt="<?php echo esc_attr($media->post_title); ?>" loading="lazy">
+                                    <?php endif; ?>
+                                </td>
+
+                                <td class="title column-title has-row-actions column-primary" data-colname="<?php esc_attr_e('File name', 'media-wipe'); ?>">
+                                    <strong>
+                                        <a class="row-title" href="#" aria-label="<?php printf(esc_attr__('"%s" (Edit)', 'media-wipe'), esc_attr($media->post_title)); ?>">
+                                            <?php echo esc_html($media->post_title); ?>
+                                        </a>
+                                    </strong>
+                                    <p class="filename">
+                                        <span class="screen-reader-text"><?php esc_html_e('File name:', 'media-wipe'); ?> </span>
+                                        <?php echo esc_html(basename($media->guid)); ?>
+                                    </p>
+                                    <div class="row-actions">
+                                        <span class="edit">
+                                            <a href="#" aria-label="<?php printf(esc_attr__('Edit "%s"', 'media-wipe'), esc_attr($media->post_title)); ?>">
+                                                <?php esc_html_e('Edit', 'media-wipe'); ?>
+                                            </a> |
+                                        </span>
+                                        <span class="delete">
+                                            <a href="#" class="submitdelete delete-single" data-media-id="<?php echo esc_attr($media->ID); ?>" aria-label="<?php printf(esc_attr__('Delete "%s" permanently', 'media-wipe'), esc_attr($media->post_title)); ?>">
+                                                <?php esc_html_e('Delete permanently', 'media-wipe'); ?>
+                                            </a> |
+                                        </span>
+                                        <span class="view">
+                                            <a href="<?php echo esc_url($media->guid); ?>" target="_blank" aria-label="<?php printf(esc_attr__('View "%s"', 'media-wipe'), esc_attr($media->post_title)); ?>">
+                                                <?php esc_html_e('View', 'media-wipe'); ?>
+                                            </a>
+                                        </span>
+                                    </div>
+                                    <button type="button" class="toggle-row"><span class="screen-reader-text"><?php esc_html_e('Show more details', 'media-wipe'); ?></span></button>
+                                </td>
+
+                                <td class="author column-author" data-colname="<?php esc_attr_e('Author', 'media-wipe'); ?>">
+                                    <?php echo $author ? esc_html($author->display_name) : esc_html__('Unknown', 'media-wipe'); ?>
+                                </td>
+
+                                <td class="parent column-parent" data-colname="<?php esc_attr_e('Uploaded to', 'media-wipe'); ?>">
+                                    <?php if ($parent_post): ?>
+                                        <strong>
+                                            <a href="<?php echo esc_url(get_edit_post_link($parent_post->ID)); ?>">
+                                                <?php echo esc_html($parent_post->post_title); ?>
+                                            </a>
+                                        </strong>
+                                    <?php else: ?>
+                                        <span aria-hidden="true">—</span>
+                                        <span class="screen-reader-text"><?php esc_html_e('(Unattached)', 'media-wipe'); ?></span>
+                                    <?php endif; ?>
+                                </td>
+
+                                <td class="comments column-comments" data-colname="<?php esc_attr_e('Comments', 'media-wipe'); ?>">
+                                    <div class="post-com-count-wrapper">
+                                        <span class="post-com-count post-com-count-no-comments">
+                                            <span class="comment-count-no-comments" aria-hidden="true">0</span>
+                                            <span class="screen-reader-text"><?php esc_html_e('No comments', 'media-wipe'); ?></span>
+                                        </span>
+                                    </div>
+                                </td>
+
+                                <td class="date column-date" data-colname="<?php esc_attr_e('Date', 'media-wipe'); ?>">
+                                    <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($media->post_date))); ?>
+                                    <br>
+                                    <span class="file-size"><?php echo esc_html($media_info['file_size_formatted']); ?></span>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr class="no-items">
+                            <td class="colspanchange" colspan="7">
+                                <?php esc_html_e('No media files found.', 'media-wipe'); ?>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (!empty($all_media)) : ?>
-                            <?php foreach ($all_media as $media) :
-                                $media_info = media_wipe_get_media_info($media->ID);
-                                $is_document = media_wipe_is_document_type($media_info['mime_type']);
-                            ?>
-                                <tr data-media-id="<?php echo esc_attr($media->ID); ?>">
-                                    <td>
-                                        <input type="checkbox" class="media-checkbox" value="<?php echo esc_attr($media->ID); ?>" />
-                                    </td>
-                                    <td>
-                                        <?php if ($is_document): ?>
-                                            <div class="document-preview">
-                                                <span class="file-icon"><?php echo media_wipe_get_file_icon($media_info['mime_type']); ?></span>
-                                            </div>
-                                        <?php else: ?>
-                                            <img src="<?php echo esc_url($media->guid); ?>" class="media-thumbnail" alt="<?php echo esc_attr($media->post_title); ?>">
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <strong><?php echo esc_html($media->post_title); ?></strong>
-                                    </td>
-                                    <td>
-                                        <span class="file-type-badge"><?php echo esc_html(media_wipe_get_file_extension($media_info['mime_type'])); ?></span>
-                                    </td>
-                                    <td data-order="<?php echo esc_attr($media_info['file_size']); ?>">
-                                        <?php echo esc_html($media_info['file_size_formatted']); ?>
-                                    </td>
-                                    <td data-order="<?php echo esc_attr(strtotime($media->post_date)); ?>">
-                                        <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($media->post_date))); ?>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="button button-small delete-single" data-media-id="<?php echo esc_attr($media->ID); ?>">
-                                            <?php esc_html_e('Delete', 'media-wipe'); ?>
-                                        </button>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                    <?php endif; ?>
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <td class="manage-column column-cb check-column">
+                            <label class="screen-reader-text" for="cb-select-all-2"><?php esc_html_e('Select All', 'media-wipe'); ?></label>
+                            <input id="cb-select-all-2" type="checkbox" />
+                        </td>
+                        <th scope="col" class="manage-column column-icon"><?php esc_html_e('File', 'media-wipe'); ?></th>
+                        <th scope="col" class="manage-column column-title column-primary sortable desc">
+                            <a href="#"><span><?php esc_html_e('File name', 'media-wipe'); ?></span><span class="sorting-indicator"></span></a>
+                        </th>
+                        <th scope="col" class="manage-column column-author"><?php esc_html_e('Author', 'media-wipe'); ?></th>
+                        <th scope="col" class="manage-column column-parent"><?php esc_html_e('Uploaded to', 'media-wipe'); ?></th>
+                        <th scope="col" class="manage-column column-comments num"><?php esc_html_e('Comments', 'media-wipe'); ?></th>
+                        <th scope="col" class="manage-column column-date sortable desc">
+                            <a href="#"><span><?php esc_html_e('Date', 'media-wipe'); ?></span><span class="sorting-indicator"></span></a>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="tablenav bottom">
+                <div class="alignleft actions bulkactions">
+                    <label for="bulk-action-selector-bottom" class="screen-reader-text"><?php esc_html_e('Select bulk action', 'media-wipe'); ?></label>
+                    <select name="action2" id="bulk-action-selector-bottom">
+                        <option value="-1"><?php esc_html_e('Bulk actions', 'media-wipe'); ?></option>
+                        <option value="delete"><?php esc_html_e('Delete permanently', 'media-wipe'); ?></option>
+                    </select>
+                    <input type="submit" id="doaction2" class="button action" value="<?php esc_attr_e('Apply', 'media-wipe'); ?>">
+                </div>
+
+                <div class="alignright">
+                    <span class="displaying-num">
+                        <?php printf(esc_html(_n('%s item', '%s items', count($all_media), 'media-wipe')), number_format_i18n(count($all_media))); ?>
+                    </span>
+                </div>
+
+                <br class="clear">
             </div>
         </div>
 

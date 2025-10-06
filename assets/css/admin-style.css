@@ -5311,6 +5311,113 @@ textarea:focus {
     background: #2271b1;
 }
 
+/* WordPress Native List Table Styling for Media Wipe */
+#media-list-table {
+    width: 100%;
+    clear: both;
+}
+
+/* Enhanced row click functionality for WordPress list table */
+#media-list-table tbody tr {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    /* Prevent text selection when clicking rows */
+    position: relative;
+}
+
+#media-list-table tbody tr:hover {
+    background: #f6f7f7 !important;
+}
+
+#media-list-table tbody tr:focus {
+    outline: 2px solid #2271b1;
+    outline-offset: -2px;
+    background: #f6f7f7 !important;
+}
+
+#media-list-table tbody tr.selected {
+    background: #e7f3ff !important;
+    transform: translateX(2px);
+}
+
+#media-list-table tbody tr.selected:hover {
+    background: #d4edff !important;
+}
+
+/* Visual hint for clickable rows */
+#media-list-table tbody tr:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background-color 0.2s ease;
+}
+
+#media-list-table tbody tr:hover:before {
+    background: #2271b1;
+}
+
+#media-list-table tbody tr.selected:before {
+    background: #2271b1;
+}
+
+/* Action buttons and links should not inherit row cursor */
+#media-list-table tbody tr .button,
+#media-list-table tbody tr .delete-single,
+#media-list-table tbody tr .submitdelete,
+#media-list-table tbody tr .row-actions a {
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+}
+
+/* Media icon styling */
+#media-list-table .media-icon img {
+    max-width: 60px;
+    max-height: 60px;
+    border-radius: 3px;
+    border: 1px solid #dcdcde;
+}
+
+#media-list-table .media-icon-container {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f6f7f7;
+    border-radius: 3px;
+    border: 1px solid #dcdcde;
+}
+
+#media-list-table .file-icon {
+    font-size: 24px;
+    color: #646970;
+}
+
+/* File size styling in date column */
+#media-list-table .file-size {
+    font-size: 12px;
+    color: #646970;
+}
+
+/* Responsive adjustments for WordPress list table */
+@media screen and (max-width: 782px) {
+    #media-list-table tbody tr:before {
+        display: none;
+        /* Hide the blue accent bar on mobile */
+    }
+
+    #media-list-table tbody tr.selected {
+        transform: none;
+        /* Remove transform on mobile */
+    }
+}
+
 /* Ensure table cells are positioned relative for the pseudo-element */
 #media-datatable tbody tr {
     position: relative;
