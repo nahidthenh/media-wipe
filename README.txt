@@ -13,146 +13,195 @@ AI-powered WordPress media management with intelligent unused media detection an
 
 == Description ==
 
-Media Wipe is a powerful and secure WordPress plugin that provides comprehensive media library management capabilities. With revolutionary AI-powered unused media detection, advanced confirmation systems, document preview functionality, and detailed security audit logging, it's the smartest and safest way to clean up your WordPress media library.
+Media Wipe is a powerful and secure WordPress plugin that provides comprehensive media library management capabilities. With revolutionary AI-powered unused media detection, professional DataTable interfaces, advanced confirmation systems, and detailed audit logging, it's the smartest and safest way to clean up your WordPress media library.
 
 **Key Features:**
 
-* **AI-Powered Unused Media Detection** - Revolutionary intelligent scanning identifies truly unused media files with confidence scoring
+* **AI-Powered Unused Media Detection** - Revolutionary intelligent scanning identifies truly unused media files with confidence scoring (High/Medium/Low)
+* **Professional DataTable Interface** - Modern, responsive tables with search, sorting, pagination, and bulk selection for both Delete Selected and Delete Unused features
 * **Smart Content Analysis** - Scans posts, pages, widgets, menus, and theme files for comprehensive media usage detection
-* **Confidence Scoring System** - 0-100% confidence scores help you make safe deletion decisions
-* **Advanced Scan Options** - Basic scan (fast) or Advanced scan (includes theme files) for different needs
-* **Enhanced Delete All Media System** - Multi-step confirmation process with backup verification
-* **Document Preview** - Visual preview of PDF, DOC, and other document files before deletion
-* **WordPress Admin Menu Integration** - Dedicated admin menu with dashboard and statistics
-* **Security Audit Logging** - Comprehensive tracking of all operations and security events
-* **Advanced Confirmation System** - Multiple safety layers prevent accidental deletions
-* **Real-time Progress Tracking** - Visual feedback during deletion operations
-* **Rate Limiting** - Prevents abuse and ensures system stability
-* **Mobile-Friendly Interface** - Responsive design works on all devices
+* **Confidence Scoring System** - 0-100% confidence scores with visual badges help you make safe deletion decisions
+* **Delete Selected Media** - Browse and select specific media files using advanced DataTable with thumbnails, file information, and individual delete options
+* **Delete Unused Media** - AI-powered detection with "Select High Confidence Only" for safest automated cleanup
+* **Delete All Media** - Complete media library cleanup with multi-step confirmation process and backup verification
+* **Deletion History & Audit Logging** - Professional DataTable showing all deletion activities with timestamps, user information, and detailed logs
+* **Dashboard Overview** - Comprehensive statistics, recent activity, and quick action buttons
+* **Advanced Safety Features** - Multiple confirmation layers, backup verification, and rate limiting prevent accidental deletions
+* **Mobile-Optimized Interface** - Fully responsive design with touch-friendly controls and horizontal scrolling tables
 
-**Security Features:**
+**DataTable Features:**
+
+* Professional responsive tables with search, sort, and pagination
+* Bulk selection with "Select All" and "Select None" controls
+* Individual file actions (delete single files)
+* Thumbnail previews with hover effects
+* File type badges and size information
+* Cross-page selection support for large media libraries
+* Mobile-optimized with horizontal scrolling
+
+**Delete Selected Media:**
+
+* Browse all media files in professional DataTable format
+* Search and filter by filename, type, or upload date
+* Select individual files or use bulk selection
+* Thumbnail previews for images, icons for documents
+* Individual delete buttons for single file removal
+* Real-time selection counter and delete button state
+
+**Delete Unused Media (AI-Powered):**
+
+* Intelligent scanning with confidence scoring (0-100%)
+* Visual confidence badges: High (90-100%), Medium (75-89%), Low (0-74%)
+* "Select High Confidence Only" for safest automated cleanup
+* Scans posts, pages, widgets, menus, and theme files
+* Real-time scan progress with file counts and status
+* Advanced filtering by confidence level
+
+**Dashboard Overview:**
+
+* Media library statistics with file counts by type
+* Total storage usage calculation
+* Recent deletion activity timeline
+* Quick action buttons for all features
+* Modern hero section with key metrics
+* System information and plugin status
+
+**Deletion History & Audit Logging:**
+
+* Professional DataTable showing all deletion activities
+* Detailed logs with timestamps, user info, and IP addresses
+* Activity and security event tracking
+* Configurable logging (enable/disable)
+* Log clearing functionality
+* Export capabilities for compliance
+
+**Security & Safety Features:**
 
 * Nonce verification for all operations
-* Capability-based access control
-* CSRF protection
-* Input validation and sanitization
+* Capability-based access control (manage_options required)
+* CSRF protection and input validation
+* Rate limiting to prevent abuse (configurable limits per hour)
+* Multi-step confirmation processes with backup verification
+* Comprehensive audit trails and activity logging
 * Security headers implementation
-* Comprehensive audit trails
-* Rate limiting for deletion operations
-
-**Dashboard Features:**
-
-* Media library statistics overview
-* Recent activity tracking
-* Quick action buttons
-* Safety guidelines and best practices
-* Settings management interface
-
-**Document Preview System:**
-
-* Support for PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX files
-* Text files (TXT, CSV) preview
-* File size and type information
-* Thumbnail generation when available
-* Batch preview for multiple documents
 
 **Use Cases:**
 
-* Intelligently identify and remove unused media files from multiple site imports
-* Clean up development sites before going live with AI-powered detection
-* Optimize storage by removing truly unused media files with confidence
-* Bulk delete media files during website redesigns safely
-* Maintain organized and efficient media libraries automatically
-* Audit media deletion activities for compliance
-* Safely manage large media collections with smart detection
+* **Site Cleanup**: Intelligently identify and remove unused media files from multiple site imports or theme changes
+* **Development to Production**: Clean up development sites before going live with AI-powered unused media detection
+* **Storage Optimization**: Reduce hosting costs by removing truly unused media files with confidence scoring
+* **Website Redesigns**: Safely bulk delete old media files during complete website overhauls
+* **Media Library Maintenance**: Keep organized and efficient media libraries with automated unused file detection
+* **Compliance & Auditing**: Track all deletion activities with detailed logs for business compliance requirements
+* **Large Media Management**: Efficiently manage media libraries with 1000+ files using professional DataTable interfaces
 
-**Performance Optimized:**
+**Performance & Technical:**
 
-* Batch processing for large operations
-* Memory management for bulk deletions
-* Efficient database queries
-* Caching for improved performance
-* Configurable operation limits
+* Memory-efficient batch processing for large operations (1000+ files)
+* Optimized database queries with early exit scanning
+* Professional DataTables.net integration for responsive interfaces
+* Caching and performance optimizations
+* AJAX-powered operations with progress tracking
+* Mobile-optimized responsive design
 
 **WordPress Compatibility:**
 
-* Fully tested with WordPress 6.7.1 (latest version)
+* Fully tested with WordPress 6.8 (latest version)
 * Compatible with WordPress 5.0 and above
 * Works with PHP 7.4 to 8.3
-* Multisite compatible
+* Single-site installations (multisite support planned)
 
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/media-wipe` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
-3. Navigate to **Media Wipe** in your WordPress admin menu to access all features.
-4. Review the settings and configure according to your needs.
-5. Always create a backup before performing any deletion operations.
+3. Navigate to **Media Wipe** in your WordPress admin menu (located after the Media menu).
+4. Explore the Dashboard to see your media library statistics and recent activity.
+5. **Always create a complete backup** before performing any deletion operations.
+
+**Quick Start Guide:**
+1. **Dashboard**: View media statistics and recent activity
+2. **Delete Selected**: Browse and select specific files to delete using the professional DataTable
+3. **Delete Unused**: Run AI-powered scan to find unused media files with confidence scoring
+4. **Deletion History**: Review all deletion activities and manage audit logging
 
 == Frequently Asked Questions ==
 
 = Is this plugin compatible with my WordPress version? =
 
-Yes, Media Wipe is fully tested and compatible with WordPress 6.7.1 (the latest version) and works with WordPress 5.0 and above. It also supports PHP 7.4 to 8.3 and is multisite compatible.
+Yes, Media Wipe is fully tested and compatible with WordPress 6.8 (the latest version) and works with WordPress 5.0 and above. It also supports PHP 7.4 to 8.3 and is designed for single-site installations.
 
 = Is it safe to use this plugin? =
 
-Yes, Media Wipe includes multiple safety layers including backup verification requirements, multi-step confirmation processes, and comprehensive audit logging. However, always create a complete backup before using any deletion features.
+Yes, Media Wipe includes multiple safety layers including AI-powered confidence scoring, backup verification requirements, multi-step confirmation processes, and comprehensive audit logging. However, always create a complete backup before using any deletion features.
 
 = Can I recover deleted files? =
 
-No, once files are deleted using this plugin, they cannot be recovered. This is why the plugin requires explicit confirmation that you have created a backup before proceeding.
+No, once files are deleted using this plugin, they cannot be recovered. This is why the plugin requires explicit confirmation that you have created a backup before proceeding. All deletions are permanent and irreversible.
 
-= What file types are supported for document preview? =
+= How does the DataTable interface work? =
 
-The plugin supports preview for PDF, Microsoft Office files (DOC, DOCX, XLS, XLSX, PPT, PPTX), text files (TXT, CSV), and OpenDocument formats.
+The plugin uses professional DataTables with search, sorting, pagination, and bulk selection. You can search for files, sort by any column, select multiple files across pages, and perform bulk operations. The interface is fully responsive and works on mobile devices.
 
-= Does this plugin delete files from the server? =
+= What's the difference between Delete Selected and Delete Unused? =
 
-Yes, this plugin deletes both the database entries and the actual files from your server. All deletion operations are permanent and irreversible.
+**Delete Selected** lets you manually browse and select specific media files to delete using a professional DataTable interface. **Delete Unused** uses AI-powered scanning to automatically identify media files that aren't being used anywhere on your site, with confidence scoring to help you make safe decisions.
 
-= How does the security audit system work? =
+= How does the AI-powered unused media detection work? =
 
-The plugin logs all activities including deletion attempts, security events, user information, IP addresses, and timestamps. You can view these logs in the Security Audit section of the admin menu.
+The system scans your posts, pages, widgets, menus, and theme files to identify media usage. It assigns confidence scores (0-100%) with visual badges: High (90-100%) = very safe to delete, Medium (75-89%) = review recommended, Low (0-74%) = manual review required.
 
-= Can I configure the confirmation requirements? =
+= What does the confidence score mean? =
 
-Yes, you can customize confirmation requirements in the Settings page, including backup confirmation requirements, text confirmation, and document preview settings.
+The confidence score indicates how certain the system is that a file is unused. **High confidence (90-100%)** files are very safe to delete. **Medium confidence (75-89%)** files should be reviewed. **Low confidence (0-74%)** files require manual verification before deletion.
 
-= Is the plugin compatible with multisite installations? =
+= How does the Deletion History feature work? =
 
-Currently, the plugin is designed for single-site installations. Multisite support is planned for future versions.
+The Deletion History page shows all deletion activities in a professional DataTable with timestamps, user information, IP addresses, and detailed logs. You can enable/disable logging, clear logs, and export data for compliance purposes.
+
+= Can I delete individual files or only in bulk? =
+
+Both! You can delete individual files using the "Delete" button in each table row, or select multiple files and use "Delete Selected" for bulk operations. The interface supports both single and bulk deletion workflows.
 
 = How does rate limiting work? =
 
-The plugin implements rate limiting to prevent abuse, allowing a maximum number of operations per hour. This helps maintain system stability and security.
+The plugin implements rate limiting to prevent abuse, allowing a maximum number of deletion operations per hour. This helps maintain system stability and prevents accidental mass deletions.
 
 = How accurate is the unused media detection? =
 
 The AI-powered detection system is highly accurate, scanning posts, pages, widgets, menus, and theme files. Files with 90%+ confidence scores are very safe to delete. For maximum safety, always start with "Select High Confidence Only" and review lower-confidence files manually.
 
-= Should I use Basic or Advanced scan? =
+= Is the plugin compatible with multisite installations? =
 
-Basic scan is recommended for most users as it's faster and covers posts, pages, and widgets. Use Advanced scan if you have custom themes with hardcoded media references, but note it's slower and may have false positives due to theme file complexity.
+Currently, the plugin is designed for single-site installations. Multisite support is planned for future versions.
 
-= What does the confidence score mean? =
+= How do I get started with the plugin? =
 
-The confidence score (0-100%) indicates how certain the system is that a file is unused. 90-100% = very safe to delete, 75-89% = review recommended, 0-74% = manual review required. Higher scores mean safer deletions.
+After activation, visit the **Media Wipe Dashboard** to see your media library statistics. Use **Delete Selected** to manually choose files, or **Delete Unused** for AI-powered detection. Always start with "Select High Confidence Only" for the safest automated cleanup.
 
 == Screenshots ==
 
-1. Media Wipe Dashboard with statistics and quick actions
-2. Enhanced Delete All Media page with confirmation system
-3. Delete Selected Media with enhanced interface
-4. Security Audit log viewer
-5. Settings configuration page
-6. Help and support documentation
+1. Media Wipe Dashboard with statistics, recent activity, and quick action buttons
+2. Delete Selected Media with professional DataTable interface, search, and bulk selection
+3. Delete Unused Media with AI-powered scanning, confidence scoring, and "Select High Confidence Only" feature
+4. Deletion History with comprehensive audit logging and professional DataTable
+5. AI scan results showing confidence badges (High/Medium/Low) and detailed file information
+6. Mobile-responsive interface with touch-friendly controls and horizontal scrolling tables
 
 == Changelog ==
 
 = 1.3.1 - 2025-10-06 =
-- **Improved: Datatable UIUX
-- **Few minor bug fixes & improvements
+**Enhanced DataTable Interface & User Experience**
+- **ENHANCED**: Professional DataTable styling consistency between Delete Selected and Delete Unused tables
+- **IMPROVED**: Delete Unused table now matches Delete Selected table design while preserving unique Confidence column
+- **ENHANCED**: Unified button styling and spacing across all DataTable interfaces
+- **IMPROVED**: Consistent hover effects, transitions, and responsive behavior
+- **ENHANCED**: Mobile optimization with horizontal scrolling and touch-friendly controls
+- **IMPROVED**: DataTable configuration standardization (25 items per page, consistent sorting)
+- **ENHANCED**: Visual consistency with matching table headers, row styling, and image thumbnails
+- **IMPROVED**: Professional confidence badge styling (High/Medium/Low indicators)
+- **ENHANCED**: Streamlined user experience with identical interaction patterns across features
+- **PERFORMANCE**: Optimized CSS and JavaScript for better loading performance
 
 = 1.3.0 - 2025-07-30 =
 **🎉 MAJOR RELEASE: Complete Interface Transformation**
@@ -304,6 +353,9 @@ The confidence score (0-100%) indicates how certain the system is that a file is
 
 == Upgrade Notice ==
 
+= 1.3.1 =
+Enhanced DataTable interface with unified styling! Delete Selected and Delete Unused tables now have consistent professional appearance while preserving unique Confidence column functionality. Improved mobile responsiveness and performance optimizations. Safe upgrade with no breaking changes.
+
 = 1.3.0 =
 🎉 MAJOR RELEASE: Complete interface transformation! Simplified 4-page structure, professional Deletion History with DataTable, beautiful empty states, and 20% performance improvement. Settings/Support pages removed - everything is now self-explanatory. **BACKUP RECOMMENDED** before this major upgrade.
 
@@ -319,18 +371,20 @@ Added new features to delete selected media files. Back up your site before upgr
 == Support ==
 
 For support, documentation, and feature requests, please visit:
-* Plugin documentation: Available in the Help & Support section
-* Author website: https://mdnahidhasan.netlify.app
-* WordPress.org support forums
+* **Plugin Dashboard**: Access comprehensive statistics and quick actions within WordPress admin
+* **Deletion History**: View detailed audit logs and manage logging settings
+* **Author website**: https://mdnahidhasan.netlify.app
+* **WordPress.org support forums**: Community support and discussions
 
 == Privacy Policy ==
 
 Media Wipe respects your privacy and follows WordPress privacy best practices:
-* The plugin only logs activities when logging is enabled in settings
+* The plugin only logs activities when logging is enabled in Deletion History settings
 * All logs are stored locally in your WordPress database
-* No data is transmitted to external servers
-* User information is only logged for audit purposes
-* You can clear all logs at any time from the Security Audit page
+* No data is transmitted to external servers or third parties
+* User information is only logged for audit and security purposes
+* You can enable/disable logging and clear all logs at any time from the Deletion History page
+* IP addresses and user information are logged only for security audit purposes
 
 == Credits ==
 
