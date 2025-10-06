@@ -5,7 +5,7 @@ Tags: media, delete, cleanup, unused, bulk
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -149,6 +149,10 @@ The confidence score (0-100%) indicates how certain the system is that a file is
 6. Help and support documentation
 
 == Changelog ==
+
+= 1.3.1 - 2025-10-06 =
+- **Improved: Datatable UIUX
+- **Few minor bug fixes & improvements
 
 = 1.3.0 - 2025-07-30 =
 **🎉 MAJOR RELEASE: Complete Interface Transformation**
