@@ -73,19 +73,11 @@
                 this.handleCheckboxChange(e.target);
             });
 
-            // Single delete buttons
-            $(document).on('click', '.delete-single', (e) => {
-                e.stopPropagation(); // Prevent row click when clicking delete button
-                const mediaId = $(e.target).data('media-id');
-                console.log('Delete single clicked:', mediaId);
-                this.deleteSingle(mediaId);
-            });
-
             // Row click functionality for easier selection (WordPress list table)
             $(document).on('click', '#media-list-table tbody tr', (e) => {
-                // Don't trigger row selection if clicking on buttons, links, or checkboxes
-                if ($(e.target).is('button, a, input[type="checkbox"], .button, .delete-single, .submitdelete') ||
-                    $(e.target).closest('button, a, .button, .delete-single, .submitdelete, .row-actions').length > 0) {
+                // Don't trigger row selection if clicking on buttons or checkboxes
+                if ($(e.target).is('button, input[type="checkbox"], .button') ||
+                    $(e.target).closest('button, .button').length > 0) {
                     return;
                 }
 

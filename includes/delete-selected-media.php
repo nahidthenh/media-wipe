@@ -76,22 +76,7 @@ function media_wipe_unused_media_page() {
         <div class="media-wipe-delete-selected">
             <!-- WordPress Native List Table -->
             <div class="tablenav top">
-                <div class="alignleft actions bulkactions">
-                    <label for="bulk-action-selector-top" class="screen-reader-text"><?php esc_html_e('Select bulk action', 'media-wipe'); ?></label>
-                    <select name="action" id="bulk-action-selector-top">
-                        <option value="-1"><?php esc_html_e('Bulk actions', 'media-wipe'); ?></option>
-                        <option value="delete"><?php esc_html_e('Delete permanently', 'media-wipe'); ?></option>
-                    </select>
-                    <input type="submit" id="doaction" class="button action" value="<?php esc_attr_e('Apply', 'media-wipe'); ?>">
-                </div>
-
-                <div class="alignright actions">
-                    <button type="button" id="select-all-btn" class="button button-secondary">
-                        <?php esc_html_e('Select All', 'media-wipe'); ?>
-                    </button>
-                    <button type="button" id="select-none-btn" class="button button-secondary">
-                        <?php esc_html_e('Select None', 'media-wipe'); ?>
-                    </button>
+                <div class="alignleft actions">
                     <button type="button" id="delete-selected-btn" class="button button-primary" disabled>
                         <span class="dashicons dashicons-trash"></span>
                         <?php esc_html_e('Delete Selected', 'media-wipe'); ?>
@@ -114,7 +99,6 @@ function media_wipe_unused_media_page() {
                         </th>
                         <th scope="col" id="author" class="manage-column column-author"><?php esc_html_e('Author', 'media-wipe'); ?></th>
                         <th scope="col" id="parent" class="manage-column column-parent"><?php esc_html_e('Uploaded to', 'media-wipe'); ?></th>
-                        <th scope="col" id="comments" class="manage-column column-comments num"><?php esc_html_e('Comments', 'media-wipe'); ?></th>
                         <th scope="col" id="date" class="manage-column column-date sortable desc">
                             <a href="#"><span><?php esc_html_e('Date', 'media-wipe'); ?></span><span class="sorting-indicator"></span></a>
                         </th>
@@ -142,37 +126,12 @@ function media_wipe_unused_media_page() {
                                             <span class="file-icon"><?php echo media_wipe_get_file_icon($media_info['mime_type']); ?></span>
                                         </div>
                                     <?php else: ?>
-                                        <img width="60" height="60" src="<?php echo esc_url($media->guid); ?>" class="attachment-60x60 size-60x60" alt="<?php echo esc_attr($media->post_title); ?>" loading="lazy">
+                                        <img width="40" height="40" src="<?php echo esc_url($media->guid); ?>" class="attachment-40x40 size-40x40" alt="<?php echo esc_attr($media->post_title); ?>" loading="lazy">
                                     <?php endif; ?>
                                 </td>
 
-                                <td class="title column-title has-row-actions column-primary" data-colname="<?php esc_attr_e('File name', 'media-wipe'); ?>">
-                                    <strong>
-                                        <a class="row-title" href="#" aria-label="<?php printf(esc_attr__('"%s" (Edit)', 'media-wipe'), esc_attr($media->post_title)); ?>">
-                                            <?php echo esc_html($media->post_title); ?>
-                                        </a>
-                                    </strong>
-                                    <p class="filename">
-                                        <span class="screen-reader-text"><?php esc_html_e('File name:', 'media-wipe'); ?> </span>
-                                        <?php echo esc_html(basename($media->guid)); ?>
-                                    </p>
-                                    <div class="row-actions">
-                                        <span class="edit">
-                                            <a href="#" aria-label="<?php printf(esc_attr__('Edit "%s"', 'media-wipe'), esc_attr($media->post_title)); ?>">
-                                                <?php esc_html_e('Edit', 'media-wipe'); ?>
-                                            </a> |
-                                        </span>
-                                        <span class="delete">
-                                            <a href="#" class="submitdelete delete-single" data-media-id="<?php echo esc_attr($media->ID); ?>" aria-label="<?php printf(esc_attr__('Delete "%s" permanently', 'media-wipe'), esc_attr($media->post_title)); ?>">
-                                                <?php esc_html_e('Delete permanently', 'media-wipe'); ?>
-                                            </a> |
-                                        </span>
-                                        <span class="view">
-                                            <a href="<?php echo esc_url($media->guid); ?>" target="_blank" aria-label="<?php printf(esc_attr__('View "%s"', 'media-wipe'), esc_attr($media->post_title)); ?>">
-                                                <?php esc_html_e('View', 'media-wipe'); ?>
-                                            </a>
-                                        </span>
-                                    </div>
+                                <td class="title column-title column-primary" data-colname="<?php esc_attr_e('File name', 'media-wipe'); ?>">
+                                    <strong><?php echo esc_html($media->post_title); ?></strong>
                                     <button type="button" class="toggle-row"><span class="screen-reader-text"><?php esc_html_e('Show more details', 'media-wipe'); ?></span></button>
                                 </td>
 
@@ -193,15 +152,6 @@ function media_wipe_unused_media_page() {
                                     <?php endif; ?>
                                 </td>
 
-                                <td class="comments column-comments" data-colname="<?php esc_attr_e('Comments', 'media-wipe'); ?>">
-                                    <div class="post-com-count-wrapper">
-                                        <span class="post-com-count post-com-count-no-comments">
-                                            <span class="comment-count-no-comments" aria-hidden="true">0</span>
-                                            <span class="screen-reader-text"><?php esc_html_e('No comments', 'media-wipe'); ?></span>
-                                        </span>
-                                    </div>
-                                </td>
-
                                 <td class="date column-date" data-colname="<?php esc_attr_e('Date', 'media-wipe'); ?>">
                                     <?php echo esc_html(date_i18n(get_option('date_format'), strtotime($media->post_date))); ?>
                                     <br>
@@ -211,7 +161,7 @@ function media_wipe_unused_media_page() {
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr class="no-items">
-                            <td class="colspanchange" colspan="7">
+                            <td class="colspanchange" colspan="6">
                                 <?php esc_html_e('No media files found.', 'media-wipe'); ?>
                             </td>
                         </tr>
@@ -230,7 +180,6 @@ function media_wipe_unused_media_page() {
                         </th>
                         <th scope="col" class="manage-column column-author"><?php esc_html_e('Author', 'media-wipe'); ?></th>
                         <th scope="col" class="manage-column column-parent"><?php esc_html_e('Uploaded to', 'media-wipe'); ?></th>
-                        <th scope="col" class="manage-column column-comments num"><?php esc_html_e('Comments', 'media-wipe'); ?></th>
                         <th scope="col" class="manage-column column-date sortable desc">
                             <a href="#"><span><?php esc_html_e('Date', 'media-wipe'); ?></span><span class="sorting-indicator"></span></a>
                         </th>
@@ -239,15 +188,6 @@ function media_wipe_unused_media_page() {
             </table>
 
             <div class="tablenav bottom">
-                <div class="alignleft actions bulkactions">
-                    <label for="bulk-action-selector-bottom" class="screen-reader-text"><?php esc_html_e('Select bulk action', 'media-wipe'); ?></label>
-                    <select name="action2" id="bulk-action-selector-bottom">
-                        <option value="-1"><?php esc_html_e('Bulk actions', 'media-wipe'); ?></option>
-                        <option value="delete"><?php esc_html_e('Delete permanently', 'media-wipe'); ?></option>
-                    </select>
-                    <input type="submit" id="doaction2" class="button action" value="<?php esc_attr_e('Apply', 'media-wipe'); ?>">
-                </div>
-
                 <div class="alignright">
                     <span class="displaying-num">
                         <?php printf(esc_html(_n('%s item', '%s items', count($all_media), 'media-wipe')), number_format_i18n(count($all_media))); ?>
