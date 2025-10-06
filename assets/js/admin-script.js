@@ -794,14 +794,14 @@ jQuery(document).ready(function ($) {
             ];
         });
 
-        // Initialize DataTable
+        // Initialize DataTable - match selected media table configuration
         $('#unused-media-datatable').DataTable({
             data: tableData,
             responsive: true,
             pageLength: 25,
-            order: [[6, 'desc']], // Sort by confidence score
+            order: [[6, 'desc']], // Sort by confidence score (column 6)
             columnDefs: [
-                { orderable: false, targets: [0, 1, 7] }
+                { orderable: false, targets: [0, 1, 7] } // Disable sorting for Select, Preview, and Actions columns
             ]
         });
 

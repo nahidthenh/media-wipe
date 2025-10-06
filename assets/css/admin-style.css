@@ -980,27 +980,60 @@ button {
     border: 1px solid #f5c2c7;
 }
 
-/* DataTable Customizations for Unused Media */
+/* DataTable Styling for Unused Media - Match Selected Media Table */
 #unused-media-datatable {
     font-size: 13px;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
 }
 
-#unused-media-datatable th {
-    background-color: #f6f7f7;
-    font-weight: 600;
-}
-
+#unused-media-datatable th,
 #unused-media-datatable td {
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: left;
     vertical-align: middle;
+}
+
+/* Table Header */
+#unused-media-datatable th {
+    background-color: #f4f7fa;
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Table Rows */
+#unused-media-datatable tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#unused-media-datatable tr:hover {
+    background-color: #f1f5f9;
+    cursor: pointer;
+}
+
+#unused-media-datatable tbody tr {
+    transition: background-color 0.3s ease;
+    user-select: none;
+}
+
+/* Table Column Styling */
+#unused-media-datatable td img {
+    max-width: 80px;
+    height: auto;
+    border-radius: 4px;
+    transition: transform 0.3s ease;
+}
+
+/* Hover effect on image */
+#unused-media-datatable td img:hover {
+    transform: scale(1.1);
 }
 
 #unused-media-datatable .unused-file-checkbox {
     margin: 0;
-}
-
-#unused-media-datatable img {
-    border-radius: 3px;
-    border: 1px solid #dcdcde;
 }
 
 #unused-media-datatable .dashicons-media-default {
@@ -1008,19 +1041,61 @@ button {
     color: #c3c4c7;
 }
 
-/* Responsive adjustments */
-@media (max-width: 782px) {
+/* Delete Selected Unused button styling - match selected media */
+#delete-selected-unused {
+    background: #d01314 !important;
+    border-color: #d01314 !important;
+    color: #fff !important;
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+}
+
+#delete-selected-unused:hover {
+    background: #b01112 !important;
+    border-color: #b01112 !important;
+}
+
+#delete-selected-unused .dashicons {
+    margin-right: 5px;
+}
+
+/* Delete single button styling for unused media */
+#unused-media-datatable .delete-single {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+#unused-media-datatable .delete-single:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+}
+
+/* Table scroll on mobile - match selected media table */
+@media (max-width: 768px) {
+    #unused-media-datatable {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .results-controls .button {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
     .results-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
-    }
-
-    .results-controls .button {
-        width: 100%;
-        margin-right: 0;
-        margin-bottom: 10px;
-        text-align: center;
     }
 
     .scan-actions .button {
