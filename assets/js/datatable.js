@@ -120,9 +120,55 @@
 
             // Single delete buttons
             $(document).on('click', '.delete-single', (e) => {
+                e.stopPropagation(); // Prevent row click when clicking delete button
                 const mediaId = $(e.target).data('media-id');
                 console.log('Delete single clicked:', mediaId);
                 this.deleteSingle(mediaId);
+            });
+
+            // Row click functionality for easier selection
+            $(document).on('click', '#media-datatable tbody tr', (e) => {
+                // Don't trigger row selection if clicking on buttons, links, or checkboxes
+                if ($(e.target).is('button, a, input[type="checkbox"], .button, .delete-single') ||
+                    $(e.target).closest('button, a, .button, .delete-single').length > 0) {
+                    return;
+                }
+
+                const $row = $(e.currentTarget);
+                const $checkbox = $row.find('.media-checkbox');
+
+                if ($checkbox.length > 0) {
+                    // Toggle the checkbox
+                    $checkbox.prop('checked', !$checkbox.prop('checked'));
+                    // Trigger the change event to update selection state
+                    $checkbox.trigger('change');
+                    console.log('Row clicked - toggled checkbox for media ID:', $checkbox.val());
+                }
+            });
+
+            // Prevent checkbox clicks from bubbling to row click
+            $(document).on('click', '.media-checkbox', (e) => {
+                e.stopPropagation();
+            });
+
+            // Keyboard accessibility - Space key to toggle selection
+            $(document).on('keydown', '#media-datatable tbody tr', (e) => {
+                if (e.key === ' ' || e.keyCode === 32) {
+                    e.preventDefault();
+                    const $row = $(e.currentTarget);
+                    const $checkbox = $row.find('.media-checkbox');
+
+                    if ($checkbox.length > 0) {
+                        $checkbox.prop('checked', !$checkbox.prop('checked'));
+                        $checkbox.trigger('change');
+                        console.log('Space key pressed - toggled checkbox for media ID:', $checkbox.val());
+                    }
+                }
+            });
+
+            // Make rows focusable for keyboard navigation
+            $(document).on('focus', '#media-datatable tbody tr', function () {
+                $(this).attr('tabindex', '0');
             });
 
             console.log('Media Wipe DataTable: Events bound successfully');

@@ -78,6 +78,11 @@ function media_wipe_unused_media_page() {
             <div class="page-description">
                 <h2><?php esc_html_e('Media Library Management', 'media-wipe'); ?></h2>
                 <p><?php esc_html_e('Select specific media files to delete from your library. Use the search and filter options to find files quickly.', 'media-wipe'); ?></p>
+                <div class="selection-tip">
+                    <span class="dashicons dashicons-info"></span>
+                    <strong><?php esc_html_e('Tip:', 'media-wipe'); ?></strong>
+                    <?php esc_html_e('Click anywhere on a table row to quickly select/deselect that media file. You can also use the spacebar when a row is focused.', 'media-wipe'); ?>
+                </div>
             </div>
 
             <!-- Professional DataTable -->

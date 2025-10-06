@@ -5257,12 +5257,87 @@ textarea:focus {
     font-size: 13px;
 }
 
+#media-datatable tbody tr {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+    /* Prevent text selection when clicking rows */
+}
+
 #media-datatable tbody tr:hover {
+    background: #f6f7f7 !important;
+}
+
+#media-datatable tbody tr:focus {
+    outline: 2px solid #2271b1;
+    outline-offset: -2px;
     background: #f6f7f7 !important;
 }
 
 #media-datatable tbody tr.selected {
     background: #e7f3ff !important;
+    transform: translateX(2px);
+}
+
+#media-datatable tbody tr.selected:hover {
+    background: #d4edff !important;
+}
+
+/* Action buttons should not inherit row cursor */
+#media-datatable tbody tr td .button,
+#media-datatable tbody tr td .delete-single {
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+}
+
+/* Visual hint for clickable rows */
+/* #media-datatable tbody tr:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background-color 0.2s ease;
+} */
+
+#media-datatable tbody tr:hover:before {
+    background: #2271b1;
+}
+
+#media-datatable tbody tr.selected:before {
+    background: #2271b1;
+}
+
+/* Ensure table cells are positioned relative for the pseudo-element */
+#media-datatable tbody tr {
+    position: relative;
+}
+
+/* Selection tip styling */
+.selection-tip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #e7f3ff;
+    border: 1px solid #b8daff;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #0073aa;
+}
+
+.selection-tip .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.selection-tip strong {
+    color: #005177;
 }
 
 /* Checkbox styling */
