@@ -551,7 +551,7 @@ function media_wipe_delete_unused_page() {
                             </label>
 
                             <label class="simple-checkbox-label">
-                                <input type="checkbox" name="exclude_featured" value="1" class="simple-checkbox" checked>
+                                <input type="checkbox" name="exclude_featured" value="1" class="simple-checkbox">
                                 <span class="simple-checkmark"></span>
                                 <?php esc_html_e('Exclude featured images (recommended)', 'media-wipe'); ?>
                             </label>
