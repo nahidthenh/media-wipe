@@ -521,40 +521,56 @@ function media_wipe_delete_unused_page() {
             </div>
         </div>
 
-        <!-- Scan Configuration -->
+        <!-- Modern Scan Configuration -->
         <div class="media-wipe-scan-config">
-            <div class="config-card">
-                <h3><?php esc_html_e('Scan Configuration', 'media-wipe'); ?></h3>
+            <div class="config-card-modern">
+                <div class="config-header">
+                    <div class="config-icon">
+                        <span class="dashicons dashicons-admin-tools"></span>
+                    </div>
+                    <div class="config-title">
+                        <h3><?php esc_html_e('Scan Configuration', 'media-wipe'); ?></h3>
+                        <p class="config-subtitle"><?php esc_html_e('Configure your scan settings for optimal results', 'media-wipe'); ?></p>
+                    </div>
+                </div>
+
                 <form id="unused-media-scan-form">
                     <?php wp_nonce_field('media_wipe_unused_scan', 'media_wipe_unused_scan_nonce'); ?>
 
-                    <table class="form-table">
-                        <tr>
-                            <th scope="row"><?php esc_html_e('Safety Options', 'media-wipe'); ?></th>
-                            <td>
-                                <fieldset>
-                                    <label>
-                                        <input type="checkbox" name="exclude_recent" value="1">
-                                        <?php esc_html_e('Exclude files uploaded in the last 30 days', 'media-wipe'); ?>
-                                    </label>
-                                    <br>
-                                    <label>
-                                        <input type="checkbox" name="exclude_featured" value="1">
-                                        <?php esc_html_e('Exclude featured images (recommended)', 'media-wipe'); ?>
-                                    </label>
-                                </fieldset>
-                            </td>
-                        </tr>
-                        <!-- Advanced scan option removed - Basic scan is optimal for most users -->
-                    </table>
+                    <div class="safety-options-simple">
+                        <h4 class="options-title-simple">
+                            <span class="dashicons dashicons-shield-alt"></span>
+                            <?php esc_html_e('Safety Options', 'media-wipe'); ?>
+                        </h4>
 
-                    <div class="scan-actions">
-                        <button type="button" id="start-unused-scan" class="button button-primary">
-                            <span class="dashicons dashicons-search"></span>
-                            <?php esc_html_e('Start Scan', 'media-wipe'); ?>
+                        <div class="simple-checkboxes">
+                            <label class="simple-checkbox-label">
+                                <input type="checkbox" name="exclude_recent" value="1" class="simple-checkbox">
+                                <span class="simple-checkmark"></span>
+                                <?php esc_html_e('Exclude recent files (30 days)', 'media-wipe'); ?>
+                            </label>
+
+                            <label class="simple-checkbox-label">
+                                <input type="checkbox" name="exclude_featured" value="1" class="simple-checkbox" checked>
+                                <span class="simple-checkmark"></span>
+                                <?php esc_html_e('Exclude featured images (recommended)', 'media-wipe'); ?>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="scan-actions-modern">
+                        <button type="button" id="start-unused-scan" class="button-modern button-primary-modern">
+                            <span class="button-icon">
+                                <span class="dashicons dashicons-search"></span>
+                            </span>
+                            <span class="button-text"><?php esc_html_e('Start AI Scan', 'media-wipe'); ?></span>
+                            <span class="button-subtitle"><?php esc_html_e('Analyze your media library', 'media-wipe'); ?></span>
                         </button>
-                        <button type="button" id="cancel-unused-scan" class="button" style="display: none;">
-                            <?php esc_html_e('Cancel Scan', 'media-wipe'); ?>
+                        <button type="button" id="cancel-unused-scan" class="button-modern button-secondary-modern" style="display: none;">
+                            <span class="button-icon">
+                                <span class="dashicons dashicons-no"></span>
+                            </span>
+                            <span class="button-text"><?php esc_html_e('Cancel Scan', 'media-wipe'); ?></span>
                         </button>
                     </div>
                 </form>

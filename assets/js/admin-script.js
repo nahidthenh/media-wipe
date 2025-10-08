@@ -629,8 +629,13 @@ jQuery(document).ready(function ($) {
         $('#scan-progress-container').show();
         $('#scan-results-container').hide();
 
-        // Disable scan button
-        $button.prop('disabled', true).text('Scanning...');
+        // Update button to loading state
+        $button.addClass('loading').prop('disabled', true);
+        $button.find('.button-text').text('Scanning...');
+        $button.find('.button-subtitle').text('Analyzing your media library');
+        $button.find('.dashicons').removeClass('dashicons-search').addClass('dashicons-update');
+
+        // Show cancel button
         $('#cancel-unused-scan').show();
 
         // Start scan
@@ -651,12 +656,37 @@ jQuery(document).ready(function ($) {
                 showNotification('error', 'Scan failed: ' + error);
             },
             complete: function () {
-                // Re-enable scan button
-                $button.prop('disabled', false).text('Start Scan');
+                // Reset button to original state
+                $button.removeClass('loading').prop('disabled', false);
+                $button.find('.button-text').text('Start AI Scan');
+                $button.find('.button-subtitle').text('Analyze your media library');
+                $button.find('.dashicons').removeClass('dashicons-update').addClass('dashicons-search');
+
+                // Hide cancel button
                 $('#cancel-unused-scan').hide();
                 $('#scan-progress-container').hide();
             }
         });
+    });
+
+    // Cancel unused media scan
+    $('#cancel-unused-scan').on('click', function (e) {
+        e.preventDefault();
+
+        var $startButton = $('#start-unused-scan');
+
+        // Reset start button to original state
+        $startButton.removeClass('loading').prop('disabled', false);
+        $startButton.find('.button-text').text('Start AI Scan');
+        $startButton.find('.button-subtitle').text('Analyze your media library');
+        $startButton.find('.dashicons').removeClass('dashicons-update').addClass('dashicons-search');
+
+        // Hide cancel button and progress
+        $(this).hide();
+        $('#scan-progress-container').hide();
+
+        console.log('Scan cancelled by user');
+        showNotification('info', 'Scan cancelled');
     });
 
     // Display unused media results

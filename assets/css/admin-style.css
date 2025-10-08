@@ -1211,6 +1211,318 @@ button {
     }
 }
 
+/* Modern Scan Configuration Styling */
+.media-wipe-scan-config {
+    margin: 30px 0;
+}
+
+.config-card-modern {
+    background: #fff;
+    border: 1px solid #e1e5e9;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+}
+
+.config-card-modern:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.config-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f0f0f1;
+}
+
+.config-icon {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.config-icon .dashicons {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    color: white;
+}
+
+.config-title h3 {
+    margin: 0 0 5px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.config-subtitle {
+    margin: 0;
+    font-size: 14px;
+    color: #646970;
+    line-height: 1.4;
+}
+
+/* Simple Safety Options Styling */
+.safety-options-simple {
+    margin-bottom: 25px;
+}
+
+.options-title-simple {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 15px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.options-title-simple .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: #667eea;
+}
+
+.simple-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Simple Checkbox Styling */
+.simple-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    margin: 0;
+    padding: 8px 0;
+    font-size: 14px;
+    color: #1d2327;
+    transition: color 0.2s ease;
+}
+
+.simple-checkbox-label:hover {
+    color: #667eea;
+}
+
+.simple-checkbox {
+    display: none;
+}
+
+.simple-checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #c3c4c7;
+    border-radius: 3px;
+    background: #fff;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+.simple-checkbox:checked+.simple-checkmark {
+    background: #667eea;
+    border-color: #667eea;
+}
+
+.simple-checkbox:checked+.simple-checkmark::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.simple-checkbox-label:hover .simple-checkmark {
+    border-color: #667eea;
+}
+
+/* Modern Scan Actions Styling */
+.scan-actions-modern {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px solid #f0f0f1;
+}
+
+.button-modern {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-height: 60px;
+}
+
+.button-primary-modern {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.button-primary-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+.button-primary-modern:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.button-secondary-modern {
+    background: #f6f7f7;
+    color: #646970;
+    border: 1px solid #dcdcde;
+}
+
+.button-secondary-modern:hover {
+    background: #f0f0f1;
+    color: #1d2327;
+    border-color: #8c8f94;
+}
+
+.button-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.button-icon .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.button-text {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.button-subtitle {
+    font-size: 12px;
+    font-weight: 400;
+    opacity: 0.8;
+    line-height: 1.2;
+}
+
+.button-primary-modern .button-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+}
+
+/* Loading state for scan button */
+.button-modern.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.button-modern.loading .button-icon .dashicons {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive Design for Modern Scan Configuration */
+@media (max-width: 768px) {
+    .config-card-modern {
+        padding: 20px;
+        margin: 20px 0;
+    }
+
+    .config-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .config-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .config-icon .dashicons {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    .config-title h3 {
+        font-size: 18px;
+    }
+
+    .scan-actions-modern {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+
+    .button-modern {
+        width: 100%;
+        justify-content: center;
+        min-height: 50px;
+        padding: 12px 20px;
+    }
+
+    .button-text {
+        font-size: 14px;
+    }
+
+    .button-subtitle {
+        font-size: 11px;
+    }
+
+    .simple-checkbox-label {
+        font-size: 13px;
+        padding: 6px 0;
+    }
+
+    .simple-checkmark {
+        width: 16px;
+        height: 16px;
+    }
+}
+
 /* Table scroll on mobile - match selected media table */
 @media (max-width: 768px) {
     #unused-media-datatable {
@@ -4885,7 +5197,9 @@ textarea:focus {
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
-
+.simple-checkbox {
+    visibility: hidden;
+}
 .mw-stat-number {
     font-size: 28px;
     font-weight: 700;
