@@ -5,7 +5,7 @@ Tags: media, delete, cleanup, unused, bulk
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -189,6 +189,10 @@ After activation, visit the **Media Wipe Dashboard** to see your media library s
 6. Mobile-responsive interface with touch-friendly controls and horizontal scrolling tables
 
 == Changelog ==
+
+= 1.3.2 - 2025-10-10 =
+**Enhanced DataTable Interface & User Experience**
+- Few minor bug fixes and improvements.
 
 = 1.3.1 - 2025-10-06 =
 **Enhanced DataTable Interface & User Experience**
