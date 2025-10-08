@@ -77,7 +77,7 @@ function media_wipe_unused_media_page() {
             <!-- WordPress Native List Table -->
             <div class="tablenav top">
                 <div class="alignleft actions">
-                    <button type="button" id="delete-selected-btn" class="button button-primary" disabled>
+                    <button type="button" id="delete-selected-btn" class="button" disabled>
                         <span class="dashicons dashicons-trash"></span>
                         <?php esc_html_e('Delete Selected', 'media-wipe'); ?>
                     </button>

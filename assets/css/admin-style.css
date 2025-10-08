@@ -5117,7 +5117,7 @@ textarea:focus {
     border-radius: 4px;
     margin: 20px 0;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
 }
 
 .mw-history-table-container .datatable-container {
@@ -5445,11 +5445,7 @@ textarea:focus {
 #delete-selected-btn {
     background: #d01314;
     border: 0;
-}
-
-#delete-selected-btn:hover {
-    background: #d01314 !important;
-    border: 0;
+    color: #fff;
 }
 
 #media-list-table .column-title {
