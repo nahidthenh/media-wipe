@@ -577,23 +577,44 @@ function media_wipe_delete_unused_page() {
             </div>
         </div>
 
-        <!-- Scan Progress -->
+        <!-- Modern Scan Progress -->
         <div id="scan-progress-container" style="display: none;">
-            <div class="progress-card">
-                <h3><?php esc_html_e('Scanning Media Library...', 'media-wipe'); ?></h3>
-                <div class="progress-bar-container">
-                    <div class="progress-bar">
-                        <div id="progress-bar-fill" style="width: 0%;"></div>
+            <div class="progress-card-modern">
+                <div class="progress-header">
+                    <div class="progress-icon">
+                        <span class="dashicons dashicons-update progress-spinner"></span>
                     </div>
-                    <div class="progress-text">
+                    <div class="progress-title">
+                        <h3><?php esc_html_e('AI Scanning in Progress', 'media-wipe'); ?></h3>
+                        <p class="progress-subtitle" id="progress-details"><?php esc_html_e('Analyzing your media library for unused files...', 'media-wipe'); ?></p>
+                    </div>
+                    <div class="progress-percentage-display">
                         <span id="progress-percentage">0%</span>
-                        <span id="progress-details"><?php esc_html_e('Initializing scan...', 'media-wipe'); ?></span>
                     </div>
                 </div>
-                <div class="progress-stats">
-                    <span id="files-processed">0</span> / <span id="total-files">0</span> <?php esc_html_e('files processed', 'media-wipe'); ?>
-                    <span class="separator">•</span>
-                    <span id="unused-found">0</span> <?php esc_html_e('unused files found', 'media-wipe'); ?>
+
+                <div class="progress-bar-modern">
+                    <div class="progress-track">
+                        <div id="progress-bar-fill" class="progress-fill-modern" style="width: 0%;"></div>
+                        <div class="progress-glow"></div>
+                    </div>
+                </div>
+
+                <div class="progress-stats-modern">
+                    <div class="stat-item">
+                        <span class="stat-icon dashicons dashicons-media-default"></span>
+                        <div class="stat-content">
+                            <span class="stat-number"><span id="files-processed">0</span> / <span id="total-files">0</span></span>
+                            <span class="stat-label"><?php esc_html_e('Files Processed', 'media-wipe'); ?></span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon dashicons dashicons-trash"></span>
+                        <div class="stat-content">
+                            <span class="stat-number" id="unused-found">0</span>
+                            <span class="stat-label"><?php esc_html_e('Unused Files Found', 'media-wipe'); ?></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

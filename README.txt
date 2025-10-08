@@ -190,7 +190,7 @@ After activation, visit the **Media Wipe Dashboard** to see your media library s
 
 == Changelog ==
 
-= 1.3.2 - 2025-10-10 =
+= 1.3.2 - 2025-10-08 =
 **Enhanced DataTable Interface & User Experience**
 - Few minor bug fixes and improvements.
 
