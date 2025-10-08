@@ -795,18 +795,97 @@ jQuery(document).ready(function ($) {
         });
 
         // Initialize DataTable - match selected media table configuration
-        $('#unused-media-datatable').DataTable({
+        var unusedTable = $('#unused-media-datatable').DataTable({
             data: tableData,
             responsive: true,
             pageLength: 25,
             order: [[6, 'desc']], // Sort by confidence score (column 6)
             columnDefs: [
                 { orderable: false, targets: [0, 1, 7] } // Disable sorting for Select, Preview, and Actions columns
-            ]
+            ],
+            drawCallback: function () {
+                // Re-initialize row-click functionality after each draw/redraw
+                initializeUnusedMediaRowClick();
+                console.log('DataTable drawn - row-click functionality re-initialized');
+            }
         });
+
+        // Add row-click selection functionality for unused media table
+        initializeUnusedMediaRowClick();
 
         // Update selection controls
         updateUnusedSelectionControls();
+    }
+
+    // Initialize row-click selection functionality for unused media table
+    function initializeUnusedMediaRowClick() {
+        // Remove any existing event handlers to prevent duplicates
+        $(document).off('click.unusedRowClick', '#unused-media-datatable tbody tr');
+        $(document).off('keydown.unusedRowClick', '#unused-media-datatable tbody tr');
+
+        console.log('Initializing unused media row-click functionality...');
+
+        // Row click functionality for easier selection (DataTable)
+        $(document).on('click.unusedRowClick', '#unused-media-datatable tbody tr', function (e) {
+            console.log('Row clicked on unused media table');
+
+            // Don't trigger row selection if clicking on buttons, links, or checkboxes
+            if ($(e.target).is('button, a, input[type="checkbox"], .button, .view-usage-btn') ||
+                $(e.target).closest('button, a, .button, .view-usage-btn').length > 0) {
+                console.log('Click ignored - target is button or checkbox');
+                return;
+            }
+
+            const $row = $(e.currentTarget);
+            const $checkbox = $row.find('.unused-file-checkbox');
+
+            console.log('Found checkbox:', $checkbox.length > 0);
+
+            if ($checkbox.length > 0) {
+                // Toggle the checkbox
+                const wasChecked = $checkbox.prop('checked');
+                $checkbox.prop('checked', !wasChecked);
+                // Trigger the change event to update selection state
+                $checkbox.trigger('change');
+                console.log('Unused media row clicked - toggled checkbox for media ID:', $checkbox.data('id'), 'from', wasChecked, 'to', !wasChecked);
+
+                // Add visual feedback
+                if (!wasChecked) {
+                    $row.addClass('selected');
+                } else {
+                    $row.removeClass('selected');
+                }
+            } else {
+                console.log('No checkbox found in row');
+            }
+        });
+
+        // Keyboard support for row selection
+        $(document).on('keydown.unusedRowClick', '#unused-media-datatable tbody tr', function (e) {
+            // Spacebar to toggle selection
+            if (e.which === 32) { // Spacebar
+                e.preventDefault();
+                const $checkbox = $(this).find('.unused-file-checkbox');
+                if ($checkbox.length > 0) {
+                    const wasChecked = $checkbox.prop('checked');
+                    $checkbox.prop('checked', !wasChecked);
+                    $checkbox.trigger('change');
+                    console.log('Unused media row spacebar - toggled checkbox for media ID:', $checkbox.data('id'));
+
+                    // Add visual feedback
+                    if (!wasChecked) {
+                        $(this).addClass('selected');
+                    } else {
+                        $(this).removeClass('selected');
+                    }
+                }
+            }
+        });
+
+        // Make rows focusable for keyboard navigation and add cursor pointer
+        $('#unused-media-datatable tbody tr').attr('tabindex', '0').css('cursor', 'pointer');
+
+        console.log('Unused media row-click functionality initialized for', $('#unused-media-datatable tbody tr').length, 'rows');
     }
 
     // Fallback function to display basic table without DataTables
@@ -838,6 +917,9 @@ jQuery(document).ready(function ($) {
             $tbody.append(row);
         });
 
+        // Add row-click selection functionality for basic table
+        initializeUnusedMediaRowClick();
+
         // Update selection controls
         updateUnusedSelectionControls();
     }
@@ -858,10 +940,13 @@ jQuery(document).ready(function ($) {
         if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
             var table = $('#unused-media-datatable').DataTable();
             table.$('.unused-file-checkbox').prop('checked', true);
+            table.$('tbody tr').addClass('selected');
         } else {
             $('.unused-file-checkbox').prop('checked', true);
+            $('#unused-media-datatable tbody tr').addClass('selected');
         }
         updateUnusedSelectionControls();
+        console.log('Select All clicked - all rows selected');
     });
 
     $('#select-none-unused').on('click', function () {
@@ -869,10 +954,13 @@ jQuery(document).ready(function ($) {
         if ($.fn.DataTable && $.fn.DataTable.isDataTable('#unused-media-datatable')) {
             var table = $('#unused-media-datatable').DataTable();
             table.$('.unused-file-checkbox').prop('checked', false);
+            table.$('tbody tr').removeClass('selected');
         } else {
             $('.unused-file-checkbox').prop('checked', false);
+            $('#unused-media-datatable tbody tr').removeClass('selected');
         }
         updateUnusedSelectionControls();
+        console.log('Select None clicked - all rows deselected');
     });
 
     $('#select-high-confidence').on('click', function () {
@@ -881,19 +969,50 @@ jQuery(document).ready(function ($) {
             var table = $('#unused-media-datatable').DataTable();
             table.$('.unused-file-checkbox').each(function () {
                 var confidence = parseInt($(this).data('confidence'));
-                $(this).prop('checked', confidence >= 90);
+                var isHighConfidence = confidence >= 90;
+                $(this).prop('checked', isHighConfidence);
+
+                // Update visual state
+                var $row = $(this).closest('tr');
+                if (isHighConfidence) {
+                    $row.addClass('selected');
+                } else {
+                    $row.removeClass('selected');
+                }
             });
         } else {
             $('.unused-file-checkbox').each(function () {
                 var confidence = parseInt($(this).data('confidence'));
-                $(this).prop('checked', confidence >= 90);
+                var isHighConfidence = confidence >= 90;
+                $(this).prop('checked', isHighConfidence);
+
+                // Update visual state
+                var $row = $(this).closest('tr');
+                if (isHighConfidence) {
+                    $row.addClass('selected');
+                } else {
+                    $row.removeClass('selected');
+                }
             });
         }
         updateUnusedSelectionControls();
+        console.log('Select High Confidence clicked - high confidence rows selected');
     });
 
-    // Update selection controls
-    $(document).on('change', '.unused-file-checkbox', updateUnusedSelectionControls);
+    // Update selection controls and visual state
+    $(document).on('change', '.unused-file-checkbox', function () {
+        updateUnusedSelectionControls();
+
+        // Update visual selection state
+        const $checkbox = $(this);
+        const $row = $checkbox.closest('tr');
+
+        if ($checkbox.prop('checked')) {
+            $row.addClass('selected');
+        } else {
+            $row.removeClass('selected');
+        }
+    });
 
     function updateUnusedSelectionControls() {
         var selectedCount = 0;

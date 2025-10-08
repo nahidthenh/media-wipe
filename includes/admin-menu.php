@@ -489,18 +489,37 @@ function media_wipe_delete_unused_page() {
         wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'media-wipe'));
     }
     ?>
-    <div class="wrap">
-        <h1><?php esc_html_e('Delete Unused Media', 'media-wipe'); ?></h1>
+    <div class="wrap media-wipe-full-screen">
+        <h1 class="wp-heading-inline">
+            <?php esc_html_e('Delete Unused Media', 'media-wipe'); ?>
+        </h1>
 
-        <!-- Feature Introduction -->
-        <div class="media-wipe-unused-intro">
-            <div class="intro-content">
-                <h2><?php esc_html_e('Identify and Delete Unused Media Files', 'media-wipe'); ?></h2>
-                <p><?php esc_html_e('This feature scans your media library to identify files that are not being used anywhere on your website. This is particularly useful for cleaning up demo content from imported themes or removing old, forgotten media files.', 'media-wipe'); ?></p>
+        <!-- Professional Hero Section -->
+        <div class="media-wipe-hero-section">
+            <div class="hero-content">
+                <div class="hero-icon">
+                    <span class="dashicons dashicons-search"></span>
+                </div>
+                <div class="hero-text">
+                    <h2><?php esc_html_e('AI-Powered Unused Media Detection', 'media-wipe'); ?></h2>
+                    <p><?php esc_html_e('Intelligently identify and safely remove media files that are not being used anywhere on your website. Perfect for cleaning up demo content, old imports, and forgotten files with confidence scoring.', 'media-wipe'); ?></p>
+                </div>
+                <div class="hero-features">
+                    <span class="feature-badge">
+                        <span class="dashicons dashicons-yes-alt"></span>
+                        <?php esc_html_e('Confidence Scoring', 'media-wipe'); ?>
+                    </span>
+                    <span class="feature-badge">
+                        <span class="dashicons dashicons-shield-alt"></span>
+                        <?php esc_html_e('Safe Detection', 'media-wipe'); ?>
+                    </span>
+                    <span class="feature-badge">
+                        <span class="dashicons dashicons-performance"></span>
+                        <?php esc_html_e('Smart Analysis', 'media-wipe'); ?>
+                    </span>
+                </div>
             </div>
         </div>
-
-        <!-- Warning section removed for cleaner interface -->
 
         <!-- Scan Configuration -->
         <div class="media-wipe-scan-config">

@@ -1041,6 +1041,37 @@ button {
     color: #c3c4c7;
 }
 
+/* Enhanced row-click functionality for unused media table */
+#unused-media-datatable tbody tr {
+    cursor: pointer !important;
+    transition: all 0.2s ease;
+}
+
+/* Visual feedback for clickable rows */
+#unused-media-datatable tbody tr:hover {
+    background: #f6f7f7 !important;
+    transform: none;
+    /* Remove any transform effects that might interfere */
+}
+
+/* Selected row styling */
+#unused-media-datatable tbody tr.selected {
+    background: #e7f3ff !important;
+}
+
+#unused-media-datatable tbody tr.selected:hover {
+    background: #d4edff !important;
+}
+
+/* Action buttons should not inherit row cursor */
+#unused-media-datatable tbody tr td .button,
+#unused-media-datatable tbody tr td .delete-single,
+#unused-media-datatable tbody tr td .view-usage-btn {
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+}
+
 /* Delete Selected Unused button styling - match selected media */
 #delete-selected-unused {
     background: #d01314 !important;
@@ -1075,6 +1106,109 @@ button {
 #unused-media-datatable .delete-single:hover {
     background: #c0392b;
     transform: translateY(-1px);
+}
+
+/* Professional Hero Section for Delete Unused Page */
+.media-wipe-hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 8px;
+    padding: 30px;
+    margin: 20px 0;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.media-wipe-hero-section .hero-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.media-wipe-hero-section .hero-icon {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.media-wipe-hero-section .hero-icon .dashicons {
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+}
+
+.media-wipe-hero-section .hero-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.media-wipe-hero-section .hero-text h2 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+}
+
+.media-wipe-hero-section .hero-text p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+.media-wipe-hero-section .hero-features {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.media-wipe-hero-section .feature-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.media-wipe-hero-section .feature-badge .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+/* Responsive hero section */
+@media (max-width: 768px) {
+    .media-wipe-hero-section {
+        padding: 20px;
+    }
+
+    .media-wipe-hero-section .hero-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .media-wipe-hero-section .hero-text {
+        min-width: auto;
+    }
+
+    .media-wipe-hero-section .hero-features {
+        justify-content: center;
+    }
+
+    .media-wipe-hero-section .feature-badge {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
 }
 
 /* Table scroll on mobile - match selected media table */
